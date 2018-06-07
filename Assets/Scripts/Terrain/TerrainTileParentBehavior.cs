@@ -14,12 +14,25 @@ namespace Misner.PalmRTS.Terrain
 
         #endregion
 
+        #region SerializeField
+
+		[SerializeField]
+        private TerrainTileBehavior _defaultTilePrefab;
+
+        #endregion
+
         #region MonoBehaviour
 
 		// Use this for initialization
 		protected void Start ()
 		{
-            _terrainTileModel = new TerrainTileModel(this);
+            if (_defaultTilePrefab == null)
+            {
+                Debug.LogErrorFormat("{0}.Start(), _defaultTilePrefab must be defined! Please check your prefab by searching '{1}' and making sure 'Default Tile Prefab' is defined.", this.ToString(), "t:TerrainTileParentBehavior");
+                return;
+            }
+
+            _terrainTileModel = new TerrainTileModel(this, _defaultTilePrefab);
             
             TerrainTileBehavior[] existingBehaviors = transform.GetComponentsInChildren<TerrainTileBehavior>();
 
@@ -32,6 +45,8 @@ namespace Misner.PalmRTS.Terrain
                     _terrainTileModel.AddTile(childBehavior);
                 }
             }
+
+            _terrainTileModel.Populate(x0: -1, x1: 1, y0: -1, y1: 1);
         }
 
         // Update is called once per frame
