@@ -2,7 +2,7 @@
 
 namespace Misner.PalmRTS.Util
 {
-	public static class ArrayExtentions
+	public static class ArrayExtensions
 	{
         /// <summary>Indicates whether the specified array is null or has a length of zero.</summary>
         /// <param name="array">The array to test.</param>
