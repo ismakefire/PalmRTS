@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Misner.PalmRTS.Util;
+using UnityEngine;
 
 namespace Misner.PalmRTS.Actor
 {
@@ -17,8 +18,18 @@ namespace Misner.PalmRTS.Actor
 
         protected void OnMouseDown()
         {
-            Debug.LogFormat("{0}.OnMouseDown(), calling destroy on self! >_<", this.ToString());
-            Destroy(this.gameObject);
+            if (KeyUtil.AnyShift)
+            {
+                Debug.LogFormat("{0}.OnMouseDown(), calling destroy on self! >_<", this.ToString());
+
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                Debug.LogFormat("{0}.OnMouseDown(), jump!", this.ToString());
+
+                GetComponent<Rigidbody>().velocity += Random.onUnitSphere * 9f;
+            }
         }
 
         #endregion
