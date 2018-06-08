@@ -33,6 +33,7 @@ namespace Misner.PalmRTS.Actor
         #region Variables
 
         private readonly List<ActorBehavior> _actorBehaviors = new List<ActorBehavior>();
+        private readonly ActorSelectionModel _actorSelectionModel = new ActorSelectionModel();
 
         #endregion
 
@@ -68,6 +69,23 @@ namespace Misner.PalmRTS.Actor
 
                 actorBehavior.Jump();
             }
+            else if (KeyUtil.AnyShift)
+            {
+                _actorSelectionModel.Toggle(actorBehavior);
+            }
+            else
+            {
+                if (_actorSelectionModel.Contains(actorBehavior))
+                {
+                    Debug.LogFormat("{0}.OnActorClicked(), idk do something?", this.ToString());
+                }
+                else
+                {
+                    _actorSelectionModel.Set(actorBehavior);
+                }
+            }
+
+            Debug.LogFormat("{0}.OnActorClicked(), _actorSelectionModel.Count = {1}", this.ToString(), _actorSelectionModel.Count);
         }
 
         #endregion
@@ -76,6 +94,7 @@ namespace Misner.PalmRTS.Actor
 
         private void KillActor(ActorBehavior actorBehavior)
         {
+            _actorSelectionModel.Remove(actorBehavior);
             _actorBehaviors.Remove(actorBehavior);
             UnityEngine.Object.Destroy(actorBehavior.gameObject);
 
