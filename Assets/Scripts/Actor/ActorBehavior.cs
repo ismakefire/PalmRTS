@@ -1,10 +1,17 @@
-﻿using Misner.PalmRTS.Util;
+﻿using System;
+using Misner.PalmRTS.Util;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Actor
 {
 	public class ActorBehavior : MonoBehaviour
 	{
+        #region Properties
+
+        public event Action<ActorBehavior> OnClicked;
+
+        #endregion
+        
         #region MonoBehaviour
 
 		// Use this for initialization
@@ -18,18 +25,19 @@ namespace Misner.PalmRTS.Actor
 
         protected void OnMouseDown()
         {
-            if (KeyUtil.AnyShift)
+            if (OnClicked != null)
             {
-                Debug.LogFormat("{0}.OnMouseDown(), calling destroy on self! >_<", this.ToString());
-
-                Destroy(this.gameObject);
+                OnClicked(this);
             }
-            else
-            {
-                Debug.LogFormat("{0}.OnMouseDown(), jump!", this.ToString());
+        }
 
-                GetComponent<Rigidbody>().velocity += Random.onUnitSphere * 9f;
-            }
+        #endregion
+
+        #region Public Methods
+
+        public void Jump()
+        {
+            this.GetComponent<Rigidbody>().velocity += UnityEngine.Random.onUnitSphere * 9f;
         }
 
         #endregion
