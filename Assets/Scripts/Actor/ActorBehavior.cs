@@ -1,4 +1,5 @@
 ﻿using System;
+using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Util;
 using UnityEngine;
 
@@ -11,7 +12,26 @@ namespace Misner.PalmRTS.Actor
         public event Action<ActorBehavior> OnClicked;
 
         #endregion
-        
+
+        #region SerializeField
+
+		[SerializeField]
+		private ETeam _actorTeam;
+
+        #endregion
+
+        #region Properties
+
+        public ETeam ControllingTeam
+        {
+            get
+            {
+                return _actorTeam;
+            }
+        }
+
+        #endregion
+
         #region MonoBehaviour
 
 		// Use this for initialization

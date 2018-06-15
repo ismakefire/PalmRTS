@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Util;
 using UnityEngine;
 
@@ -56,6 +57,13 @@ namespace Misner.PalmRTS.Actor
             if (actorBehavior == null)
             {
                 return;
+            }
+
+            ITeam teamControllingActor = TeamManager.Instance.GetTeam(actorBehavior.ControllingTeam);
+
+            if (teamControllingActor != null)
+            {
+                teamControllingActor.OnActorClicked(actorBehavior);
             }
 
             if (KeyUtil.AnyCommand)
