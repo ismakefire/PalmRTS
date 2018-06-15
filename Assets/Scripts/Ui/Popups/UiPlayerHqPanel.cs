@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Misner.PalmRTS.UI
 {
@@ -20,6 +19,16 @@ namespace Misner.PalmRTS.UI
 
         #endregion
 
+        #region SerializeField
+
+        [SerializeField]
+        private Button _createConstructionBotButton;
+
+        [SerializeField]
+        private Button _createTransitVehicleButton;
+
+        #endregion
+
         #region MonoBehaviour
 
         // Use this for initialization
@@ -33,6 +42,9 @@ namespace Misner.PalmRTS.UI
             {
                 Debug.LogErrorFormat("{0}.Awake(), why are there two of these?", this.ToString());
             }
+
+            _createConstructionBotButton.onClick.AddListener(OnCreateConstructionBotButtonClicked);
+            _createTransitVehicleButton.onClick.AddListener(OnCreateTransitVehicleButtonClicked);
         }
 
         // Update is called once per frame
@@ -57,6 +69,24 @@ namespace Misner.PalmRTS.UI
             this.gameObject.SetActive(false);
 
             Debug.LogFormat("{0}.HidePanel()", this.ToString());
+        }
+
+        #endregion
+
+        #region Events
+
+        protected void OnCreateConstructionBotButtonClicked()
+        {
+            Debug.LogFormat("{0}.OnCreateConstructionBotButtonClicked(), we're all good!", this.ToString());
+
+            HidePanel();
+        }
+
+        protected void OnCreateTransitVehicleButtonClicked()
+        {
+            Debug.LogFormat("{0}.OnCreateTransitVehicleButtonClicked(), we're all good!", this.ToString());
+
+            HidePanel();
         }
 
         #endregion
