@@ -45,7 +45,12 @@ namespace Misner.PalmRTS.Team
                 _teamEnumToImplementation[teamKey] = CreateTeam(teamKey);
             }
 
-			return _teamEnumToImplementation[teamKey];
+            return _teamEnumToImplementation[teamKey];
+        }
+
+        public TTeam GetTeam<TTeam>(ETeam teamKey) where TTeam : ITeam
+        {
+            return (TTeam)( GetTeam(teamKey) );
         }
 
         #endregion

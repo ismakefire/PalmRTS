@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 23983783005169080}
   - component: {fileID: 54174409105119538}
   - component: {fileID: 114859680485584490}
+  - component: {fileID: 114747178683398514}
   m_Layer: 0
   m_Name: HQ Cube
   m_TagString: Untagged
@@ -212,6 +213,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114747178683398514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849082461507126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da59587f7269240b8a1ae8cbc821fc58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114859680485584490
 MonoBehaviour:
   m_ObjectHideFlags: 1
