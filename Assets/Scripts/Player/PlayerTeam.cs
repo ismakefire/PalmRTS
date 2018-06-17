@@ -4,6 +4,14 @@ using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Team;
 using UnityEngine;
 
+namespace Misner.PalmRTS.Team
+{
+    public interface ITeam
+    {
+        void OnActorClicked(ActorBehavior actorBehavior);
+    }
+}
+
 namespace Misner.PalmRTS.Player
 {
     public class PlayerTeam : ITeam
