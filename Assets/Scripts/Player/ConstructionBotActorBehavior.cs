@@ -1,4 +1,5 @@
 ﻿using Misner.PalmRTS.Actor;
+using Misner.PalmRTS.Team;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Player
@@ -27,6 +28,14 @@ namespace Misner.PalmRTS.Player
         #endregion
 
         #region MonoBehaviour
+
+        // Use this for initialization
+        protected void Start()
+        {
+            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
+
+            playerTeam.AddClickEvent(Actor, Actor.Jump);
+        }
 
 		protected void Update ()
 		{

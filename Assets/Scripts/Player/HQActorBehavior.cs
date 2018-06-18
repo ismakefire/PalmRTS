@@ -59,7 +59,11 @@ namespace Misner.PalmRTS.Player
             Debug.LogFormat("{0}.OnCreateConstructionBot()", this.ToString());
 
             GameObject newConstructionBot = Instantiate(_constructionBotPrefab);
+            newConstructionBot.transform.SetParent(this.transform.parent);
             newConstructionBot.transform.localPosition = this.transform.localPosition + _actorSpawnOffset + Random.insideUnitSphere * 0.1f;
+
+            ActorBehavior actor = newConstructionBot.GetComponent<ActorBehavior>();
+            ActorModelManager.Instance.Add(actor);
         }
 
         protected void OnCreateTransitVehicle()
