@@ -12,6 +12,7 @@ namespace Misner.PalmRTS.UI
         {
             public Action CreateConstructionBot { get; set; }
             public Action CreateTransitVehicle { get; set; }
+            public Action CreateMiningDrill { get; set; }
         }
 
         #endregion
@@ -41,8 +42,11 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private Button _createConstructionBotButton;
 
+		[SerializeField]
+		private Button _createTransitVehicleButton;
+
         [SerializeField]
-        private Button _createTransitVehicleButton;
+        private Button _createMiningDrillButton;
 
         #endregion
 
@@ -62,6 +66,7 @@ namespace Misner.PalmRTS.UI
 
             _createConstructionBotButton.onClick.AddListener(OnCreateConstructionBotButtonClicked);
             _createTransitVehicleButton.onClick.AddListener(OnCreateTransitVehicleButtonClicked);
+            _createMiningDrillButton.onClick.AddListener(OnCreateMiningDrillButtonClicked);
         }
 
         // Update is called once per frame
@@ -113,6 +118,18 @@ namespace Misner.PalmRTS.UI
             if (_actions != null && _actions.CreateTransitVehicle != null)
             {
                 _actions.CreateTransitVehicle();
+            }
+
+            HidePanel();
+        }
+
+        protected void OnCreateMiningDrillButtonClicked()
+        {
+            Debug.LogFormat("{0}.OnCreateMiningDrillButtonClicked(), we're all good!", this.ToString());
+
+            if (_actions != null && _actions.CreateMiningDrill != null)
+            {
+                _actions.CreateMiningDrill();
             }
 
             HidePanel();
