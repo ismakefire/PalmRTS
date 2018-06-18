@@ -1,10 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Misner.PalmRTS.UI
 {
 	public class UiPlayerHqPanel : MonoBehaviour
 	{
+        #region Types
+
+        public class PlayerHQActions
+        {
+            public Action CreateConstructionBot { get; set; }
+            public Action CreateTransitVehicle { get; set; }
+        }
+
+        #endregion
+
+        #region Variables
+
+        private PlayerHQActions _actions = null;
+
+        #endregion
+
         #region Singleton
 
         private static UiPlayerHqPanel _instance = null;
@@ -57,8 +74,9 @@ namespace Misner.PalmRTS.UI
 
         #region Public Interface
 
-        public void ShowPanel()
+        public void ShowPanel(PlayerHQActions actions)
         {
+            _actions = actions;
             this.gameObject.SetActive(true);
 
             Debug.LogFormat("{0}.ShowPanel()", this.ToString());
@@ -66,6 +84,7 @@ namespace Misner.PalmRTS.UI
 
         public void HidePanel()
         {
+            _actions = null;
             this.gameObject.SetActive(false);
 
             Debug.LogFormat("{0}.HidePanel()", this.ToString());
@@ -79,12 +98,22 @@ namespace Misner.PalmRTS.UI
         {
             Debug.LogFormat("{0}.OnCreateConstructionBotButtonClicked(), we're all good!", this.ToString());
 
+            if (_actions != null && _actions.CreateConstructionBot != null)
+            {
+                _actions.CreateConstructionBot();
+            }
+
             HidePanel();
         }
 
         protected void OnCreateTransitVehicleButtonClicked()
         {
             Debug.LogFormat("{0}.OnCreateTransitVehicleButtonClicked(), we're all good!", this.ToString());
+
+            if (_actions != null && _actions.CreateTransitVehicle != null)
+            {
+                _actions.CreateTransitVehicle();
+            }
 
             HidePanel();
         }

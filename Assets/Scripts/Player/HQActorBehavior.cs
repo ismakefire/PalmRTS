@@ -8,6 +8,16 @@ namespace Misner.PalmRTS.Player
     [RequireComponent(typeof(ActorBehavior))]
 	public class HQActorBehavior : MonoBehaviour
 	{
+        #region SerializeField
+
+        [SerializeField]
+        private Vector3 _actorSpawnOffset;
+
+        [SerializeField]
+        private GameObject _constructionBotPrefab;
+
+        #endregion
+
         #region Properties
 
 		public ActorBehavior Actor
@@ -36,8 +46,26 @@ namespace Misner.PalmRTS.Player
 
 		protected void ShowHQPanel()
 		{
-			UiPlayerHqPanel.Instance.ShowPanel();
+			UiPlayerHqPanel.Instance.ShowPanel(
+                new UiPlayerHqPanel.PlayerHQActions() {
+                    CreateConstructionBot = OnCreateConstructionBot,
+                    CreateTransitVehicle = OnCreateTransitVehicle
+                }
+            );
 		}
+
+        protected void OnCreateConstructionBot()
+        {
+            Debug.LogFormat("{0}.OnCreateConstructionBot()", this.ToString());
+
+            GameObject newConstructionBot = Instantiate(_constructionBotPrefab);
+            newConstructionBot.transform.localPosition = this.transform.localPosition + _actorSpawnOffset + Random.insideUnitSphere * 0.1f;
+        }
+
+        protected void OnCreateTransitVehicle()
+        {
+            Debug.LogFormat("{0}.OnCreateTransitVehicle()", this.ToString());
+        }
 
         #endregion
 
