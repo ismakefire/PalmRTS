@@ -40,17 +40,17 @@ namespace Misner.PalmRTS.Player
 
 		protected void Update ()
 		{
-            if (transform.localPosition.y < 1.9f)
+            if (transform.localPosition.y < 0.95f)
             {
-                Body.velocity += Vector3.up * 0.3f * Time.timeScale;
+                Body.velocity += Vector3.up * 0.15f * Time.timeScale;
             }
-            else if (transform.localPosition.y < 2.1f)
+            else if (transform.localPosition.y < 1.05f)
             {
-                Body.velocity -= Vector3.up * 0.1f * Time.timeScale;
+                Body.velocity -= Vector3.up * 0.05f * Time.timeScale;
             }
             else
             {
-                Body.velocity -= Vector3.up * 0.3f * Time.timeScale;
+                Body.velocity -= Vector3.up * 0.15f * Time.timeScale;
             }
 
             Body.velocity *= Mathf.Exp(-Time.deltaTime);
