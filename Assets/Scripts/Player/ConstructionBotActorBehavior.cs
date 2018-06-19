@@ -1,5 +1,6 @@
 ﻿using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Team;
+using Misner.PalmRTS.UI;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Player
@@ -34,7 +35,7 @@ namespace Misner.PalmRTS.Player
         {
             PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
 
-            playerTeam.AddClickEvent(Actor, Actor.Jump);
+            playerTeam.AddClickEvent(Actor, ShowHQPanel);
         }
 
 		protected void Update ()
@@ -54,6 +55,15 @@ namespace Misner.PalmRTS.Player
 
             Body.velocity *= Mathf.Exp(-Time.deltaTime);
 		}
+
+        #endregion
+
+        #region Events
+
+        protected void ShowHQPanel()
+        {
+            UiConstructionBotPanel.Instance.ShowPanel();
+        }
 
         #endregion
 	}
