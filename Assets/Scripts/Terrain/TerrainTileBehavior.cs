@@ -9,7 +9,7 @@ namespace Misner.PalmRTS.Terrain
 	{
         #region Constants
 
-        public const float GridWidth = 10f;
+        public const float GridWidth = 8f;
 
         #endregion
         
