@@ -1,4 +1,5 @@
 ﻿using Misner.PalmRTS.Actor;
+using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.UI;
 using UnityEngine;
@@ -38,6 +39,8 @@ namespace Misner.PalmRTS.Player
             PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
 
             playerTeam.AddClickEvent(Actor, ShowHQPanel);
+
+            StructureTileManager.Instance.Add(Actor);
 		}
 
         #endregion

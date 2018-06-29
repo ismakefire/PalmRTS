@@ -30,6 +30,17 @@ namespace Misner.PalmRTS.Actor
             }
         }
 
+        public Vector2Int TilePosition
+        {
+            get
+            {
+                return new Vector2Int(
+                    Mathf.RoundToInt(transform.localPosition.x),
+                    Mathf.RoundToInt(transform.localPosition.z)
+                );
+            }
+        }
+
         #endregion
 
         #region MonoBehaviour
