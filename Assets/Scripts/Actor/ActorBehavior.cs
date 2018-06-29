@@ -52,6 +52,13 @@ namespace Misner.PalmRTS.Actor
             {
                 Debug.LogErrorFormat("{0}.Start(), a Collider component must be attached for this script to function.", this.ToString());
             }
+
+            ITeam team = TeamManager.Instance.GetTeam(ControllingTeam);
+
+            if (team != null)
+            {
+                team.OnActorAdded(this);
+            }
         }
 
         protected void OnMouseDown()
