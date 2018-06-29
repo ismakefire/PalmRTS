@@ -33,7 +33,7 @@ namespace Misner.PalmRTS.Player
         // Use this for initialization
         protected void Start()
         {
-            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
+            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(Actor.ControllingTeam);
 
             playerTeam.AddClickEvent(Actor, ShowHQPanel);
         }
