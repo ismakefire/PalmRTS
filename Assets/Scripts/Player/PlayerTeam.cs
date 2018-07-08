@@ -55,21 +55,39 @@ namespace Misner.PalmRTS.Player
 
         public List<Vector2Int> GenerateAvailableStructureTiles()
         {
-            List<Vector2Int> result = new List<Vector2Int>();
+            HashList<Vector2Int> result = new HashList<Vector2Int>();
 
             foreach (ActorBehavior actor in _actors)
             {
+                // TODO: Change this to any building providing additional range.
                 HQActorBehavior hq = actor.GetComponent<HQActorBehavior>();
 
                 if (hq != null)
                 {
                     Debug.LogFormat("<color=#ff00ff>{0}.GenerateAvailableStructureTiles(), has hq. hq.Actor.TilePosition = {1}</color>", this.ToString(), hq.Actor.TilePosition);
 
-                    //
+                    for (int ix = -2; ix <= 2; ix++)
+                    {
+                        for (int iy = -2; iy <= 2; iy++)
+                        {
+                            int displacementSquared = ix * ix + iy * iy;
+                            
+                            if (displacementSquared > 0 && displacementSquared <= 5)
+                            {
+                                result.Add(hq.Actor.TilePosition + new Vector2Int(ix, iy));
+                            }
+                        }
+                    }
                 }
             }
 
-            return result;
+            // TODO: Remove all locations which already contain objects.
+
+            List<Vector2Int> resultOutput = new List<Vector2Int>();
+
+            resultOutput.AddRange(result);
+
+            return resultOutput;
         }
 
         #endregion

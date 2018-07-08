@@ -10,6 +10,7 @@ namespace Misner.PalmRTS.UI
 
         public class PlayerDeploymentActions
         {
+            public Action DeployDrill { get; set; }
         }
 
         #endregion
@@ -92,8 +93,14 @@ namespace Misner.PalmRTS.UI
         {
             Debug.LogFormat("{0}.OnDeployDrillButtonClicked(), we're all good!", this.ToString());
 
+            if (_actions != null && _actions.DeployDrill != null)
+            {
+                _actions.DeployDrill();
+            }
+
             HidePanel();
         }
+
         #endregion
 	}
 }
