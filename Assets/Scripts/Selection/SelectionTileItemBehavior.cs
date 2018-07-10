@@ -7,7 +7,8 @@ namespace Misner.PalmRTS.Selection
 	{
         #region Properties
 
-        public Action OnItemClicked { get; set; }
+        public Player.ConstructionBotActorBehavior.DrillDeploymentHandle DeploymentHandle { get; set; }
+        public Vector2Int TileLocation { get; set; }
 
         #endregion
 
@@ -15,15 +16,9 @@ namespace Misner.PalmRTS.Selection
 
         protected void OnMouseUp ()
 		{
-            Debug.LogFormat("<color=#ff00ff>{0}.OnMouseUp()</color>", this.ToString());
-
-            if (OnItemClicked != null)
+            if (DeploymentHandle != null)
             {
-                OnItemClicked();
-            }
-            else
-            {
-                Debug.LogFormat("<color=#ff0000>{0}.OnMouseUp(), No action setup.</color>", this.ToString());
+                DeploymentHandle.OnSelectionPerformed(TileLocation);
             }
 		}
 

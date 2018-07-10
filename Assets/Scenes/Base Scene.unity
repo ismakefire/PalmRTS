@@ -994,6 +994,7 @@ GameObject:
   - component: {fileID: 2089089763}
   - component: {fileID: 2089089762}
   - component: {fileID: 2089089761}
+  - component: {fileID: 2089089765}
   m_Layer: 5
   m_Name: Pop-up Canvas
   m_TagString: Untagged
@@ -1082,3 +1083,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2089089765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2089089760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04d7126b9b0545e58d8f335f3a7377d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

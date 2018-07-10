@@ -17,6 +17,9 @@ namespace Misner.PalmRTS.Player
         [SerializeField]
         private GameObject _constructionBotPrefab;
 
+        [SerializeField]
+        private GameObject _drillStructurePrefab;
+
         #endregion
 
         #region Properties
@@ -49,12 +52,19 @@ namespace Misner.PalmRTS.Player
 
 		protected void ShowHQPanel()
 		{
-			UiPlayerHqPanel.Instance.ShowPanel(
-                new UiPlayerHqPanel.PlayerHQActions() {
-                    CreateConstructionBot = OnCreateConstructionBot,
-                    CreateTransitVehicle = OnCreateTransitVehicle
-                }
-            );
+            if (PanelManager.Instance.IsAnyChildActive)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.ShowHQPanel(), PanelManager.Instance.IsAnyChildActive = {1}</color>", this.ToString(), PanelManager.Instance.IsAnyChildActive);
+            }
+            else
+            {
+				UiPlayerHqPanel.Instance.ShowPanel(
+					new UiPlayerHqPanel.PlayerHQActions() {
+					CreateConstructionBot = OnCreateConstructionBot,
+					CreateTransitVehicle = OnCreateTransitVehicle
+				}
+				);
+            }
 		}
 
         protected void OnCreateConstructionBot()
@@ -67,6 +77,9 @@ namespace Misner.PalmRTS.Player
 
             ActorBehavior actor = newConstructionBot.GetComponent<ActorBehavior>();
             ActorModelManager.Instance.Add(actor);
+
+            ConstructionBotActorBehavior constructionBot = newConstructionBot.GetComponent<ConstructionBotActorBehavior>();
+            constructionBot.DrillStructurePrefab = _drillStructurePrefab;
         }
 
         protected void OnCreateTransitVehicle()

@@ -34,7 +34,7 @@ namespace Misner.PalmRTS.Selection
 
         #region Public Interface
 
-        public void CreateObjectAt(Vector2Int tileLocation, Action<Vector2Int> onSelectionPerformed)
+        public SelectionTileItemBehavior CreateObjectAt(Vector2Int tileLocation, Player.ConstructionBotActorBehavior.DrillDeploymentHandle deploymentHandle)
         {
             SelectionTileItemBehavior newSelectionObject = UnityEngine.Object.Instantiate<SelectionTileItemBehavior>(_selectionObjectPrefab);
 
@@ -42,12 +42,17 @@ namespace Misner.PalmRTS.Selection
             newSelectionObject.transform.localPosition = new Vector3(tileLocation.x, 0, tileLocation.y);
             newSelectionObject.transform.localScale = Vector3.one;
 
-            newSelectionObject.OnItemClicked += () =>
-            {
-                Debug.LogFormat("<color=#00ff00>{0}.CreateObjectAt() -> delegate, tileLocation = {1}</color>", this.ToString(), tileLocation);
-            };
+            newSelectionObject.DeploymentHandle = deploymentHandle;
+            newSelectionObject.TileLocation = tileLocation;
 
-            Debug.LogFormat("<color=#ff00ff>{0}.CreateObjectAt(), tileLocation = {1}</color>", this.ToString(), tileLocation);
+            return newSelectionObject;
+        }
+
+        public void DestroyObject(SelectionTileItemBehavior selectionTile)
+        {
+            selectionTile.DeploymentHandle = null;
+
+            UnityEngine.Object.DestroyObject(selectionTile.gameObject);
         }
 
         #endregion
