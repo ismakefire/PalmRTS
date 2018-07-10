@@ -227,7 +227,8 @@ MonoBehaviour:
   _actorSpawnOffset: {x: 1, y: 0.08, z: 0}
   _constructionBotPrefab: {fileID: 1433240008116752, guid: e82b7e652bc974210b4cc01827d15e04,
     type: 2}
-  _drillStructurePrefab: {fileID: 1849082461507126}
+  _drillStructurePrefab: {fileID: 1335183676257300, guid: 8d118a7122e6c46998fc973df61fc7ab,
+    type: 2}
 --- !u!114 &114859680485584490
 MonoBehaviour:
   m_ObjectHideFlags: 1
