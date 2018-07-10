@@ -81,7 +81,16 @@ namespace Misner.PalmRTS.Player
                 }
             }
 
-            // TODO: Remove all locations which already contain objects.
+            foreach (ActorBehavior actor in _actors)
+            {
+                HQActorBehavior hq = actor.GetComponent<HQActorBehavior>();
+                DrillStructureBehavior drillStructure = actor.GetComponent<DrillStructureBehavior>();
+
+                if (hq != null || drillStructure != null)
+                {
+                    result.Remove(actor.TilePosition);
+                }
+            }
 
             List<Vector2Int> resultOutput = new List<Vector2Int>();
 
