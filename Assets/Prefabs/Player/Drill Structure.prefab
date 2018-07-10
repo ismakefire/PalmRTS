@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 23206841331982562}
   - component: {fileID: 54988774495802252}
   - component: {fileID: 114423449883301724}
+  - component: {fileID: 114585394750532570}
   m_Layer: 0
   m_Name: Drill Structure
   m_TagString: Untagged
@@ -282,6 +283,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actorTeam: 1
+--- !u!114 &114585394750532570
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1335183676257300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c62e207c7cad84d9ca9c5d63c6f9a62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136811106163489040
 CapsuleCollider:
   m_ObjectHideFlags: 1
