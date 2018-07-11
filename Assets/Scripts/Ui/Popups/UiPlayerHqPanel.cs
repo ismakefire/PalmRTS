@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,7 +71,7 @@ namespace Misner.PalmRTS.UI
         }
 
         // Update is called once per frame
-		protected void Start()
+        protected void Start()
 		{
             HidePanel();
 		}
@@ -79,8 +80,11 @@ namespace Misner.PalmRTS.UI
 
         #region Public Interface
 
+        private float _panelShowTime = -1f;
+
         public void ShowPanel(PlayerHQActions actions)
         {
+            _panelShowTime = Time.time;
             _actions = actions;
             this.gameObject.SetActive(true);
 
@@ -101,6 +105,12 @@ namespace Misner.PalmRTS.UI
 
         protected void OnCreateConstructionBotButtonClicked()
         {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnCreateConstructionBotButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
             Debug.LogFormat("{0}.OnCreateConstructionBotButtonClicked(), we're all good!", this.ToString());
 
             if (_actions != null && _actions.CreateConstructionBot != null)
@@ -113,6 +123,12 @@ namespace Misner.PalmRTS.UI
 
         protected void OnCreateTransitVehicleButtonClicked()
         {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnCreateTransitVehicleButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
             Debug.LogFormat("{0}.OnCreateTransitVehicleButtonClicked(), we're all good!", this.ToString());
 
             if (_actions != null && _actions.CreateTransitVehicle != null)
@@ -125,6 +141,12 @@ namespace Misner.PalmRTS.UI
 
         protected void OnCreateMiningDrillButtonClicked()
         {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnCreateMiningDrillButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
             Debug.LogFormat("{0}.OnCreateMiningDrillButtonClicked(), we're all good!", this.ToString());
 
             if (_actions != null && _actions.CreateMiningDrill != null)

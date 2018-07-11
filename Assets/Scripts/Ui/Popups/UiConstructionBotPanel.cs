@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -69,8 +70,11 @@ namespace Misner.PalmRTS.UI
 
         #region Public Interface
 
+        private float _panelShowTime = -1f;
+
         public void ShowPanel(PlayerDeploymentActions actions = null)
         {
+			_panelShowTime = Time.time;
             _actions = actions;
             this.gameObject.SetActive(true);
 
@@ -91,6 +95,12 @@ namespace Misner.PalmRTS.UI
 
         protected void OnDeployDrillButtonClicked()
         {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnDeployDrillButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
             Debug.LogFormat("{0}.OnDeployDrillButtonClicked(), we're all good!", this.ToString());
 
             if (_actions != null && _actions.DeployDrill != null)
