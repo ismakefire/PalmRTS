@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Team;
+using Misner.PalmRTS.UI;
 using Misner.Utility.Collections;
 using UnityEngine;
 
@@ -23,6 +24,8 @@ namespace Misner.PalmRTS.Player
         private readonly HashList<ActorBehavior> _actors = new HashList<ActorBehavior>();
         private Dictionary<ActorBehavior, Action> _onClickActions = new Dictionary<ActorBehavior, Action>();
 
+        private int _playerMoney = 1000;
+
         #endregion
 
         #region ITeam
@@ -34,6 +37,12 @@ namespace Misner.PalmRTS.Player
 
         public void OnActorClicked(ActorBehavior actorBehavior)
         {
+            if (PanelManager.Instance.IsAnyChildActive)
+            {
+                Debug.LogFormat("{0}.OnActorClicked(). A panel is up, we can fuck off.", this.ToString());
+                return;
+            }
+
             if (!_onClickActions.ContainsKey(actorBehavior))
             {
                 Debug.LogFormat("{0}.OnActorClicked() does not contain event.", this.ToString());
@@ -47,6 +56,34 @@ namespace Misner.PalmRTS.Player
         #endregion
 
         #region Public Interface
+
+        public PlayerTeam()
+        {
+        }
+
+        public string GetPlayerMoneyString()
+        {
+            string moneyString = string.Format("${0}", this._playerMoney);
+            
+            return moneyString;
+        }
+
+        public bool SpendMoney(int costInMoney)
+        {
+            Debug.LogFormat("<color=#ff00ff>{0}.SpendMoney(), (_playerMoney >= costInMoney) = {1}</color>", this.ToString(), (_playerMoney >= costInMoney));
+
+            if (_playerMoney >= costInMoney)
+            {
+                _playerMoney -= costInMoney;
+                UiHudPanel.Instance.MoneyText = string.Format("${0}", _playerMoney);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public void AddClickEvent(ActorBehavior actor, Action clickAction)
         {

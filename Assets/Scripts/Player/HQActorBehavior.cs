@@ -61,7 +61,8 @@ namespace Misner.PalmRTS.Player
 				UiPlayerHqPanel.Instance.ShowPanel(
 					new UiPlayerHqPanel.PlayerHQActions() {
 					CreateConstructionBot = OnCreateConstructionBot,
-					CreateTransitVehicle = OnCreateTransitVehicle
+					CreateTransitVehicle = OnCreateTransitVehicle,
+                    CreateMiningDrill = OnCreateMiningDrill
 				}
 				);
             }
@@ -69,23 +70,39 @@ namespace Misner.PalmRTS.Player
 
         protected void OnCreateConstructionBot()
         {
-            Debug.LogFormat("{0}.OnCreateConstructionBot()", this.ToString());
+			PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
 
-            GameObject newConstructionBot = Instantiate(_constructionBotPrefab);
-            newConstructionBot.transform.SetParent(this.transform.parent);
-            newConstructionBot.transform.localPosition = this.transform.localPosition + _actorSpawnOffset + Random.insideUnitSphere * 0.1f;
-
-            ActorBehavior actor = newConstructionBot.GetComponent<ActorBehavior>();
-            ActorModelManager.Instance.Add(actor);
-
-            ConstructionBotActorBehavior constructionBot = newConstructionBot.GetComponent<ConstructionBotActorBehavior>();
-            constructionBot.DrillStructurePrefab = _drillStructurePrefab;
+            if (playerTeam.SpendMoney(40))
+            {
+				Debug.LogFormat("{0}.OnCreateConstructionBot()", this.ToString());
+				
+				GameObject newConstructionBot = Instantiate(_constructionBotPrefab);
+				newConstructionBot.transform.SetParent(this.transform.parent);
+				newConstructionBot.transform.localPosition = this.transform.localPosition + _actorSpawnOffset + Random.insideUnitSphere * 0.1f;
+				
+				ActorBehavior actor = newConstructionBot.GetComponent<ActorBehavior>();
+				ActorModelManager.Instance.Add(actor);
+				
+				ConstructionBotActorBehavior constructionBot = newConstructionBot.GetComponent<ConstructionBotActorBehavior>();
+				constructionBot.DrillStructurePrefab = _drillStructurePrefab;
+            }
         }
 
         protected void OnCreateTransitVehicle()
         {
-            Debug.LogFormat("{0}.OnCreateTransitVehicle()", this.ToString());
+            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
+            bool purchaseWorked = playerTeam.SpendMoney(10);
+            
+            Debug.LogFormat("{0}.OnCreateTransitVehicle(), purchaseWorked = {1}", this.ToString(), purchaseWorked);
         }
+
+		protected void OnCreateMiningDrill()
+        {
+            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
+            bool purchaseWorked = playerTeam.SpendMoney(100);
+
+            Debug.LogFormat("{0}.OnCreateMiningDrill(), purchaseWorked = {1}", this.ToString(), purchaseWorked);
+		}
 
         #endregion
 
