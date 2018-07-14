@@ -30,6 +30,7 @@ namespace Misner.PalmRTS.Player
             }
         }
 
+        // TODO: Maybe get these from a Singleton?
         public GameObject DrillStructurePrefab { get; set; }
 
         #endregion
@@ -82,16 +83,19 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        public class DrillDeploymentHandle
+
+
+
+        public class DrillDeploymentHandle : SelectionTileItemBehavior.IStructureDeploymentHandle
         {
             private readonly Action<DrillDeploymentHandle> _removeDeploymentHandle;
-            private readonly Action<Misner.Utility.Math.IntVector2> _onCreateConstructionBot;
+            private readonly Action<Misner.Utility.Math.IntVector2> _onCreateDrillStructure ;
             private readonly List<SelectionTileItemBehavior> _selectionTiles = new List<SelectionTileItemBehavior>();
 
-            public DrillDeploymentHandle(Action<DrillDeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onCreateConstructionBot)
+            public DrillDeploymentHandle(Action<DrillDeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onCreateDrillStructure)
             {
 				this._removeDeploymentHandle = removeDeplymentHandle;
-                this._onCreateConstructionBot = onCreateConstructionBot;
+                this._onCreateDrillStructure = onCreateDrillStructure;
             }
 
             public void AddSelectionTile(SelectionTileItemBehavior selectionTile)
@@ -99,17 +103,21 @@ namespace Misner.PalmRTS.Player
                 _selectionTiles.Add(selectionTile);
             }
 
-            public void OnSelectionPerformed(Vector2Int tileLocation)
-            {
-                Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}</color>", this.ToString(), tileLocation);
+            #region SelectionTileItemBehavior.IStructureDeploymentHandle
 
-                if (_onCreateConstructionBot != null)
-                {
-                    _onCreateConstructionBot(new Utility.Math.IntVector2(tileLocation.x, tileLocation.y));
-                }
+			public void OnSelectionPerformed(Vector2Int tileLocation)
+			{
+				Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}</color>", this.ToString(), tileLocation);
+				
+				if (_onCreateDrillStructure  != null)
+				{
+					_onCreateDrillStructure (new Utility.Math.IntVector2(tileLocation.x, tileLocation.y));
+				}
+				
+				DestroyAllSelectionTiles();
+			}
 
-                DestroyAllSelectionTiles();
-            }
+            #endregion
 
             private void DestroyAllSelectionTiles()
             {
@@ -125,7 +133,7 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        private readonly List<DrillDeploymentHandle> _deploymentHandles = new List<DrillDeploymentHandle>();
+        private readonly List<DrillDeploymentHandle> _drillDeploymentHandles = new List<DrillDeploymentHandle>();
 
         protected void OnDeployDrill()
         {
@@ -135,7 +143,7 @@ namespace Misner.PalmRTS.Player
 
             Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDrill(), TODO setup some drill deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
 
-            DrillDeploymentHandle deploymentHandle = new DrillDeploymentHandle(RemoveDeploymentHandle, OnCreateConstructionBot);
+            DrillDeploymentHandle deploymentHandle = new DrillDeploymentHandle(RemoveDrillDeploymentHandle, OnCreateDrillStructure);
 
             foreach (Vector2Int tileLocation in availableTiles)
             {
@@ -144,17 +152,17 @@ namespace Misner.PalmRTS.Player
                 deploymentHandle.AddSelectionTile(selectionTile);
             }
 
-            _deploymentHandles.Add(deploymentHandle);
+            _drillDeploymentHandles.Add(deploymentHandle);
         }
 
-        private void RemoveDeploymentHandle(DrillDeploymentHandle deploymentHandle)
+        private void RemoveDrillDeploymentHandle(DrillDeploymentHandle deploymentHandle)
         {
-            _deploymentHandles.Remove(deploymentHandle);
+            _drillDeploymentHandles.Remove(deploymentHandle);
         }
 
-        protected void OnCreateConstructionBot(Utility.Math.IntVector2 tileLocation)
+        protected void OnCreateDrillStructure(Utility.Math.IntVector2 tileLocation)
         {
-            Debug.LogFormat("{0}.OnCreateConstructionBot(), tileLocation = {1}", this.ToString(), tileLocation);
+            Debug.LogFormat("{0}.OnCreateDrillStructure(), tileLocation = {1}", this.ToString(), tileLocation);
 
             GameObject newDrillStructure = Instantiate(DrillStructurePrefab);
             newDrillStructure.transform.SetParent(this.transform.parent);

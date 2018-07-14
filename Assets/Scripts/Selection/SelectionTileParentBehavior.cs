@@ -34,7 +34,7 @@ namespace Misner.PalmRTS.Selection
 
         #region Public Interface
 
-        public SelectionTileItemBehavior CreateObjectAt(Vector2Int tileLocation, Player.ConstructionBotActorBehavior.DrillDeploymentHandle deploymentHandle)
+        public SelectionTileItemBehavior CreateObjectAt(Vector2Int tileLocation, SelectionTileItemBehavior.IStructureDeploymentHandle deploymentHandle)
         {
             SelectionTileItemBehavior newSelectionObject = UnityEngine.Object.Instantiate<SelectionTileItemBehavior>(_selectionObjectPrefab);
 
