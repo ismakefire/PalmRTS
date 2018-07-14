@@ -101,12 +101,17 @@ namespace Misner.PalmRTS.UI
                 return;
             }
 
-            Debug.LogFormat("{0}.OnDeployDrillButtonClicked(), we're all good!", this.ToString());
-
             if (_actions != null && _actions.DeployDrill != null)
             {
+                Debug.LogFormat("{0}.OnDeployDrillButtonClicked(), we're all good!", this.ToString());
+
                 _actions.DeployDrill();
             }
+            else
+            {
+                Debug.LogFormat("{0}.OnDeployDrillButtonClicked(), (_actions != null && _actions.DeployDrill != null) = {1}", this.ToString(), (_actions != null && _actions.DeployDrill != null));
+            }
+
 
             HidePanel();
         }

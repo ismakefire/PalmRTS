@@ -32,6 +32,16 @@ namespace Misner.PalmRTS.Player
 			}
 		}
 
+        public PlayerTeam OurTeam
+        {
+            get
+            {
+				PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
+
+                return playerTeam;
+            }
+        }
+
         #endregion
         
         #region MonoBehaviour
@@ -39,9 +49,7 @@ namespace Misner.PalmRTS.Player
 		// Use this for initialization
 		protected void Start ()
 		{
-            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
-
-            playerTeam.AddClickEvent(Actor, ShowHQPanel);
+            OurTeam.AddClickEvent(Actor, ShowHQPanel);
 
             StructureTileManager.Instance.Add(Actor);
 		}
@@ -70,9 +78,7 @@ namespace Misner.PalmRTS.Player
 
         protected void OnCreateConstructionBot()
         {
-			PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
-
-            if (playerTeam.SpendMoney(40))
+            if (OurTeam.SpendMoney(40))
             {
 				Debug.LogFormat("{0}.OnCreateConstructionBot()", this.ToString());
 				
@@ -90,16 +96,14 @@ namespace Misner.PalmRTS.Player
 
         protected void OnCreateTransitVehicle()
         {
-            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
-            bool purchaseWorked = playerTeam.SpendMoney(10);
+            bool purchaseWorked = OurTeam.SpendMoney(10);
             
             Debug.LogFormat("{0}.OnCreateTransitVehicle(), purchaseWorked = {1}", this.ToString(), purchaseWorked);
         }
 
 		protected void OnCreateMiningDrill()
         {
-            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
-            bool purchaseWorked = playerTeam.SpendMoney(100);
+            bool purchaseWorked = OurTeam.SpendMoney(100);
 
             Debug.LogFormat("{0}.OnCreateMiningDrill(), purchaseWorked = {1}", this.ToString(), purchaseWorked);
 		}
