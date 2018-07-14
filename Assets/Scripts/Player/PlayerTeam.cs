@@ -103,13 +103,16 @@ namespace Misner.PalmRTS.Player
                 {
                     Debug.LogFormat("<color=#ff00ff>{0}.GenerateAvailableStructureTiles(), has hq. hq.Actor.TilePosition = {1}</color>", this.ToString(), hq.Actor.TilePosition);
 
-                    for (int ix = -2; ix <= 2; ix++)
+                    int gridDistance = 5;
+                    int displacementSquaredBound = gridDistance * gridDistance + 2*2;
+
+                    for (int ix = -gridDistance; ix <= gridDistance; ix++)
                     {
-                        for (int iy = -2; iy <= 2; iy++)
+                        for (int iy = -gridDistance; iy <= gridDistance; iy++)
                         {
                             int displacementSquared = ix * ix + iy * iy;
                             
-                            if (displacementSquared > 0 && displacementSquared <= 5)
+                            if (displacementSquared > 0 && displacementSquared <= displacementSquaredBound)
                             {
                                 result.Add(hq.Actor.TilePosition + new Vector2Int(ix, iy));
                             }
