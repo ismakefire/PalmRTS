@@ -12,6 +12,7 @@ namespace Misner.PalmRTS.UI
         public class PlayerDeploymentActions
         {
             public Action DeployDrill { get; set; }
+            public Action DeployDepot { get; set; }
         }
 
         #endregion
@@ -41,6 +42,9 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private Button _deployDrillButton;
 
+        [SerializeField]
+        private Button _deployDepotButton;
+
         #endregion
 
         #region MonoBehaviour
@@ -58,6 +62,7 @@ namespace Misner.PalmRTS.UI
             }
 
             _deployDrillButton.onClick.AddListener(OnDeployDrillButtonClicked);
+            _deployDepotButton.onClick.AddListener(OnDeployDepotButtonClicked);
         }
 
         // Update is called once per frame
@@ -112,6 +117,27 @@ namespace Misner.PalmRTS.UI
                 Debug.LogFormat("{0}.OnDeployDrillButtonClicked(), (_actions != null && _actions.DeployDrill != null) = {1}", this.ToString(), (_actions != null && _actions.DeployDrill != null));
             }
 
+            HidePanel();
+        }
+
+        protected void OnDeployDepotButtonClicked()
+        {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnDeployDepotButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
+            if (_actions != null && _actions.DeployDepot != null)
+            {
+                Debug.LogFormat("{0}.OnDeployDepotButtonClicked(), we're all good!", this.ToString());
+
+                _actions.DeployDepot();
+            }
+            else
+            {
+                Debug.LogFormat("{0}.OnDeployDepotButtonClicked(), (_actions != null && _actions.DeployDepot != null) = {1}", this.ToString(), (_actions != null && _actions.DeployDepot != null));
+            }
 
             HidePanel();
         }

@@ -33,6 +33,8 @@ namespace Misner.PalmRTS.Player
         // TODO: Maybe get these from a Singleton?
         public GameObject DrillStructurePrefab { get; set; }
 
+        public GameObject DepotStructurePrefab { get; set; }
+
         #endregion
 
         #region MonoBehaviour
@@ -77,7 +79,8 @@ namespace Misner.PalmRTS.Player
             {
 				UiConstructionBotPanel.Instance.ShowPanel(
 					new UiConstructionBotPanel.PlayerDeploymentActions() {
-					DeployDrill = OnDeployDrill
+					DeployDrill = OnDeployDrill,
+                    DeployDepot = OnDeployDepot
 				}
 				);
             }
@@ -172,6 +175,105 @@ namespace Misner.PalmRTS.Player
             ActorBehavior actor = newDrillStructure.GetComponent<ActorBehavior>();
             ActorModelManager.Instance.Add(actor);
         }
+
+
+
+
+
+
+
+        public class Depot_DeploymentHandle : SelectionTileItemBehavior.IStructureDeploymentHandle
+        {
+            private readonly Action<Depot_DeploymentHandle> _removeDeploymentHandle;
+            private readonly Action<Misner.Utility.Math.IntVector2> _onCreateDepot_Structure;
+            private readonly List<SelectionTileItemBehavior> _selectionTiles = new List<SelectionTileItemBehavior>();
+
+            public Depot_DeploymentHandle(Action<Depot_DeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onCreateDepot_Structure)
+            {
+                this._removeDeploymentHandle = removeDeplymentHandle;
+                this._onCreateDepot_Structure = onCreateDepot_Structure;
+            }
+
+            public void AddSelectionTile(SelectionTileItemBehavior selectionTile)
+            {
+                _selectionTiles.Add(selectionTile);
+            }
+
+            #region SelectionTileItemBehavior.IStructureDeploymentHandle
+
+            public void OnSelectionPerformed(Vector2Int tileLocation)
+            {
+                Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}</color>", this.ToString(), tileLocation);
+
+                if (_onCreateDepot_Structure != null)
+                {
+                    _onCreateDepot_Structure(new Utility.Math.IntVector2(tileLocation.x, tileLocation.y));
+                }
+
+                DestroyAllSelectionTiles();
+            }
+
+            #endregion
+
+            private void DestroyAllSelectionTiles()
+            {
+                foreach (SelectionTileItemBehavior selectionTile in _selectionTiles)
+                {
+                    SelectionTileParentBehavior.Instance.DestroyObject(selectionTile);
+                }
+
+                if (_removeDeploymentHandle != null)
+                {
+                    _removeDeploymentHandle(this);
+                }
+            }
+        }
+
+        private readonly List<Depot_DeploymentHandle> _depot_DeploymentHandle = new List<Depot_DeploymentHandle>();
+
+        protected void OnDeployDepot()
+        {
+            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(Actor.ControllingTeam);
+
+            List<Vector2Int> availableTiles = playerTeam.GenerateAvailableStructureTiles();
+
+            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDepot(), TODO setup some depot deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
+
+            Depot_DeploymentHandle deploymentHandle = new Depot_DeploymentHandle(RemoveDepot_DeploymentHandle, OnCreateDepot_Structure);
+
+            foreach (Vector2Int tileLocation in availableTiles)
+            {
+                SelectionTileItemBehavior selectionTile = SelectionTileParentBehavior.Instance.CreateObjectAt(tileLocation, deploymentHandle);
+
+                deploymentHandle.AddSelectionTile(selectionTile);
+            }
+
+            _depot_DeploymentHandle.Add(deploymentHandle);
+        }
+
+        protected void RemoveDepot_DeploymentHandle(Depot_DeploymentHandle depot_DeploymentHandle)
+        {
+            _depot_DeploymentHandle.Remove(depot_DeploymentHandle);
+        }
+
+        protected void OnCreateDepot_Structure(Utility.Math.IntVector2 tileLocation)
+        {
+            Debug.LogFormat("{0}.OnCreateDepot_Structure(), tileLocation = {1}", this.ToString(), tileLocation);
+
+            GameObject newDepot_Structure = Instantiate(DepotStructurePrefab);
+            newDepot_Structure.transform.SetParent(this.transform.parent);
+            newDepot_Structure.transform.localPosition = new Vector3((float)tileLocation.x, 0f, (float)tileLocation.y) + Vector3.up * 0.5f + UnityEngine.Random.insideUnitSphere * 0.01f;
+            newDepot_Structure.transform.localScale = Vector3.one * 0.9f;
+
+            ActorBehavior actor = newDepot_Structure.GetComponent<ActorBehavior>();
+            ActorModelManager.Instance.Add(actor);
+        }
+
+
+
+
+
+
 
         #endregion
 	}
