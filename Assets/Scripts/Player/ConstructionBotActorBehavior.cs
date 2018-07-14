@@ -84,13 +84,13 @@ namespace Misner.PalmRTS.Player
 
         public class DrillDeploymentHandle
         {
-			private readonly Action<DrillDeploymentHandle> _removeDeplymentHandle;
+            private readonly Action<DrillDeploymentHandle> _removeDeploymentHandle;
             private readonly Action<Misner.Utility.Math.IntVector2> _onCreateConstructionBot;
             private readonly List<SelectionTileItemBehavior> _selectionTiles = new List<SelectionTileItemBehavior>();
 
             public DrillDeploymentHandle(Action<DrillDeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onCreateConstructionBot)
             {
-				this._removeDeplymentHandle = removeDeplymentHandle;
+				this._removeDeploymentHandle = removeDeplymentHandle;
                 this._onCreateConstructionBot = onCreateConstructionBot;
             }
 
@@ -118,9 +118,9 @@ namespace Misner.PalmRTS.Player
                     SelectionTileParentBehavior.Instance.DestroyObject(selectionTile);
                 }
 
-                if (_removeDeplymentHandle != null)
+                if (_removeDeploymentHandle != null)
                 {
-                    _removeDeplymentHandle(this);
+                    _removeDeploymentHandle(this);
                 }
             }
         }
