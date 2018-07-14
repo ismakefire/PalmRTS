@@ -35,6 +35,8 @@ namespace Misner.PalmRTS.Player
 
         public GameObject DepotStructurePrefab { get; set; }
 
+        public GameObject MachineFactoryStructurePrefab { get; set; }
+
         #endregion
 
         #region MonoBehaviour
@@ -80,7 +82,8 @@ namespace Misner.PalmRTS.Player
 				UiConstructionBotPanel.Instance.ShowPanel(
 					new UiConstructionBotPanel.PlayerDeploymentActions() {
 					DeployDrill = OnDeployDrill,
-                    DeployDepot = OnDeployDepot
+                    DeployDepot = OnDeployDepot,
+                    DeployMachineFactory = OnDeployMachineFactory
 				}
 				);
             }
@@ -271,6 +274,98 @@ namespace Misner.PalmRTS.Player
 
 
 
+
+
+
+
+
+
+        public class MachineFactory_DeploymentHandle : SelectionTileItemBehavior.IStructureDeploymentHandle
+        {
+            private readonly Action<MachineFactory_DeploymentHandle> _removeDeploymentHandle;
+            private readonly Action<Misner.Utility.Math.IntVector2> _onCreateMachineFactory_Structure;
+            private readonly List<SelectionTileItemBehavior> _selectionTiles = new List<SelectionTileItemBehavior>();
+
+            public MachineFactory_DeploymentHandle(Action<MachineFactory_DeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onCreateMachineFactory_Structure)
+            {
+                this._removeDeploymentHandle = removeDeplymentHandle;
+                this._onCreateMachineFactory_Structure = onCreateMachineFactory_Structure;
+            }
+
+            public void AddSelectionTile(SelectionTileItemBehavior selectionTile)
+            {
+                _selectionTiles.Add(selectionTile);
+            }
+
+            #region SelectionTileItemBehavior.IStructureDeploymentHandle
+
+            public void OnSelectionPerformed(Vector2Int tileLocation)
+            {
+                Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}</color>", this.ToString(), tileLocation);
+
+                if (_onCreateMachineFactory_Structure != null)
+                {
+                    _onCreateMachineFactory_Structure(new Utility.Math.IntVector2(tileLocation.x, tileLocation.y));
+                }
+
+                DestroyAllSelectionTiles();
+            }
+
+            #endregion
+
+            private void DestroyAllSelectionTiles()
+            {
+                foreach (SelectionTileItemBehavior selectionTile in _selectionTiles)
+                {
+                    SelectionTileParentBehavior.Instance.DestroyObject(selectionTile);
+                }
+
+                if (_removeDeploymentHandle != null)
+                {
+                    _removeDeploymentHandle(this);
+                }
+            }
+        }
+
+        private readonly List<MachineFactory_DeploymentHandle> _machineFactory_DeploymentHandle = new List<MachineFactory_DeploymentHandle>();
+
+        protected void OnDeployMachineFactory()
+        {
+            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(Actor.ControllingTeam);
+
+            List<Vector2Int> availableTiles = playerTeam.GenerateAvailableStructureTiles();
+
+            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployMachineFactory(), TODO setup some machine factory deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
+
+            MachineFactory_DeploymentHandle deploymentHandle = new MachineFactory_DeploymentHandle(RemoveMachineFactory_DeploymentHandle, OnCreateMachineFactory_Structure);
+
+            foreach (Vector2Int tileLocation in availableTiles)
+            {
+                SelectionTileItemBehavior selectionTile = SelectionTileParentBehavior.Instance.CreateObjectAt(tileLocation, deploymentHandle);
+
+                deploymentHandle.AddSelectionTile(selectionTile);
+            }
+
+            _machineFactory_DeploymentHandle.Add(deploymentHandle);
+        }
+
+        protected void RemoveMachineFactory_DeploymentHandle(MachineFactory_DeploymentHandle machineFactory_DeploymentHandle)
+        {
+            _machineFactory_DeploymentHandle.Remove(machineFactory_DeploymentHandle);
+        }
+
+        protected void OnCreateMachineFactory_Structure(Utility.Math.IntVector2 tileLocation)
+        {
+            Debug.LogFormat("{0}.OnCreateMachineFactory_Structure(), tileLocation = {1}", this.ToString(), tileLocation);
+
+            GameObject newMachineFactory_Structure = Instantiate(MachineFactoryStructurePrefab);
+            newMachineFactory_Structure.transform.SetParent(this.transform.parent);
+            newMachineFactory_Structure.transform.localPosition = new Vector3((float)tileLocation.x, 0f, (float)tileLocation.y) + Vector3.up * 0.5f + UnityEngine.Random.insideUnitSphere * 0.01f;
+            newMachineFactory_Structure.transform.localScale = Vector3.one * 0.9f;
+
+            ActorBehavior actor = newMachineFactory_Structure.GetComponent<ActorBehavior>();
+            ActorModelManager.Instance.Add(actor);
+        }
 
 
 

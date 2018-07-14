@@ -23,6 +23,9 @@ namespace Misner.PalmRTS.Player
         [SerializeField]
         private GameObject _depotStructurePrefab;
 
+        [SerializeField]
+        private GameObject _machineFactoryStructurePrefab;
+
         #endregion
 
         #region Properties
@@ -95,6 +98,7 @@ namespace Misner.PalmRTS.Player
 				ConstructionBotActorBehavior constructionBot = newConstructionBot.GetComponent<ConstructionBotActorBehavior>();
 				constructionBot.DrillStructurePrefab = _drillStructurePrefab;
                 constructionBot.DepotStructurePrefab = _depotStructurePrefab;
+                constructionBot.MachineFactoryStructurePrefab = _machineFactoryStructurePrefab;
             }
         }
 

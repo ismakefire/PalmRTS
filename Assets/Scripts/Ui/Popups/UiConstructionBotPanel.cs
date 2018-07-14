@@ -13,6 +13,7 @@ namespace Misner.PalmRTS.UI
         {
             public Action DeployDrill { get; set; }
             public Action DeployDepot { get; set; }
+            public Action DeployMachineFactory { get; set; }
         }
 
         #endregion
@@ -45,6 +46,9 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private Button _deployDepotButton;
 
+        [SerializeField]
+        private Button _deployMachineFactoryButton;
+
         #endregion
 
         #region MonoBehaviour
@@ -63,6 +67,7 @@ namespace Misner.PalmRTS.UI
 
             _deployDrillButton.onClick.AddListener(OnDeployDrillButtonClicked);
             _deployDepotButton.onClick.AddListener(OnDeployDepotButtonClicked);
+            _deployMachineFactoryButton.onClick.AddListener(OnDeployMachineFactoryButtonClicked);
         }
 
         // Update is called once per frame
@@ -137,6 +142,28 @@ namespace Misner.PalmRTS.UI
             else
             {
                 Debug.LogFormat("{0}.OnDeployDepotButtonClicked(), (_actions != null && _actions.DeployDepot != null) = {1}", this.ToString(), (_actions != null && _actions.DeployDepot != null));
+            }
+
+            HidePanel();
+        }
+
+        protected void OnDeployMachineFactoryButtonClicked()
+        {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnDeployMachineFactoryButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
+            if (_actions != null && _actions.DeployMachineFactory != null)
+            {
+                Debug.LogFormat("{0}.OnDeployMachineFactoryButtonClicked(), we're all good!", this.ToString());
+
+                _actions.DeployMachineFactory();
+            }
+            else
+            {
+                Debug.LogFormat("{0}.OnDeployMachineFactoryButtonClicked(), (_actions != null && _actions.DeployMachineFactory != null) = {1}", this.ToString(), (_actions != null && _actions.DeployMachineFactory != null));
             }
 
             HidePanel();
