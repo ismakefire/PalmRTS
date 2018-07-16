@@ -5,6 +5,7 @@ using Misner.PalmRTS.Selection;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Terrain;
 using Misner.PalmRTS.UI;
+using Misner.Utility.Math;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Player
@@ -92,16 +93,26 @@ namespace Misner.PalmRTS.Player
 
 
 
-        public class DrillDeploymentHandle : SelectionTileItemBehavior.IStructureDeploymentHandle
+        public class StructureDeploymentHandle : SelectionTileItemBehavior.IStructureDeploymentHandle
         {
-            private readonly Action<DrillDeploymentHandle> _removeDeploymentHandle;
-            private readonly Action<Misner.Utility.Math.IntVector2> _onCreateDrillStructure ;
+            private readonly Action<StructureDeploymentHandle> _removeDeploymentHandle;
+            private readonly Action<Misner.Utility.Math.IntVector2> _onDeployStructure;
             private readonly List<SelectionTileItemBehavior> _selectionTiles = new List<SelectionTileItemBehavior>();
 
-            public DrillDeploymentHandle(Action<DrillDeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onCreateDrillStructure)
+            public StructureDeploymentHandle(Action<StructureDeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onDeployStructure)
             {
 				this._removeDeploymentHandle = removeDeplymentHandle;
-                this._onCreateDrillStructure = onCreateDrillStructure;
+                this._onDeployStructure = onDeployStructure;
+            }
+
+            public void ApplyToTilesLocations(List<Vector2Int> availableTiles)
+            {
+                foreach (Vector2Int tileLocation in availableTiles)
+                {
+                    SelectionTileItemBehavior selectionTile = SelectionTileParentBehavior.Instance.CreateObjectAt(tileLocation, this);
+                    
+                    AddSelectionTile(selectionTile);
+                }
             }
 
             public void AddSelectionTile(SelectionTileItemBehavior selectionTile)
@@ -115,9 +126,9 @@ namespace Misner.PalmRTS.Player
 			{
 				Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}</color>", this.ToString(), tileLocation);
 				
-				if (_onCreateDrillStructure  != null)
+				if (_onDeployStructure  != null)
 				{
-					_onCreateDrillStructure (new Utility.Math.IntVector2(tileLocation.x, tileLocation.y));
+					_onDeployStructure (new Utility.Math.IntVector2(tileLocation.x, tileLocation.y));
 				}
 				
 				DestroyAllSelectionTiles();
@@ -139,31 +150,49 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        private readonly List<DrillDeploymentHandle> _drillDeploymentHandles = new List<DrillDeploymentHandle>();
 
-        protected void OnDeployDrill()
+
+
+
+
+
+
+        private readonly List<StructureDeploymentHandle> _deploymentHandles = new List<StructureDeploymentHandle>();
+
+        private List<Vector2Int> GetAvailableTiles()
         {
             PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(Actor.ControllingTeam);
 
             List<Vector2Int> availableTiles = playerTeam.GenerateAvailableStructureTiles();
 
-            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDrill(), TODO setup some drill deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
-
-            DrillDeploymentHandle deploymentHandle = new DrillDeploymentHandle(RemoveDrillDeploymentHandle, OnCreateDrillStructure);
-
-            foreach (Vector2Int tileLocation in availableTiles)
-            {
-                SelectionTileItemBehavior selectionTile = SelectionTileParentBehavior.Instance.CreateObjectAt(tileLocation, deploymentHandle);
-
-                deploymentHandle.AddSelectionTile(selectionTile);
-            }
-
-            _drillDeploymentHandles.Add(deploymentHandle);
+            return availableTiles;
         }
 
-        private void RemoveDrillDeploymentHandle(DrillDeploymentHandle deploymentHandle)
+        private void RemoveDeploymentHandle(StructureDeploymentHandle deploymentHandle)
         {
-            _drillDeploymentHandles.Remove(deploymentHandle);
+            _deploymentHandles.Remove(deploymentHandle);
+        }
+
+        private void BeginStructureDeployment(Action<IntVector2> onDeploymentSelected)
+        {
+            List<Vector2Int> availableTiles = GetAvailableTiles();
+
+            StructureDeploymentHandle deploymentHandle = new StructureDeploymentHandle(RemoveDeploymentHandle, onDeploymentSelected);
+
+            deploymentHandle.ApplyToTilesLocations(availableTiles);
+
+            _deploymentHandles.Add(deploymentHandle);
+        }
+
+
+
+
+
+        protected void OnDeployDrill()
+        {
+            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDrill(), TODO setup some drill deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
+
+            BeginStructureDeployment(OnCreateDrillStructure);
         }
 
         protected void OnCreateDrillStructure(Utility.Math.IntVector2 tileLocation)
@@ -185,78 +214,11 @@ namespace Misner.PalmRTS.Player
 
 
 
-        public class Depot_DeploymentHandle : SelectionTileItemBehavior.IStructureDeploymentHandle
-        {
-            private readonly Action<Depot_DeploymentHandle> _removeDeploymentHandle;
-            private readonly Action<Misner.Utility.Math.IntVector2> _onCreateDepot_Structure;
-            private readonly List<SelectionTileItemBehavior> _selectionTiles = new List<SelectionTileItemBehavior>();
-
-            public Depot_DeploymentHandle(Action<Depot_DeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onCreateDepot_Structure)
-            {
-                this._removeDeploymentHandle = removeDeplymentHandle;
-                this._onCreateDepot_Structure = onCreateDepot_Structure;
-            }
-
-            public void AddSelectionTile(SelectionTileItemBehavior selectionTile)
-            {
-                _selectionTiles.Add(selectionTile);
-            }
-
-            #region SelectionTileItemBehavior.IStructureDeploymentHandle
-
-            public void OnSelectionPerformed(Vector2Int tileLocation)
-            {
-                Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}</color>", this.ToString(), tileLocation);
-
-                if (_onCreateDepot_Structure != null)
-                {
-                    _onCreateDepot_Structure(new Utility.Math.IntVector2(tileLocation.x, tileLocation.y));
-                }
-
-                DestroyAllSelectionTiles();
-            }
-
-            #endregion
-
-            private void DestroyAllSelectionTiles()
-            {
-                foreach (SelectionTileItemBehavior selectionTile in _selectionTiles)
-                {
-                    SelectionTileParentBehavior.Instance.DestroyObject(selectionTile);
-                }
-
-                if (_removeDeploymentHandle != null)
-                {
-                    _removeDeploymentHandle(this);
-                }
-            }
-        }
-
-        private readonly List<Depot_DeploymentHandle> _depot_DeploymentHandle = new List<Depot_DeploymentHandle>();
-
         protected void OnDeployDepot()
         {
-            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(Actor.ControllingTeam);
-
-            List<Vector2Int> availableTiles = playerTeam.GenerateAvailableStructureTiles();
-
             Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDepot(), TODO setup some depot deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
 
-            Depot_DeploymentHandle deploymentHandle = new Depot_DeploymentHandle(RemoveDepot_DeploymentHandle, OnCreateDepot_Structure);
-
-            foreach (Vector2Int tileLocation in availableTiles)
-            {
-                SelectionTileItemBehavior selectionTile = SelectionTileParentBehavior.Instance.CreateObjectAt(tileLocation, deploymentHandle);
-
-                deploymentHandle.AddSelectionTile(selectionTile);
-            }
-
-            _depot_DeploymentHandle.Add(deploymentHandle);
-        }
-
-        protected void RemoveDepot_DeploymentHandle(Depot_DeploymentHandle depot_DeploymentHandle)
-        {
-            _depot_DeploymentHandle.Remove(depot_DeploymentHandle);
+            BeginStructureDeployment(OnCreateDepot_Structure);
         }
 
         protected void OnCreateDepot_Structure(Utility.Math.IntVector2 tileLocation)
@@ -280,78 +242,11 @@ namespace Misner.PalmRTS.Player
 
 
 
-        public class MachineFactory_DeploymentHandle : SelectionTileItemBehavior.IStructureDeploymentHandle
-        {
-            private readonly Action<MachineFactory_DeploymentHandle> _removeDeploymentHandle;
-            private readonly Action<Misner.Utility.Math.IntVector2> _onCreateMachineFactory_Structure;
-            private readonly List<SelectionTileItemBehavior> _selectionTiles = new List<SelectionTileItemBehavior>();
-
-            public MachineFactory_DeploymentHandle(Action<MachineFactory_DeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onCreateMachineFactory_Structure)
-            {
-                this._removeDeploymentHandle = removeDeplymentHandle;
-                this._onCreateMachineFactory_Structure = onCreateMachineFactory_Structure;
-            }
-
-            public void AddSelectionTile(SelectionTileItemBehavior selectionTile)
-            {
-                _selectionTiles.Add(selectionTile);
-            }
-
-            #region SelectionTileItemBehavior.IStructureDeploymentHandle
-
-            public void OnSelectionPerformed(Vector2Int tileLocation)
-            {
-                Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}</color>", this.ToString(), tileLocation);
-
-                if (_onCreateMachineFactory_Structure != null)
-                {
-                    _onCreateMachineFactory_Structure(new Utility.Math.IntVector2(tileLocation.x, tileLocation.y));
-                }
-
-                DestroyAllSelectionTiles();
-            }
-
-            #endregion
-
-            private void DestroyAllSelectionTiles()
-            {
-                foreach (SelectionTileItemBehavior selectionTile in _selectionTiles)
-                {
-                    SelectionTileParentBehavior.Instance.DestroyObject(selectionTile);
-                }
-
-                if (_removeDeploymentHandle != null)
-                {
-                    _removeDeploymentHandle(this);
-                }
-            }
-        }
-
-        private readonly List<MachineFactory_DeploymentHandle> _machineFactory_DeploymentHandle = new List<MachineFactory_DeploymentHandle>();
-
         protected void OnDeployMachineFactory()
         {
-            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(Actor.ControllingTeam);
-
-            List<Vector2Int> availableTiles = playerTeam.GenerateAvailableStructureTiles();
-
             Debug.LogFormat("<color=#ff00ff>{0}.OnDeployMachineFactory(), TODO setup some machine factory deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
 
-            MachineFactory_DeploymentHandle deploymentHandle = new MachineFactory_DeploymentHandle(RemoveMachineFactory_DeploymentHandle, OnCreateMachineFactory_Structure);
-
-            foreach (Vector2Int tileLocation in availableTiles)
-            {
-                SelectionTileItemBehavior selectionTile = SelectionTileParentBehavior.Instance.CreateObjectAt(tileLocation, deploymentHandle);
-
-                deploymentHandle.AddSelectionTile(selectionTile);
-            }
-
-            _machineFactory_DeploymentHandle.Add(deploymentHandle);
-        }
-
-        protected void RemoveMachineFactory_DeploymentHandle(MachineFactory_DeploymentHandle machineFactory_DeploymentHandle)
-        {
-            _machineFactory_DeploymentHandle.Remove(machineFactory_DeploymentHandle);
+            BeginStructureDeployment(OnCreateMachineFactory_Structure);
         }
 
         protected void OnCreateMachineFactory_Structure(Utility.Math.IntVector2 tileLocation)
