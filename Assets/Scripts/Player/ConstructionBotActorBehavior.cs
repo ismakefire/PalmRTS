@@ -190,7 +190,7 @@ namespace Misner.PalmRTS.Player
 
         protected void OnDeployDrill()
         {
-            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDrill(), TODO setup some drill deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
+            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDrill(), TODO setup some drill deployment stuff.</color>", this.ToString());
 
             BeginStructureDeployment(OnCreateDrillStructure);
         }
@@ -216,7 +216,7 @@ namespace Misner.PalmRTS.Player
 
         protected void OnDeployDepot()
         {
-            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDepot(), TODO setup some depot deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
+            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDepot(), TODO setup some depot deployment stuff.</color>", this.ToString());
 
             BeginStructureDeployment(OnCreateDepot_Structure);
         }
@@ -244,7 +244,7 @@ namespace Misner.PalmRTS.Player
 
         protected void OnDeployMachineFactory()
         {
-            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployMachineFactory(), TODO setup some machine factory deployment stuff. availableTiles.Count = {1}</color>", this.ToString(), availableTiles.Count);
+            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployMachineFactory(), TODO setup some machine factory deployment stuff.</color>", this.ToString());
 
             BeginStructureDeployment(OnCreateMachineFactory_Structure);
         }
