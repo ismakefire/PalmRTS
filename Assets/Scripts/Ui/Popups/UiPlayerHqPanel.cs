@@ -20,6 +20,7 @@ namespace Misner.PalmRTS.UI
 
         #region Variables
 
+        private readonly PanelModel<PlayerHQActions> _panelModel = new PanelModel<PlayerHQActions>();
         private PlayerHQActions _actions = null;
 
         #endregion
@@ -80,11 +81,9 @@ namespace Misner.PalmRTS.UI
 
         #region Public Interface
 
-        private float _panelShowTime = -1f;
-
         public void ShowPanel(PlayerHQActions actions)
         {
-            _panelShowTime = Time.time;
+            _panelModel.ShowPanel(actions, HidePanel);
             _actions = actions;
             this.gameObject.SetActive(true);
 
@@ -93,6 +92,7 @@ namespace Misner.PalmRTS.UI
 
         public void HidePanel()
         {
+            _panelModel.Clear();
             _actions = null;
             this.gameObject.SetActive(false);
 
@@ -105,56 +105,17 @@ namespace Misner.PalmRTS.UI
 
         protected void OnCreateConstructionBotButtonClicked()
         {
-            if (Time.time - _panelShowTime < 0.1f)
-            {
-                Debug.LogFormat("<color=#ff0000>{0}.OnCreateConstructionBotButtonClicked() TOO FAST!</color>", this.ToString());
-                return;
-            }
-
-            Debug.LogFormat("{0}.OnCreateConstructionBotButtonClicked(), we're all good!", this.ToString());
-
-            if (_actions != null && _actions.CreateConstructionBot != null)
-            {
-                _actions.CreateConstructionBot();
-            }
-
-            HidePanel();
+            _panelModel.PlayPanelAction(_panelModel.Actions.CreateConstructionBot);
         }
 
         protected void OnCreateTransitVehicleButtonClicked()
         {
-            if (Time.time - _panelShowTime < 0.1f)
-            {
-                Debug.LogFormat("<color=#ff0000>{0}.OnCreateTransitVehicleButtonClicked() TOO FAST!</color>", this.ToString());
-                return;
-            }
-
-            Debug.LogFormat("{0}.OnCreateTransitVehicleButtonClicked(), we're all good!", this.ToString());
-
-            if (_actions != null && _actions.CreateTransitVehicle != null)
-            {
-                _actions.CreateTransitVehicle();
-            }
-
-            HidePanel();
+            _panelModel.PlayPanelAction(_panelModel.Actions.CreateTransitVehicle);
         }
 
         protected void OnCreateMiningDrillButtonClicked()
         {
-            if (Time.time - _panelShowTime < 0.1f)
-            {
-                Debug.LogFormat("<color=#ff0000>{0}.OnCreateMiningDrillButtonClicked() TOO FAST!</color>", this.ToString());
-                return;
-            }
-
-            Debug.LogFormat("{0}.OnCreateMiningDrillButtonClicked(), we're all good!", this.ToString());
-
-            if (_actions != null && _actions.CreateMiningDrill != null)
-            {
-                _actions.CreateMiningDrill();
-            }
-
-            HidePanel();
+            _panelModel.PlayPanelAction(_panelModel.Actions.CreateMiningDrill);
         }
 
         #endregion
