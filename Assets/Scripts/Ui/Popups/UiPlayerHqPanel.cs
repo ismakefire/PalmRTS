@@ -21,7 +21,6 @@ namespace Misner.PalmRTS.UI
         #region Variables
 
         private readonly PanelModel<PlayerHQActions> _panelModel = new PanelModel<PlayerHQActions>();
-        private PlayerHQActions _actions = null;
 
         #endregion
 
@@ -34,6 +33,15 @@ namespace Misner.PalmRTS.UI
             get
             {
                 return _instance;
+            }
+        }
+
+        // Use this for initialization
+        protected void Awake()
+        {
+            if (_instance == null)
+            {
+                _instance = this;
             }
         }
 
@@ -54,26 +62,13 @@ namespace Misner.PalmRTS.UI
 
         #region MonoBehaviour
 
-        // Use this for initialization
-        protected void Awake()
-        {
-            if (_instance == null)
-            {
-                _instance = this;
-            }
-            else
-            {
-                Debug.LogErrorFormat("{0}.Awake(), why are there two of these?", this.ToString());
-            }
-
-            _createConstructionBotButton.onClick.AddListener(OnCreateConstructionBotButtonClicked);
-            _createTransitVehicleButton.onClick.AddListener(OnCreateTransitVehicleButtonClicked);
-            _createMiningDrillButton.onClick.AddListener(OnCreateMiningDrillButtonClicked);
-        }
-
         // Update is called once per frame
         protected void Start()
-		{
+        {
+			_createConstructionBotButton.onClick.AddListener(OnCreateConstructionBotButtonClicked);
+			_createTransitVehicleButton.onClick.AddListener(OnCreateTransitVehicleButtonClicked);
+			_createMiningDrillButton.onClick.AddListener(OnCreateMiningDrillButtonClicked);
+
             HidePanel();
 		}
 
@@ -84,7 +79,6 @@ namespace Misner.PalmRTS.UI
         public void ShowPanel(PlayerHQActions actions)
         {
             _panelModel.ShowPanel(actions, HidePanel);
-            _actions = actions;
             this.gameObject.SetActive(true);
 
             Debug.LogFormat("{0}.ShowPanel()", this.ToString());
@@ -93,7 +87,6 @@ namespace Misner.PalmRTS.UI
         public void HidePanel()
         {
             _panelModel.Clear();
-            _actions = null;
             this.gameObject.SetActive(false);
 
             Debug.LogFormat("{0}.HidePanel()", this.ToString());

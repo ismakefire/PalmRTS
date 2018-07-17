@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
+using Misner.PalmRTS.UI;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Player
@@ -48,7 +48,25 @@ namespace Misner.PalmRTS.Player
 
         protected void ShowTransitDepotPanel()
         {
-            Debug.LogFormat("<color=#007fff>{0}.ShowTransitDepotPanel()</color>", this.ToString());
+            if (PanelManager.Instance.IsAnyChildActive)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.ShowTransitDepotPanel(), PanelManager.Instance.IsAnyChildActive = {1}</color>", this.ToString(), PanelManager.Instance.IsAnyChildActive);
+            }
+            else
+            {
+				Debug.LogFormat("<color=#ff00ff>{0}.TODO()</color>", this.ToString());
+
+                UiPlayerDepotPanel.Instance.ShowPanel(new UiPlayerDepotPanel.PlayerDepotActions());
+
+                //UiPlayerHqPanel.Instance.ShowPanel(
+                //    new UiPlayerHqPanel.PlayerHQActions()
+                //    {
+                //        CreateConstructionBot = OnCreateConstructionBot,
+                //        CreateTransitVehicle = OnCreateTransitVehicle,
+                //        CreateMiningDrill = OnCreateMiningDrill
+                //    }
+                //);
+            }
         }
 
         #endregion

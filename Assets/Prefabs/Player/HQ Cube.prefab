@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da59587f7269240b8a1ae8cbc821fc58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actorSpawnOffset: {x: 1, y: 0.08, z: 0}
+  _actorSpawnOffset: {x: 1, y: 1, z: 0}
   _constructionBotPrefab: {fileID: 1433240008116752, guid: e82b7e652bc974210b4cc01827d15e04,
     type: 2}
   _drillStructurePrefab: {fileID: 1335183676257300, guid: 8d118a7122e6c46998fc973df61fc7ab,
