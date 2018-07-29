@@ -44,7 +44,7 @@ namespace Misner.PalmRTS.Actor
             _actorBehaviors.Add(actorBehavior);
             actorBehavior.OnClicked += OnActorClicked;
 
-            Debug.LogFormat("{0}.Add(), _actorBehaviors.Count = {1}", this.ToString(), _actorBehaviors.Count);
+            //Debug.LogFormat("{0}.Add(), _actorBehaviors.Count = {1}", this.ToString(), _actorBehaviors.Count);
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace Misner.PalmRTS.Actor
 
         protected void OnActorClicked(ActorBehavior actorBehavior)
         {
-            Debug.LogFormat("{0}.OnActorClicked(), (actorBehavior != null) = {1}", this.ToString(), (actorBehavior != null));
+            //Debug.LogFormat("{0}.OnActorClicked(), (actorBehavior != null) = {1}", this.ToString(), (actorBehavior != null));
             if (actorBehavior == null)
             {
                 return;

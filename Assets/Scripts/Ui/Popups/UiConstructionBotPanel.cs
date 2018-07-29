@@ -96,7 +96,7 @@ namespace Misner.PalmRTS.UI
             _actions = null;
             this.gameObject.SetActive(false);
 
-            Debug.LogFormat("{0}.HidePanel()", this.ToString());
+            //Debug.LogFormat("{0}.HidePanel()", this.ToString());
         }
 
         #endregion

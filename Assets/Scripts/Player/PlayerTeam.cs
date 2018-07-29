@@ -49,7 +49,7 @@ namespace Misner.PalmRTS.Player
                 return;
             }
 
-			Debug.LogFormat("{0}.OnActorClicked() YAY YAY.", this.ToString());
+			//Debug.LogFormat("{0}.OnActorClicked() YAY YAY.", this.ToString());
             _onClickActions[actorBehavior]();
         }
 

@@ -38,7 +38,7 @@ namespace Misner.PalmRTS.Terrain
 
             if (!existingBehaviors.IsNullOrEmpty())
             {
-                Debug.LogFormat("{0}.Start(), existing tiles found! existingBehaviors.Length = {1}", this.ToString(), existingBehaviors.Length);
+                //Debug.LogFormat("{0}.Start(), existing tiles found! existingBehaviors.Length = {1}", this.ToString(), existingBehaviors.Length);
                 
                 foreach (TerrainTileBehavior childBehavior in existingBehaviors)
                 {
