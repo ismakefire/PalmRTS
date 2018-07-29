@@ -13,7 +13,7 @@ namespace Misner.PalmRTS.Player
     {
         #region Variables
 
-        private readonly float _miningRateUps = 1.0f / 30f; 
+        private readonly float _miningRateUps = 10.0f / 30f; 
 
         private int _emptyBoxCount = 15;
         private int _fullBoxCount = 0;
