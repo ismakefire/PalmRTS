@@ -13,8 +13,9 @@ namespace Misner.PalmRTS.Player
     {
         #region Variables
 
-        private readonly float _miningRateUps = 10.0f / 30f; 
+        private readonly float _miningRateUps = 10.0f / 30f;
 
+        private float _groundDrilledCount = 0f;
         private int _emptyBoxCount = 15;
         private int _fullBoxCount = 0;
 
@@ -102,6 +103,8 @@ namespace Misner.PalmRTS.Player
         {
             _miningProgress += Time.deltaTime * _miningRateUps;
 
+            transform.localPosition = new Vector3(transform.localPosition.x, 0.5f - 0.01f*(_miningProgress + _groundDrilledCount), transform.localPosition.z);
+
             if (_miningProgress >= 1f)
             {
                 if (_emptyBoxCount > 0)
@@ -109,6 +112,7 @@ namespace Misner.PalmRTS.Player
                     --_emptyBoxCount;
                     ++_fullBoxCount;
 
+                    ++_groundDrilledCount;
                     _miningProgress = 0f;
 
                     if (InventoryChanged != null)
