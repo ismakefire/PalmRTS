@@ -115,7 +115,10 @@ namespace Misner.PalmRTS.UI
         {
             ClearInventory();
 
-            AddItem("Empty Box", _drill.EmptyBoxCount.ToString(), Color.gray);
+            if (_drill.EmptyBoxCount > 0)
+            {
+				AddItem("Empty Box", _drill.EmptyBoxCount.ToString(), Color.gray);
+            }
 
             for (int i = 0; i < _drill.FullBoxCount; i++)
             {

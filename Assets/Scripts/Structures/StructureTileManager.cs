@@ -53,6 +53,18 @@ namespace Misner.PalmRTS.Structure
             return true;
         }
 
+        public ActorBehavior GetActorAtTile(Vector2Int tileKey)
+        {
+            ActorBehavior result = null;
+
+            if (_tileToActor.ContainsKey(tileKey))
+            {
+                result = _tileToActor[tileKey];
+            }
+
+            return result;
+        }
+
         #endregion
 	}
 }

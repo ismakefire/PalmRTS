@@ -50,19 +50,37 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        public float EmptyBoxCount
+        public int EmptyBoxCount
         {
             get
             {
                 return _emptyBoxCount;
             }
+            set
+            {
+                _emptyBoxCount = value;
+
+                if (InventoryChanged != null)
+                {
+                    InventoryChanged();
+                }
+            }
         }
 
-        public float FullBoxCount
+        public int FullBoxCount
         {
             get
             {
                 return _fullBoxCount;
+            }
+            set
+            {
+                _fullBoxCount = value;
+
+                if (InventoryChanged != null)
+                {
+                    InventoryChanged();
+                }
             }
         }
 
