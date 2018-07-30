@@ -1,13 +1,14 @@
 ﻿using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
+using Misner.PalmRTS.Transit;
 using Misner.PalmRTS.UI;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Player
 {
     [RequireComponent(typeof(ActorBehavior))]
-	public class HQActorBehavior : MonoBehaviour
+    public class HQActorBehavior : MonoBehaviour, IInventoryStructure
 	{
         #region SerializeField
 
@@ -50,6 +51,9 @@ namespace Misner.PalmRTS.Player
                 return playerTeam;
             }
         }
+
+        public int Inventory_EmptyBoxCount { get; set; }
+        public int Inventory_DrillProductCount { get; set; }
 
         #endregion
         
