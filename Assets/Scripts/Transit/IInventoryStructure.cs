@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,5 +9,7 @@ namespace Misner.PalmRTS.Transit
     {
         int Inventory_EmptyBoxCount { get; set; }
         int Inventory_DrillProductCount { get; set; }
+
+        event Action InventoryChanged;
 	}
 }

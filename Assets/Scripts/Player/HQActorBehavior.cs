@@ -1,4 +1,5 @@
-﻿using Misner.PalmRTS.Actor;
+﻿using System;
+using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Transit;
@@ -52,8 +53,14 @@ namespace Misner.PalmRTS.Player
             }
         }
 
+        #endregion
+
+        #region IInventoryStructure
+
         public int Inventory_EmptyBoxCount { get; set; }
         public int Inventory_DrillProductCount { get; set; }
+
+        public event Action InventoryChanged;
 
         #endregion
         
@@ -81,6 +88,7 @@ namespace Misner.PalmRTS.Player
             {
 				UiPlayerHqPanel.Instance.ShowPanel(
 					new UiPlayerHqPanel.PlayerHQActions() {
+                    Structure = this,
 					CreateConstructionBot = OnCreateConstructionBot,
 					CreateTransitVehicle = OnCreateTransitVehicle,
                     CreateMiningDrill = OnCreateMiningDrill
@@ -97,7 +105,7 @@ namespace Misner.PalmRTS.Player
 				
 				GameObject newConstructionBot = Instantiate(_constructionBotPrefab);
 				newConstructionBot.transform.SetParent(this.transform.parent);
-				newConstructionBot.transform.localPosition = this.transform.localPosition + _actorSpawnOffset + Random.insideUnitSphere * 0.1f;
+				newConstructionBot.transform.localPosition = this.transform.localPosition + _actorSpawnOffset + UnityEngine.Random.insideUnitSphere * 0.1f;
 				
 				ActorBehavior actor = newConstructionBot.GetComponent<ActorBehavior>();
 				ActorModelManager.Instance.Add(actor);

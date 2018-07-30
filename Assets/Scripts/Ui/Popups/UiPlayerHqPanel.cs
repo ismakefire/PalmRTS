@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using Misner.PalmRTS.Transit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +13,8 @@ namespace Misner.PalmRTS.UI
 
         public class PlayerHQActions
         {
+            public IInventoryStructure Structure { get; set; }
+            
             public Action CreateConstructionBot { get; set; }
             public Action CreateTransitVehicle { get; set; }
             public Action CreateMiningDrill { get; set; }
@@ -21,6 +25,7 @@ namespace Misner.PalmRTS.UI
         #region Variables
 
         private readonly PanelModel<PlayerHQActions> _panelModel = new PanelModel<PlayerHQActions>();
+        private readonly List<InventorySlot> _inventorySlots = new List<InventorySlot>();
 
         #endregion
 
@@ -58,6 +63,12 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private Button _createMiningDrillButton;
 
+        [SerializeField]
+        private Transform _inventoryLayout;
+
+        [SerializeField]
+        private InventorySlot _inventorySlotPrefab;
+
         #endregion
 
         #region MonoBehaviour
@@ -82,19 +93,33 @@ namespace Misner.PalmRTS.UI
             this.gameObject.SetActive(true);
 
             //Debug.LogFormat("{0}.ShowPanel()", this.ToString());
+
+            if (_panelModel.Actions != null && _panelModel.Actions.Structure != null)
+            {
+				actions.Structure.InventoryChanged += OnInventoryChanged;
+            }
+
+            OnInventoryChanged();
         }
 
         public void HidePanel()
         {
+            if (_panelModel.Actions != null && _panelModel.Actions.Structure != null)
+            {
+				_panelModel.Actions.Structure.InventoryChanged -= OnInventoryChanged;
+            }
+
             _panelModel.Clear();
             this.gameObject.SetActive(false);
 
             //Debug.LogFormat("{0}.HidePanel()", this.ToString());
+
+            ClearInventory();
         }
 
         #endregion
 
-        #region Events
+        #region UI Events
 
         protected void OnCreateConstructionBotButtonClicked()
         {
@@ -109,6 +134,53 @@ namespace Misner.PalmRTS.UI
         protected void OnCreateMiningDrillButtonClicked()
         {
             _panelModel.PlayPanelAction(_panelModel.Actions.CreateMiningDrill);
+        }
+
+        #endregion
+
+        #region Gameplay Events
+
+        protected void OnInventoryChanged()
+        {
+            ClearInventory();
+
+            Debug.LogFormat("<color=#ff00ff>{0}.OnInventoryChanged(), _panelModel.Actions.Structure.Inventory_EmptyBoxCount = {1}, _panelModel.Actions.Structure.Inventory_DrillProductCount = {2}</color>", this.ToString(), _panelModel.Actions.Structure.Inventory_EmptyBoxCount, _panelModel.Actions.Structure.Inventory_DrillProductCount);
+
+            if (_panelModel.Actions.Structure.Inventory_EmptyBoxCount > 0)
+            {
+                AddItem("Empty Box", _panelModel.Actions.Structure.Inventory_EmptyBoxCount.ToString(), Color.gray);
+            }
+
+            for (int i = 0; i < _panelModel.Actions.Structure.Inventory_DrillProductCount; i++)
+            {
+                AddItem("Drill Product", "1", Color.red);
+            }
+        }
+
+        #endregion
+
+        #region Private Inventory Methods
+
+        private void ClearInventory()
+        {
+            foreach (InventorySlot inventorySlot in _inventorySlots)
+            {
+                UnityEngine.Object.Destroy(inventorySlot.gameObject);
+            }
+
+            _inventorySlots.Clear();
+        }
+
+        private void AddItem(string itemName, string itemCount, Color itemColor)
+        {
+            InventorySlot inventorySlot = UnityEngine.Object.Instantiate<InventorySlot>(_inventorySlotPrefab);
+            inventorySlot.transform.parent = _inventoryLayout;
+
+            inventorySlot.ItemNameText = itemName;
+            inventorySlot.ItemCountText = itemCount;
+            inventorySlot.ItemIconImage.color = itemColor;
+
+            _inventorySlots.Add(inventorySlot);
         }
 
         #endregion
