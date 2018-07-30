@@ -121,7 +121,7 @@ namespace Misner.PalmRTS.Transit
         {
             get
             {
-                return (_currentOrder.Duration != null) ? _currentOrder.Duration.Value : 2.5f;
+                return (_currentOrder.Duration != null) ? _currentOrder.Duration.Value : 0.5f;
             }
         }
 
