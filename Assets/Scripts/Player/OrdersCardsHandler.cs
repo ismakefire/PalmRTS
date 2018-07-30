@@ -8,8 +8,6 @@ namespace Misner.PalmRTS.UI
 {
     public class OrdersCardsHandler
     {
-        private readonly UiPlayerDepotPanel _depotPanel;
-
         public readonly TransitOrderController TransitOrder;
 
         private readonly TransitOrderCard _transitOrderCard;
@@ -17,9 +15,8 @@ namespace Misner.PalmRTS.UI
 
         private bool isActive = true;
 
-        public OrdersCardsHandler(UiPlayerDepotPanel depotPanel, TransitOrderController transitOrder, TransitOrderCard transitOrderCard, Action<OrdersCardsHandler> removeOrderButton)
+        public OrdersCardsHandler(UiPlayerDepotPanel unused, TransitOrderController transitOrder, TransitOrderCard transitOrderCard, Action<OrdersCardsHandler> removeOrderButton)
         {
-            _depotPanel = depotPanel;
             TransitOrder = transitOrder;
             _transitOrderCard = transitOrderCard;
             _removeOrderButton = removeOrderButton;

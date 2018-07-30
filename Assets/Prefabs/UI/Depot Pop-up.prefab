@@ -477,7 +477,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224205777544374480}
   - component: {fileID: 222935239006694454}
-  - component: {fileID: 114591100839841352}
+  - component: {fileID: 114359332836330920}
   m_Layer: 5
   m_Name: Depot Pop-up
   m_TagString: Untagged
@@ -889,7 +889,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114591100839841352}
+      - m_Target: {fileID: 114359332836330920}
         m_MethodName: HidePanel
         m_Mode: 1
         m_Arguments:
@@ -1215,6 +1215,26 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114359332836330920
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1787925628197520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd1766bb37b94872bde55a5136c0ccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inventoryLayout: {fileID: 224515791228070794}
+  _inventorySlotPrefab: {fileID: 114218446182703438, guid: a183ee2ff48244637beb6933398dc2a3,
+    type: 2}
+  _noOrdersText: {fileID: 224743034971183190}
+  _transitOrderCardPrefab: {fileID: 114942119470529518, guid: 2b06516e483ca4832b1db1ad63b771a2,
+    type: 2}
+  _createNewOrderTransform: {fileID: 224468189865829762}
+  _createNewOrderButton: {fileID: 114348000869544340}
+  _ordersParent: {fileID: 224243456114993482}
 --- !u!114 &114399533850977932
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1481,26 +1501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c5e5d5c19ae42e8812ffff784046c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114591100839841352
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1787925628197520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d97d9a6548a084911add3e43a8d68c0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inventoryLayout: {fileID: 224515791228070794}
-  _inventorySlotPrefab: {fileID: 114218446182703438, guid: a183ee2ff48244637beb6933398dc2a3,
-    type: 2}
-  _noOrdersText: {fileID: 224743034971183190}
-  _transitOrderCardPrefab: {fileID: 114942119470529518, guid: 2b06516e483ca4832b1db1ad63b771a2,
-    type: 2}
-  _createNewOrderTransform: {fileID: 224468189865829762}
-  _createNewOrderButton: {fileID: 114348000869544340}
-  _ordersParent: {fileID: 224243456114993482}
 --- !u!114 &114597055912280954
 MonoBehaviour:
   m_ObjectHideFlags: 1

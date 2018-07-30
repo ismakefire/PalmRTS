@@ -195,8 +195,8 @@ namespace Misner.PalmRTS.Player
             {
                 //Debug.LogFormat("<color=#ff00ff>{0}.TODO()</color>", this.ToString());
 
-                UiPlayerDepotPanel.Instance.ShowPanel(
-                    new UiPlayerDepotPanel.PlayerDepotActions(),
+                UiPlayerTransportConnectorPanel.Instance.ShowPanel(
+                    new UiPlayerTransportConnectorPanel.PlayerConnectorActions(),
                     this
                 );
             }
