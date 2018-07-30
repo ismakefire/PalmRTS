@@ -6,15 +6,15 @@ namespace Misner.PalmRTS.Transit
 {
     public class TransitOrderController
     {
-        private readonly TransitDepotStructureActor _transitDepot;
+        private readonly ITransitActor _transitActor;
 
         private ITransitOrder _currentOrder = new NopTransitOrder();
         
         public event Action<bool> PrimaryOrderChanged;
         
-        public TransitOrderController(TransitDepotStructureActor transitDepot, int? verb, int? @object = null, int? subject = null)
+        public TransitOrderController(ITransitActor transitActor, int? verb, int? @object = null, int? subject = null)
         {
-            _transitDepot = transitDepot;
+            _transitActor = transitActor;
             Verb = verb;
             Object = @object;
             Subject = subject;
@@ -63,18 +63,14 @@ namespace Misner.PalmRTS.Transit
 							break;
 							
 						case 1:
-                            nextOrder = new TakeFromTransitOrder(_transitDepot);
+                            nextOrder = new TakeFromTransitOrder(_transitActor);
 							break;
 
                         case 2:
-                            nextOrder = new InsertIntoTransitOrder(_transitDepot);
+                            nextOrder = new InsertIntoTransitOrder(_transitActor);
                             break;
 
-                        //case 3:
-                            //nextOrder = new SendToTransitOrder();
-                            //break;
-
-                        case 4:
+                        case 3:
                             nextOrder = new WaitForTransitOrder();
                             break;
 

@@ -11,15 +11,15 @@ namespace Misner.PalmRTS.Transit
     {
         #region Private Variables
 
-        readonly TransitDepotStructureActor _transitDepot;
+        readonly ITransitActor _transitActor;
 
         #endregion
 
         #region Constructor
 
-        public TakeFromTransitOrder(TransitDepotStructureActor transitDepot)
+        public TakeFromTransitOrder(ITransitActor transitActor)
         {
-            _transitDepot = transitDepot;
+            _transitActor = transitActor;
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace Misner.PalmRTS.Transit
             }
             else
             {
-                ActorBehavior result = StructureTileManager.Instance.GetActorAtTile(_transitDepot.Actor.TilePosition + offset.Value);
+                ActorBehavior result = StructureTileManager.Instance.GetActorAtTile(_transitActor.Actor.TilePosition + offset.Value);
 
                 if (result == null)
                 {
@@ -72,7 +72,7 @@ namespace Misner.PalmRTS.Transit
                                     int transactionAmount = 1;
 
                                     drill.EmptyBoxCount -= transactionAmount;
-                                    _transitDepot.EmptyBoxCount += transactionAmount;
+                                    _transitActor.EmptyBoxCount += transactionAmount;
                                 }
                                 break;
 
@@ -82,7 +82,7 @@ namespace Misner.PalmRTS.Transit
                                     int transactionAmount = 1;
 
                                     drill.FullBoxCount -= transactionAmount;
-                                    _transitDepot.DrillProductCount += transactionAmount;
+                                    _transitActor.DrillProductCount += transactionAmount;
                                 }
                                 break;
                             

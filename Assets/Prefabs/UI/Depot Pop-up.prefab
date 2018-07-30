@@ -835,7 +835,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Transit Depot
+  m_Text: Transport Connector
 --- !u!114 &114145011079841346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2000,7 +2000,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Transit Orders
+  m_Text: Transport Orders
 --- !u!114 &114999323784858480
 MonoBehaviour:
   m_ObjectHideFlags: 1

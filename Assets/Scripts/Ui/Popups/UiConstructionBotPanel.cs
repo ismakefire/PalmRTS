@@ -14,6 +14,7 @@ namespace Misner.PalmRTS.UI
             public Action DeployDrill { get; set; }
             public Action DeployDepot { get; set; }
             public Action DeployMachineFactory { get; set; }
+            public Action DeployConnector { get; set; }
         }
 
         #endregion
@@ -49,6 +50,9 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private Button _deployMachineFactoryButton;
 
+        [SerializeField]
+        private Button _deployConnectorButton;
+
         #endregion
 
         #region MonoBehaviour
@@ -68,6 +72,7 @@ namespace Misner.PalmRTS.UI
             _deployDrillButton.onClick.AddListener(OnDeployDrillButtonClicked);
             _deployDepotButton.onClick.AddListener(OnDeployDepotButtonClicked);
             _deployMachineFactoryButton.onClick.AddListener(OnDeployMachineFactoryButtonClicked);
+            _deployConnectorButton.onClick.AddListener(OnDeployConnectorButtonClicked);
         }
 
         // Update is called once per frame
@@ -164,6 +169,28 @@ namespace Misner.PalmRTS.UI
             else
             {
                 Debug.LogFormat("{0}.OnDeployMachineFactoryButtonClicked(), (_actions != null && _actions.DeployMachineFactory != null) = {1}", this.ToString(), (_actions != null && _actions.DeployMachineFactory != null));
+            }
+
+            HidePanel();
+        }
+
+        protected void OnDeployConnectorButtonClicked()
+        {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnDeployConnectorButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
+            if (_actions != null && _actions.DeployConnector != null)
+            {
+                Debug.LogFormat("{0}.OnDeployConnectorButtonClicked(), we're all good!", this.ToString());
+
+                _actions.DeployConnector();
+            }
+            else
+            {
+                Debug.LogFormat("{0}.OnDeployConnectorButtonClicked(), (_actions != null && _actions.DeployConnector != null) = {1}", this.ToString(), (_actions != null && _actions.DeployConnector != null));
             }
 
             HidePanel();

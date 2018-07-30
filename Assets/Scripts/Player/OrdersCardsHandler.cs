@@ -111,7 +111,6 @@ namespace Misner.PalmRTS.UI
             {
                 case 1:
                 case 2:
-                case 3:
                     break;
 
                 default:
@@ -131,7 +130,7 @@ namespace Misner.PalmRTS.UI
         {
             switch (TransitOrder.Verb)
             {
-                case 4:
+                case 3:
                     break;
 
                 default:

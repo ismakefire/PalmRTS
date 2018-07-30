@@ -26,6 +26,9 @@ namespace Misner.PalmRTS.Player
         [SerializeField]
         private GameObject _machineFactoryStructurePrefab;
 
+        [SerializeField]
+        private GameObject _connectorStructurePrefab;
+
         #endregion
 
         #region Properties
@@ -99,6 +102,7 @@ namespace Misner.PalmRTS.Player
 				constructionBot.DrillStructurePrefab = _drillStructurePrefab;
                 constructionBot.DepotStructurePrefab = _depotStructurePrefab;
                 constructionBot.MachineFactoryStructurePrefab = _machineFactoryStructurePrefab;
+                constructionBot.ConnectorStructurePrefab = _connectorStructurePrefab;
             }
         }
 

@@ -123,10 +123,13 @@ namespace Misner.PalmRTS.Player
 
             foreach (ActorBehavior actor in _actors)
             {
-                HQActorBehavior hq = actor.GetComponent<HQActorBehavior>();
-                DrillStructureBehavior drillStructure = actor.GetComponent<DrillStructureBehavior>();
-
-                if (hq != null || drillStructure != null)
+                if (
+                    actor.GetComponent<HQActorBehavior>() != null ||
+                    actor.GetComponent<DrillStructureBehavior>() != null ||
+                    actor.GetComponent<TransitDepotStructureActor>() != null ||
+                    actor.GetComponent<MachineFactoryStructureActoryBehavior>() != null ||
+                    actor.GetComponent<TransportConnector>() != null
+                )
                 {
                     result.Remove(actor.TilePosition);
                 }

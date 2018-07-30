@@ -11,15 +11,15 @@ namespace Misner.PalmRTS.Transit
     {
         #region Private Variables
 
-        readonly TransitDepotStructureActor _transitDepot;
+        readonly ITransitActor _transitActor;
 
         #endregion
 
         #region Constructor
 
-        public InsertIntoTransitOrder(TransitDepotStructureActor transitDepot)
+        public InsertIntoTransitOrder(ITransitActor transitActor)
         {
-            _transitDepot = transitDepot;
+            _transitActor = transitActor;
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace Misner.PalmRTS.Transit
             }
             else
             {
-                ActorBehavior result = StructureTileManager.Instance.GetActorAtTile(_transitDepot.Actor.TilePosition + offset.Value);
+                ActorBehavior result = StructureTileManager.Instance.GetActorAtTile(_transitActor.Actor.TilePosition + offset.Value);
 
                 if (result == null)
                 {
@@ -67,21 +67,21 @@ namespace Misner.PalmRTS.Transit
                         switch (Object)
                         {
                             case 1:
-                                if (_transitDepot.EmptyBoxCount > 0)
+                                if (_transitActor.EmptyBoxCount > 0)
                                 {
                                     int transactionAmount = 1;
 
-                                    _transitDepot.EmptyBoxCount -= transactionAmount;
+                                    _transitActor.EmptyBoxCount -= transactionAmount;
 									drill.EmptyBoxCount += transactionAmount;
                                 }
                                 break;
 
                             case 2:
-                                if (_transitDepot.DrillProductCount > 0)
+                                if (_transitActor.DrillProductCount > 0)
                                 {
                                     int transactionAmount = 1;
 
-                                    _transitDepot.DrillProductCount -= transactionAmount;
+                                    _transitActor.DrillProductCount -= transactionAmount;
 									drill.FullBoxCount += transactionAmount;
                                 }
                                 break;

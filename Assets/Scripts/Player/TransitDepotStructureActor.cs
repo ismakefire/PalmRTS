@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Misner.PalmRTS.Player
 {
     [RequireComponent(typeof(ActorBehavior))]
-	public class TransitDepotStructureActor : MonoBehaviour
+    public class TransitDepotStructureActor : MonoBehaviour, ITransitActor
     {
         #region Private Variables
 
@@ -195,10 +195,10 @@ namespace Misner.PalmRTS.Player
             {
 				Debug.LogFormat("<color=#ff00ff>{0}.TODO()</color>", this.ToString());
 
-                UiPlayerDepotPanel.Instance.ShowPanel(
-                    new UiPlayerDepotPanel.PlayerDepotActions(),
-                    this
-                );
+                //UiPlayerDepotPanel.Instance.ShowPanel(
+                //    new UiPlayerDepotPanel.PlayerDepotActions(),
+                //    this
+                //);
             }
         }
 

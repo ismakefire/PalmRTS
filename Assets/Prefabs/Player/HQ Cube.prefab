@@ -233,6 +233,8 @@ MonoBehaviour:
     type: 2}
   _machineFactoryStructurePrefab: {fileID: 1849082461507126, guid: 8fbac6f34b7314cf3812e3028b2066da,
     type: 2}
+  _connectorStructurePrefab: {fileID: 1135451479850874, guid: dfc66bdb941fa4b2e931e6c42eeb3e45,
+    type: 2}
 --- !u!114 &114859680485584490
 MonoBehaviour:
   m_ObjectHideFlags: 1

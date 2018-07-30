@@ -23,7 +23,7 @@ namespace Misner.PalmRTS.UI
         private readonly PanelModel<PlayerDepotActions> _panelModel = new PanelModel<PlayerDepotActions>();
         private readonly List<InventorySlot> _inventorySlots = new List<InventorySlot>();
 
-        private TransitDepotStructureActor _transitDepot = null;
+        private TransportConnector _transportConnector = null;
 
         #endregion
 
@@ -94,11 +94,11 @@ namespace Misner.PalmRTS.UI
 
         #region Public Interface
 
-        public void ShowPanel(PlayerDepotActions actions, TransitDepotStructureActor transitDepot)
+        public void ShowPanel(PlayerDepotActions actions, TransportConnector transportConnector)
         {
-            _transitDepot = transitDepot;
-            _transitDepot.InventoryChanged += OnDepotInventoryChanged;
-            _transitDepot.TransitOrdersChanged += OnTransitOrdersChanged;
+            _transportConnector = transportConnector;
+            _transportConnector.InventoryChanged += OnDepotInventoryChanged;
+            _transportConnector.TransitOrdersChanged += OnTransitOrdersChanged;
             
             _panelModel.ShowPanel(actions, HidePanel);
             this.gameObject.SetActive(true);
@@ -111,11 +111,11 @@ namespace Misner.PalmRTS.UI
 
         public void HidePanel()
         {
-            if (_transitDepot != null)
+            if (_transportConnector != null)
             {
-                _transitDepot.InventoryChanged -= OnDepotInventoryChanged;
-                _transitDepot.TransitOrdersChanged -= OnTransitOrdersChanged;
-				_transitDepot = null;
+                _transportConnector.InventoryChanged -= OnDepotInventoryChanged;
+                _transportConnector.TransitOrdersChanged -= OnTransitOrdersChanged;
+				_transportConnector = null;
             }
 
             _panelModel.Clear();
@@ -134,12 +134,12 @@ namespace Misner.PalmRTS.UI
         {
             ClearInventory();
 
-            if (_transitDepot.EmptyBoxCount > 0)
+            if (_transportConnector.EmptyBoxCount > 0)
             {
-                AddItem("Empty Box", _transitDepot.EmptyBoxCount.ToString(), Color.gray);
+                AddItem("Empty Box", _transportConnector.EmptyBoxCount.ToString(), Color.gray);
             }
 
-            for (int i = 0; i < _transitDepot.DrillProductCount; i++)
+            for (int i = 0; i < _transportConnector.DrillProductCount; i++)
             {
                 AddItem("Drill Product", "1", Color.red);
             }
@@ -149,13 +149,13 @@ namespace Misner.PalmRTS.UI
         {
             RemoveAllOrderButtons();
 
-            if (_transitDepot.TransitOrders == null || _transitDepot.TransitOrders.Count <= 0)
+            if (_transportConnector.TransitOrders == null || _transportConnector.TransitOrders.Count <= 0)
             {
                 Debug.LogFormat("<color=#ff00ff>{0}.OnTransitOrdersChanged(), need some orders brah!</color>", this.ToString());
             }
             else
             {
-                foreach (TransitOrderController item in _transitDepot.TransitOrders)
+                foreach (TransitOrderController item in _transportConnector.TransitOrders)
                 {
                     OrdersCardsHandler orderHandler = AddOrdersButton(item);
 
@@ -170,7 +170,7 @@ namespace Misner.PalmRTS.UI
 
         protected void OnCreateNewOrderButtonClicked()
         {
-            _transitDepot.AddOrder(new TransitOrderController(_transitDepot, 0));
+            _transportConnector.AddOrder(new TransitOrderController(_transportConnector, 0));
         }
 
         #endregion
@@ -241,7 +241,7 @@ namespace Misner.PalmRTS.UI
         /// <param name="handler">Handler.</param>
         private void RemoveOrder(OrdersCardsHandler handler)
         {
-            _transitDepot.RemoveOrder(handler.TransitOrder);
+            _transportConnector.RemoveOrder(handler.TransitOrder);
         }
 
         #endregion

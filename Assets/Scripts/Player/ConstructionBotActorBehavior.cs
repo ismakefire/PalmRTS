@@ -55,6 +55,8 @@ namespace Misner.PalmRTS.Player
 
         public GameObject MachineFactoryStructurePrefab { get; set; }
 
+        public GameObject ConnectorStructurePrefab { get; set; }
+
         #endregion
 
         #region MonoBehaviour
@@ -184,7 +186,8 @@ namespace Misner.PalmRTS.Player
 					new UiConstructionBotPanel.PlayerDeploymentActions() {
     					DeployDrill = OnDeployDrill,
     					DeployDepot = OnDeployDepot,
-    					DeployMachineFactory = OnDeployMachineFactory
+    					DeployMachineFactory = OnDeployMachineFactory,
+                        DeployConnector = OnDeployConnector
     				}
 				);
             }
@@ -370,6 +373,39 @@ namespace Misner.PalmRTS.Player
             ActorBehavior actor = newMachineFactory_Structure.GetComponent<ActorBehavior>();
             ActorModelManager.Instance.Add(actor);
         }
+
+
+
+
+
+
+
+
+
+
+        protected void OnDeployConnector()
+        {
+            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployConnector(), TODO setup some machine factory deployment stuff.</color>", this.ToString());
+
+            BeginStructureDeployment(OnCreateConnector_Structure);
+        }
+
+        protected void OnCreateConnector_Structure(Utility.Math.IntVector2 tileLocation)
+        {
+            Debug.LogFormat("{0}.OnCreateConnector_Structure(), tileLocation = {1}", this.ToString(), tileLocation);
+
+            GameObject newConnector_Structure = Instantiate(ConnectorStructurePrefab);
+            newConnector_Structure.transform.SetParent(this.transform.parent);
+            newConnector_Structure.transform.localPosition = new Vector3((float)tileLocation.x, 0f, (float)tileLocation.y) + Vector3.up * 0.5f + UnityEngine.Random.insideUnitSphere * 0.01f;
+            newConnector_Structure.transform.localScale = Vector3.one * 0.9f;
+
+            ActorBehavior actor = newConnector_Structure.GetComponent<ActorBehavior>();
+            ActorModelManager.Instance.Add(actor);
+        }
+
+
+
+
 
 
 
