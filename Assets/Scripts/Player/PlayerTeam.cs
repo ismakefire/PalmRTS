@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Misner.PalmRTS.Actor;
+using Misner.PalmRTS.Financial;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.UI;
 using Misner.Utility.Collections;
@@ -23,8 +24,9 @@ namespace Misner.PalmRTS.Player
 
         private readonly HashList<ActorBehavior> _actors = new HashList<ActorBehavior>();
         private Dictionary<ActorBehavior, Action> _onClickActions = new Dictionary<ActorBehavior, Action>();
+        private readonly DebtModel _debtModel;
 
-        private int _playerMoney = 1000;
+        private int _playerMoney = 250;
 
         #endregion
 
@@ -59,6 +61,23 @@ namespace Misner.PalmRTS.Player
 
         public PlayerTeam()
         {
+            _debtModel = DebtModel.Create(amount: _playerMoney, pps: 0.0001);
+            _debtModel.BalanceChange += OnBalanceChange;
+        }
+
+        private bool OnBalanceChange(int change)
+        {
+            bool canAffordInterest = false;
+
+            if (_playerMoney + change > 0)
+            {
+                _playerMoney += change;
+                canAffordInterest = true;
+
+                UiHudPanel.Instance.MoneyText = string.Format("${0}", _playerMoney);
+            }
+
+            return canAffordInterest;
         }
 
         public string GetPlayerMoneyString()
