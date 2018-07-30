@@ -71,6 +71,9 @@ namespace Misner.PalmRTS.Player
 		{
             OurTeam.AddClickEvent(Actor, ShowHQPanel);
 
+            Inventory_EmptyBoxCount = 20;
+            Inventory_DrillProductCount = 2;
+
             StructureTileManager.Instance.Add(Actor);
 		}
 
