@@ -51,6 +51,16 @@ namespace Misner.PalmRTS.Player
             }
         }
 
+        public PlayerTeam OurTeam
+        {
+            get
+            {
+                PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
+
+                return playerTeam;
+            }
+        }
+
         public Rigidbody Body
         {
             get
@@ -315,8 +325,11 @@ namespace Misner.PalmRTS.Player
 
 
 		protected void OnDeployDrill()
-		{
-			BeginStructureDeployment(OnCreateDrillStructure);
+        {
+            if (OurTeam.SpendMoney(40))
+            {
+				BeginStructureDeployment(OnCreateDrillStructure);
+            }
 		}
 		
 		protected void OnCreateDrillStructure(Utility.Math.IntVector2 tileLocation)
@@ -335,9 +348,12 @@ namespace Misner.PalmRTS.Player
 
         protected void OnDeployDepot()
         {
-            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDepot(), TODO setup some depot deployment stuff.</color>", this.ToString());
-
-            BeginStructureDeployment(OnCreateDepot_Structure);
+            if (OurTeam.SpendMoney(40))
+            {
+				Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDepot(), TODO setup some depot deployment stuff.</color>", this.ToString());
+				
+				BeginStructureDeployment(OnCreateDepot_Structure);
+            }
         }
 
         protected void OnCreateDepot_Structure(Utility.Math.IntVector2 tileLocation)
@@ -356,9 +372,12 @@ namespace Misner.PalmRTS.Player
 
         protected void OnDeployMachineFactory()
         {
-            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployMachineFactory(), TODO setup some machine factory deployment stuff.</color>", this.ToString());
-
-            BeginStructureDeployment(OnCreateMachineFactory_Structure);
+            if (OurTeam.SpendMoney(40))
+            {
+				Debug.LogFormat("<color=#ff00ff>{0}.OnDeployMachineFactory(), TODO setup some machine factory deployment stuff.</color>", this.ToString());
+				
+				BeginStructureDeployment(OnCreateMachineFactory_Structure);
+            }
         }
 
         protected void OnCreateMachineFactory_Structure(Utility.Math.IntVector2 tileLocation)
@@ -377,9 +396,12 @@ namespace Misner.PalmRTS.Player
 
         protected void OnDeployConnector()
         {
-            Debug.LogFormat("<color=#ff00ff>{0}.OnDeployConnector(), TODO setup some machine factory deployment stuff.</color>", this.ToString());
-
-            BeginStructureDeployment(OnCreateConnector_Structure);
+            if (OurTeam.SpendMoney(20))
+            {
+				Debug.LogFormat("<color=#ff00ff>{0}.OnDeployConnector(), TODO setup some machine factory deployment stuff.</color>", this.ToString());
+				
+				BeginStructureDeployment(OnCreateConnector_Structure);
+            }
         }
 
         protected void OnCreateConnector_Structure(Utility.Math.IntVector2 tileLocation)
@@ -410,7 +432,10 @@ namespace Misner.PalmRTS.Player
         
         protected void OnDeployCrusher()
         {
-            BeginStructureDeployment(OnCreateCrusherStructure);
+            if (OurTeam.SpendMoney(40))
+            {
+				BeginStructureDeployment(OnCreateCrusherStructure);
+            }
         }
         
         protected void OnCreateCrusherStructure(Utility.Math.IntVector2 tileLocation)
@@ -429,7 +454,10 @@ namespace Misner.PalmRTS.Player
 
         protected void OnDeploySmelter()
         {
-            BeginStructureDeployment(OnCreateSmelterStructure);
+            if (OurTeam.SpendMoney(40))
+            {
+				BeginStructureDeployment(OnCreateSmelterStructure);
+            }
         }
         
         protected void OnCreateSmelterStructure(Utility.Math.IntVector2 tileLocation)
@@ -448,7 +476,10 @@ namespace Misner.PalmRTS.Player
 
         protected void OnDeployFabricator()
         {
-            BeginStructureDeployment(OnCreateFabricatorStructure);
+            if (OurTeam.SpendMoney(40))
+            {
+				BeginStructureDeployment(OnCreateFabricatorStructure);
+            }
         }
 
         protected void OnCreateFabricatorStructure(Utility.Math.IntVector2 tileLocation)
