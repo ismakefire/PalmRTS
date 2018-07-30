@@ -74,6 +74,11 @@ namespace Misner.PalmRTS.Player
             Inventory_EmptyBoxCount = 20;
             Inventory_DrillProductCount = 2;
 
+            if (InventoryChanged != null)
+            {
+                InventoryChanged();
+            }
+
             StructureTileManager.Instance.Add(Actor);
 		}
 
@@ -94,7 +99,9 @@ namespace Misner.PalmRTS.Player
                     Structure = this,
 					CreateConstructionBot = OnCreateConstructionBot,
 					CreateTransitVehicle = OnCreateTransitVehicle,
-                    CreateMiningDrill = OnCreateMiningDrill
+                    CreateMiningDrill = OnCreateMiningDrill,
+                    BuyMetalBox = OnBuyMetalBox,
+                    SellMetalBox = OnSellMetalBox
 				}
 				);
             }
@@ -134,6 +141,33 @@ namespace Misner.PalmRTS.Player
 
             Debug.LogFormat("{0}.OnCreateMiningDrill(), purchaseWorked = {1}", this.ToString(), purchaseWorked);
 		}
+
+        protected void OnBuyMetalBox()
+        {
+            if (OurTeam.SpendMoney(10))
+            {
+                Inventory_EmptyBoxCount += 1;
+
+				if (InventoryChanged != null)
+				{
+					InventoryChanged();
+				}
+            }
+        }
+
+        protected void OnSellMetalBox()
+        {
+            if (Inventory_EmptyBoxCount >= 1)
+            {
+                Inventory_EmptyBoxCount -= 1;
+                OurTeam.AwardMoney(4);
+
+                if (InventoryChanged != null)
+                {
+                    InventoryChanged();
+                }
+            }
+        }
 
         #endregion
 

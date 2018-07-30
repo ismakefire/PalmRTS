@@ -104,6 +104,14 @@ namespace Misner.PalmRTS.Player
             }
         }
 
+        public void AwardMoney(int moneyAwarded)
+        {
+            _playerMoney += moneyAwarded;
+            UiHudPanel.Instance.MoneyText = string.Format("${0}", _playerMoney);
+
+            Debug.LogFormat("<color=#00ff00>{0}.SpendMoney(), moneyAwarded = {1}, _playerMoney = {2}</color>", this.ToString(), moneyAwarded, _playerMoney);
+        }
+
         public void AddClickEvent(ActorBehavior actor, Action clickAction)
         {
             _onClickActions[actor] = clickAction;

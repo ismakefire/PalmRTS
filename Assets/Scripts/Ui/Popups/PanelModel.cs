@@ -45,7 +45,7 @@ namespace Misner.PalmRTS.UI
             _panelShowTime = -1f;
         }
 
-        public void PlayPanelAction(Action panelAction)
+        public void PlayPanelAction(Action panelAction, bool hidePanel = true)
         {
             if (!this.CanShowPanel())
             {
@@ -60,7 +60,7 @@ namespace Misner.PalmRTS.UI
                     panelAction();
                 }
 
-                if (_hidePanel != null)
+                if (hidePanel == true && _hidePanel != null)
                 {
                     _hidePanel();
                 }

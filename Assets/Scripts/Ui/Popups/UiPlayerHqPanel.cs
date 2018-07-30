@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Misner.PalmRTS.Player;
 using Misner.PalmRTS.Transit;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,9 @@ namespace Misner.PalmRTS.UI
             public Action CreateConstructionBot { get; set; }
             public Action CreateTransitVehicle { get; set; }
             public Action CreateMiningDrill { get; set; }
+
+            public Action BuyMetalBox { get; set; }
+            public Action SellMetalBox { get; set; }
         }
 
         #endregion
@@ -69,6 +73,18 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private InventorySlot _inventorySlotPrefab;
 
+        [SerializeField]
+        private Button _buyMetalBoxButton;
+
+        [SerializeField]
+        private Text _buyMetalBoxText;
+
+        [SerializeField]
+        private Button _sellMetalBoxButton;
+
+        [SerializeField]
+        private Text _sellMetalBoxText;
+
         #endregion
 
         #region MonoBehaviour
@@ -79,6 +95,12 @@ namespace Misner.PalmRTS.UI
 			_createConstructionBotButton.onClick.AddListener(OnCreateConstructionBotButtonClicked);
 			_createTransitVehicleButton.onClick.AddListener(OnCreateTransitVehicleButtonClicked);
 			_createMiningDrillButton.onClick.AddListener(OnCreateMiningDrillButtonClicked);
+
+            _buyMetalBoxButton.onClick.AddListener(OnBuyMetalBoxButtonClicked);
+            _sellMetalBoxButton.onClick.AddListener(OnSellMetalBoxButtonClicked);
+
+            _buyMetalBoxText.text = "-$10";
+            _sellMetalBoxText.text = "+$4";
 
             HidePanel();
 		}
@@ -134,6 +156,16 @@ namespace Misner.PalmRTS.UI
         protected void OnCreateMiningDrillButtonClicked()
         {
             _panelModel.PlayPanelAction(_panelModel.Actions.CreateMiningDrill);
+        }
+
+        protected void OnBuyMetalBoxButtonClicked()
+        {
+            _panelModel.PlayPanelAction(_panelModel.Actions.BuyMetalBox, false);
+        }
+
+        protected void OnSellMetalBoxButtonClicked()
+        {
+            _panelModel.PlayPanelAction(_panelModel.Actions.SellMetalBox, false);
         }
 
         #endregion
