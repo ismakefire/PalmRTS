@@ -56,33 +56,34 @@ namespace Misner.PalmRTS.Transit
                 }
                 else
                 {
-                    DrillStructureBehavior drill = result.gameObject.GetComponent<DrillStructureBehavior>();
+                    IInventoryStructure inventoryStructure = result.gameObject.GetComponent<IInventoryStructure>();
+                    Debug.LogFormat("<color=#ff00ff>{0}.CompleteTransaction(), inventoryStructure = {1}</color>", this.ToString(), inventoryStructure.ToString());
 
-                    if (drill == null)
+                    if (inventoryStructure == null)
                     {
-                        Debug.LogFormat("<color=#ff00ff>{0}.CompleteTransaction(), it's not a drill.</color>", this.ToString());
+                        Debug.LogFormat("<color=#ff00ff>{0}.CompleteTransaction(), there isn't an inventory structure there.</color>", this.ToString());
                     }
                     else
                     {
                         switch (Object)
                         {
                             case 1:
-                                if (_transitActor.EmptyBoxCount > 0)
+                                if (_transitActor.Inventory_EmptyBoxCount > 0)
                                 {
                                     int transactionAmount = 1;
 
-                                    _transitActor.EmptyBoxCount -= transactionAmount;
-									drill.EmptyBoxCount += transactionAmount;
+                                    _transitActor.Inventory_EmptyBoxCount -= transactionAmount;
+                                    inventoryStructure.Inventory_EmptyBoxCount += transactionAmount;
                                 }
                                 break;
 
                             case 2:
-                                if (_transitActor.DrillProductCount > 0)
+                                if (_transitActor.Inventory_DrillProductCount > 0)
                                 {
                                     int transactionAmount = 1;
 
-                                    _transitActor.DrillProductCount -= transactionAmount;
-									drill.FullBoxCount += transactionAmount;
+                                    _transitActor.Inventory_DrillProductCount -= transactionAmount;
+                                    inventoryStructure.Inventory_DrillProductCount += transactionAmount;
                                 }
                                 break;
 

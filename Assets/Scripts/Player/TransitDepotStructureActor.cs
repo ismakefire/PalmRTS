@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Misner.PalmRTS.Player
 {
     [RequireComponent(typeof(ActorBehavior))]
-    public class TransitDepotStructureActor : MonoBehaviour, ITransitActor
+    public class TransitDepotStructureActor : MonoBehaviour, ITransitActor, IInventoryStructure
     {
         #region Private Variables
 
@@ -39,7 +39,7 @@ namespace Misner.PalmRTS.Player
         }
 
         private int _emptyBoxCount;
-        public int EmptyBoxCount
+        public int Inventory_EmptyBoxCount
         {
             get
             {
@@ -57,7 +57,7 @@ namespace Misner.PalmRTS.Player
         }
 
         private int _drillProductCount;
-        public int DrillProductCount
+        public int Inventory_DrillProductCount
         {
             get
             {
@@ -102,8 +102,8 @@ namespace Misner.PalmRTS.Player
         {
             OurTeam.AddClickEvent(Actor, ShowTransitDepotPanel);
 
-            EmptyBoxCount = 20;
-            DrillProductCount = 2;
+            Inventory_EmptyBoxCount = 20;
+            Inventory_DrillProductCount = 2;
 
             _lastTick = Time.time;
 

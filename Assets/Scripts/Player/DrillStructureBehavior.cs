@@ -4,13 +4,14 @@ using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Terrain;
+using Misner.PalmRTS.Transit;
 using Misner.PalmRTS.UI;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Player
 {
     [RequireComponent(typeof(ActorBehavior))]
-	public class DrillStructureBehavior : MonoBehaviour
+    public class DrillStructureBehavior : MonoBehaviour, IInventoryStructure
     {
         #region Variables
 
@@ -52,7 +53,7 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        public int EmptyBoxCount
+        public int Inventory_EmptyBoxCount
         {
             get
             {
@@ -69,7 +70,7 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        public int FullBoxCount
+        public int Inventory_DrillProductCount
         {
             get
             {
@@ -103,7 +104,7 @@ namespace Misner.PalmRTS.Player
         protected void Update ()
         {
 			TerrainTileBehavior tile = TerrainTileParentBehavior.Instance.GetTile(Actor.TilePosition);
-			Debug.LogFormat("<color=#ff00ff>{0}.Update(), tile.transform.position = {1}, transform.position = {2}, Actor.TilePosition = {3}</color>", this.ToString(), tile.transform.position, transform.position, Actor.TilePosition);
+			//Debug.LogFormat("<color=#ff00ff>{0}.Update(), tile.transform.position = {1}, transform.position = {2}, Actor.TilePosition = {3}</color>", this.ToString(), tile.transform.position, transform.position, Actor.TilePosition);
 
 
             float miningRateCoef = 1.0f;

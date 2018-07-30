@@ -134,12 +134,12 @@ namespace Misner.PalmRTS.UI
         {
             ClearInventory();
 
-            if (_transportConnector.EmptyBoxCount > 0)
+            if (_transportConnector.Inventory_EmptyBoxCount > 0)
             {
-                AddItem("Empty Box", _transportConnector.EmptyBoxCount.ToString(), Color.gray);
+                AddItem("Empty Box", _transportConnector.Inventory_EmptyBoxCount.ToString(), Color.gray);
             }
 
-            for (int i = 0; i < _transportConnector.DrillProductCount; i++)
+            for (int i = 0; i < _transportConnector.Inventory_DrillProductCount; i++)
             {
                 AddItem("Drill Product", "1", Color.red);
             }
