@@ -15,6 +15,10 @@ namespace Misner.PalmRTS.UI
             public Action DeployDepot { get; set; }
             public Action DeployMachineFactory { get; set; }
             public Action DeployConnector { get; set; }
+
+            public Action DeployCrusher { get; set; }
+            public Action DeploySmelter{ get; set; }
+            public Action DeployFabricator { get; set; }
         }
 
         #endregion
@@ -53,6 +57,17 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private Button _deployConnectorButton;
 
+
+
+        [SerializeField]
+        private Button _deployCrusherButton;
+
+        [SerializeField]
+        private Button _deploySmelterButton;
+
+        [SerializeField]
+        private Button _deployFabricatorButton;
+
         #endregion
 
         #region MonoBehaviour
@@ -73,6 +88,10 @@ namespace Misner.PalmRTS.UI
             _deployDepotButton.onClick.AddListener(OnDeployDepotButtonClicked);
             _deployMachineFactoryButton.onClick.AddListener(OnDeployMachineFactoryButtonClicked);
             _deployConnectorButton.onClick.AddListener(OnDeployConnectorButtonClicked);
+
+            _deployCrusherButton.onClick.AddListener(OnDeployCrusherButtonClicked);
+            _deploySmelterButton.onClick.AddListener(OnDeploySmelterButtonClicked);
+            _deployFabricatorButton.onClick.AddListener(OnDeployFabricatorButtonClicked);
         }
 
         // Update is called once per frame
@@ -191,6 +210,72 @@ namespace Misner.PalmRTS.UI
             else
             {
                 Debug.LogFormat("{0}.OnDeployConnectorButtonClicked(), (_actions != null && _actions.DeployConnector != null) = {1}", this.ToString(), (_actions != null && _actions.DeployConnector != null));
+            }
+
+            HidePanel();
+        }
+
+        protected void OnDeployCrusherButtonClicked()
+        {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnDeployCrusherButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
+            if (_actions != null && _actions.DeployCrusher != null)
+            {
+                Debug.LogFormat("{0}.OnDeployCrusherButtonClicked(), we're all good!", this.ToString());
+
+                _actions.DeployCrusher();
+            }
+            else
+            {
+                Debug.LogFormat("{0}.OnDeployCrusherButtonClicked(), (_actions != null && _actions.DeployCrusher != null) = {1}", this.ToString(), (_actions != null && _actions.DeployCrusher != null));
+            }
+
+            HidePanel();
+        }
+
+        protected void OnDeploySmelterButtonClicked()
+        {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnDeploySmelterButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
+            if (_actions != null && _actions.DeploySmelter != null)
+            {
+                Debug.LogFormat("{0}.OnDeploySmelterButtonClicked(), we're all good!", this.ToString());
+
+                _actions.DeploySmelter();
+            }
+            else
+            {
+                Debug.LogFormat("{0}.OnDeploySmelterButtonClicked(), (_actions != null && _actions.DeploySmelter != null) = {1}", this.ToString(), (_actions != null && _actions.DeploySmelter != null));
+            }
+
+            HidePanel();
+        }
+
+        protected void OnDeployFabricatorButtonClicked()
+        {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnDeployFabricatorButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
+            if (_actions != null && _actions.DeployFabricator != null)
+            {
+                Debug.LogFormat("{0}.OnDeployFabricatorButtonClicked(), we're all good!", this.ToString());
+
+                _actions.DeployFabricator();
+            }
+            else
+            {
+                Debug.LogFormat("{0}.OnDeployFabricatorButtonClicked(), (_actions != null && _actions.DeployFabricator != null) = {1}", this.ToString(), (_actions != null && _actions.DeployFabricator != null));
             }
 
             HidePanel();

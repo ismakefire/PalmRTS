@@ -245,6 +245,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 003c37ab3d1314a3184868d0923dcaf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CrusherStructurePrefab: {fileID: 1466630930113708, guid: bd4127070d94e4b309ed719430d11b6d,
+    type: 2}
+  SmelterStructurePrefab: {fileID: 1998758889270614, guid: 0f0729bbdb8c04d0c888b0abe227c99d,
+    type: 2}
+  FabricatorStructurePrefab: {fileID: 1849082461507126, guid: 97de97d3061f74ced9adb59ad6e0086c,
+    type: 2}
 --- !u!135 &135844435066188872
 SphereCollider:
   m_ObjectHideFlags: 1

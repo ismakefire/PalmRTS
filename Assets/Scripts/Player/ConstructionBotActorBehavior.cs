@@ -28,6 +28,19 @@ namespace Misner.PalmRTS.Player
 		
 		#endregion
 
+		#region SerializeField
+
+        [SerializeField]
+        private GameObject CrusherStructurePrefab;
+
+        [SerializeField]
+        private GameObject SmelterStructurePrefab;
+
+        [SerializeField]
+        private GameObject FabricatorStructurePrefab;
+
+        #endregion
+
         #region Properties
 
         public ActorBehavior Actor
@@ -187,7 +200,10 @@ namespace Misner.PalmRTS.Player
     					DeployDrill = OnDeployDrill,
     					DeployDepot = OnDeployDepot,
     					DeployMachineFactory = OnDeployMachineFactory,
-                        DeployConnector = OnDeployConnector
+                        DeployConnector = OnDeployConnector,
+                        DeployCrusher = OnDeployCrusher,
+                        DeploySmelter = OnDeploySmelter,
+                        DeployFabricator = OnDeployFabricator
     				}
 				);
             }
@@ -298,8 +314,6 @@ namespace Misner.PalmRTS.Player
 
 
 
-
-		
 		protected void OnDeployDrill()
 		{
 			BeginStructureDeployment(OnCreateDrillStructure);
@@ -318,11 +332,6 @@ namespace Misner.PalmRTS.Player
 			ActorModelManager.Instance.Add(actor);
 		}
 		
-		
-		
-		
-		
-
 
         protected void OnDeployDepot()
         {
@@ -345,13 +354,6 @@ namespace Misner.PalmRTS.Player
         }
 
 
-
-
-
-
-
-
-
         protected void OnDeployMachineFactory()
         {
             Debug.LogFormat("<color=#ff00ff>{0}.OnDeployMachineFactory(), TODO setup some machine factory deployment stuff.</color>", this.ToString());
@@ -371,14 +373,6 @@ namespace Misner.PalmRTS.Player
             ActorBehavior actor = newMachineFactory_Structure.GetComponent<ActorBehavior>();
             ActorModelManager.Instance.Add(actor);
         }
-
-
-
-
-
-
-
-
 
 
         protected void OnDeployConnector()
@@ -405,6 +399,70 @@ namespace Misner.PalmRTS.Player
 
 
 
+
+
+
+
+
+
+
+
+        
+        protected void OnDeployCrusher()
+        {
+            BeginStructureDeployment(OnCreateCrusherStructure);
+        }
+        
+        protected void OnCreateCrusherStructure(Utility.Math.IntVector2 tileLocation)
+        {
+            //Debug.LogFormat("{0}.OnCreateCrusherStructure(), tileLocation = {1}", this.ToString(), tileLocation);
+            
+            GameObject newCrusherStructure = Instantiate(CrusherStructurePrefab);
+            newCrusherStructure.transform.SetParent(this.transform.parent);
+            newCrusherStructure.transform.localPosition = new Vector3((float)tileLocation.x, 0f, (float)tileLocation.y) + Vector3.up * 0.5f + UnityEngine.Random.insideUnitSphere * 0.01f;
+            newCrusherStructure.transform.localScale = Vector3.one * 0.9f;
+            
+            ActorBehavior actor = newCrusherStructure.GetComponent<ActorBehavior>();
+            ActorModelManager.Instance.Add(actor);
+        }
+
+
+        protected void OnDeploySmelter()
+        {
+            BeginStructureDeployment(OnCreateSmelterStructure);
+        }
+        
+        protected void OnCreateSmelterStructure(Utility.Math.IntVector2 tileLocation)
+        {
+            //Debug.LogFormat("{0}.OnCreateSmelterStructure(), tileLocation = {1}", this.ToString(), tileLocation);
+            
+            GameObject newSmelterStructure = Instantiate(SmelterStructurePrefab);
+            newSmelterStructure.transform.SetParent(this.transform.parent);
+            newSmelterStructure.transform.localPosition = new Vector3((float)tileLocation.x, 0f, (float)tileLocation.y) + Vector3.up * 0.5f + UnityEngine.Random.insideUnitSphere * 0.01f;
+            newSmelterStructure.transform.localScale = Vector3.one * 0.9f;
+            
+            ActorBehavior actor = newSmelterStructure.GetComponent<ActorBehavior>();
+            ActorModelManager.Instance.Add(actor);
+        }
+
+
+        protected void OnDeployFabricator()
+        {
+            BeginStructureDeployment(OnCreateFabricatorStructure);
+        }
+
+        protected void OnCreateFabricatorStructure(Utility.Math.IntVector2 tileLocation)
+        {
+            //Debug.LogFormat("{0}.OnCreateFabricatorStructure(), tileLocation = {1}", this.ToString(), tileLocation);
+
+            GameObject newFabricatorStructure = Instantiate(FabricatorStructurePrefab);
+            newFabricatorStructure.transform.SetParent(this.transform.parent);
+            newFabricatorStructure.transform.localPosition = new Vector3((float)tileLocation.x, 0f, (float)tileLocation.y) + Vector3.up * 0.5f + UnityEngine.Random.insideUnitSphere * 0.01f;
+            newFabricatorStructure.transform.localScale = Vector3.one * 0.9f;
+
+            ActorBehavior actor = newFabricatorStructure.GetComponent<ActorBehavior>();
+            ActorModelManager.Instance.Add(actor);
+        }
 
 
 
