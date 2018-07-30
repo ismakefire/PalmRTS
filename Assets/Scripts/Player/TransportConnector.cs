@@ -38,6 +38,10 @@ namespace Misner.PalmRTS.Player
             }
         }
 
+        #endregion
+
+        #region IInventoryStructure
+
         private int _emptyBoxCount;
         public int Inventory_EmptyBoxCount
         {
@@ -74,6 +78,12 @@ namespace Misner.PalmRTS.Player
             }
         }
 
+        public event Action InventoryChanged;
+
+        #endregion
+
+        #region Transit Order Properties
+
         private readonly List<TransitOrderController> _transitOrders = new List<TransitOrderController>();
         public IList<TransitOrderController> TransitOrders
         {
@@ -90,7 +100,6 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        public event Action InventoryChanged;
         public event Action TransitOrdersChanged;
 
         #endregion

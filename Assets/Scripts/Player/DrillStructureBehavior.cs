@@ -53,6 +53,10 @@ namespace Misner.PalmRTS.Player
             }
         }
 
+        #endregion
+
+        #region IInventoryStructure
+
         public int Inventory_EmptyBoxCount
         {
             get
