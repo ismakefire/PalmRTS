@@ -129,6 +129,7 @@ namespace Misner.PalmRTS.Player
             _miningProgress += Time.deltaTime * _miningRateUps * miningRateCoef;
 
             transform.localPosition = new Vector3(transform.localPosition.x, 0.5f - 0.01f*(_miningProgress + _groundDrilledCount), transform.localPosition.z);
+            tile.transform.localPosition = new Vector3(tile.transform.localPosition.x, transform.localPosition.y - 0.5f, tile.transform.localPosition.z);
 
             if (_miningProgress >= 1f)
             {
