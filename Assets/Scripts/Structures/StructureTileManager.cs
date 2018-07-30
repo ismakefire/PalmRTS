@@ -39,7 +39,7 @@ namespace Misner.PalmRTS.Structure
 
         public bool Add(ActorBehavior actor)
         {
-            Debug.LogFormat("<color=#ff00ff>{0}.Add(), actor.TilePosition = {1}</color>", this.ToString(), actor.TilePosition);
+            //Debug.LogFormat("<color=#ff00ff>{0}.Add(), actor.TilePosition = {1}</color>", this.ToString(), actor.TilePosition);
 
             Vector2Int tileKey = actor.TilePosition;
 

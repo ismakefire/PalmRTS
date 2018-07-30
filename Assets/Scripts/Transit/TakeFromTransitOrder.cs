@@ -57,7 +57,6 @@ namespace Misner.PalmRTS.Transit
                 else
                 {
                     IInventoryStructure inventoryStructure = result.gameObject.GetComponent<IInventoryStructure>();
-                    //Debug.LogFormat("<color=#ff00ff>{0}.CompleteTransaction(), inventoryStructure = {1}</color>", this.ToString(), inventoryStructure.ToString());
 
                     if (inventoryStructure == null)
                     {

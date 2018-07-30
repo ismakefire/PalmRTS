@@ -81,7 +81,7 @@ namespace Misner.PalmRTS.UI
             _panelModel.ShowPanel(actions, HidePanel);
             this.gameObject.SetActive(true);
 
-            Debug.LogFormat("{0}.ShowPanel()", this.ToString());
+            //Debug.LogFormat("{0}.ShowPanel()", this.ToString());
         }
 
         public void HidePanel()

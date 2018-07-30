@@ -231,7 +231,7 @@ namespace Misner.PalmRTS.Player
 
 			public void OnSelectionPerformed(Vector2Int tileLocation)
 			{
-                Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}, _constructionBot.CurrentState = {2}</color>", this.ToString(), tileLocation, _constructionBot.CurrentState);
+                //Debug.LogFormat("<color=#000000>{0}.OnSelectionPerformed(), tileLocation = {1}, _constructionBot.CurrentState = {2}</color>", this.ToString(), tileLocation, _constructionBot.CurrentState);
                 
                 if (_constructionBot.CurrentState == State.AwaitingInput)
                 {
@@ -302,14 +302,12 @@ namespace Misner.PalmRTS.Player
 		
 		protected void OnDeployDrill()
 		{
-			Debug.LogFormat("<color=#ff00ff>{0}.OnDeployDrill(), TODO setup some drill deployment stuff.</color>", this.ToString());
-			
 			BeginStructureDeployment(OnCreateDrillStructure);
 		}
 		
 		protected void OnCreateDrillStructure(Utility.Math.IntVector2 tileLocation)
 		{
-			Debug.LogFormat("{0}.OnCreateDrillStructure(), tileLocation = {1}", this.ToString(), tileLocation);
+			//Debug.LogFormat("{0}.OnCreateDrillStructure(), tileLocation = {1}", this.ToString(), tileLocation);
 			
 			GameObject newDrillStructure = Instantiate(DrillStructurePrefab);
 			newDrillStructure.transform.SetParent(this.transform.parent);

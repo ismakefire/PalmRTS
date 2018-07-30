@@ -53,7 +53,7 @@ namespace Misner.PalmRTS.UI
             }
             else
             {
-                Debug.LogFormat("{0}.PlayPanelAction(), we're all good!", this.ToString());
+                //Debug.LogFormat("{0}.PlayPanelAction(), we're all good!", this.ToString());
 
                 if (panelAction != null)
                 {

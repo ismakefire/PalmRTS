@@ -160,18 +160,7 @@ namespace Misner.PalmRTS.Player
             }
             else
             {
-                Debug.LogFormat("<color=#ff00ff>{0}.TODO()</color>", this.ToString());
-
                 UiPlayerDrillPanel.Instance.ShowPanel(new UiPlayerDrillPanel.PlayerDrillActions(), this);
-
-                //UiPlayerHqPanel.Instance.ShowPanel(
-                //    new UiPlayerHqPanel.PlayerHQActions()
-                //    {
-                //        CreateConstructionBot = OnCreateConstructionBot,
-                //        CreateTransitVehicle = OnCreateTransitVehicle,
-                //        CreateMiningDrill = OnCreateMiningDrill
-                //    }
-                //);
             }
         }
 
