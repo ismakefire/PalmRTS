@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Misner.PalmRTS.Util;
+using Misner.Utility.Math;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Terrain
@@ -18,6 +19,26 @@ namespace Misner.PalmRTS.Terrain
 
 		[SerializeField]
         private TerrainTileBehavior _defaultTilePrefab;
+
+        #endregion
+
+        #region MonoBehaviour Singleton
+
+        private static TerrainTileParentBehavior _instance = null;
+
+        public static TerrainTileParentBehavior Instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
+
+        // Use this for initialization
+        protected void Awake()
+        {
+            _instance = this;
+        }
 
         #endregion
 
@@ -46,7 +67,7 @@ namespace Misner.PalmRTS.Terrain
                 }
             }
 
-            int mapSize = 2;
+            int mapSize = 7;
 
             _terrainTileModel.Populate(x0: -mapSize, x1: mapSize, y0: -mapSize, y1: mapSize);
         }
@@ -55,6 +76,22 @@ namespace Misner.PalmRTS.Terrain
 		protected void Update ()
 		{
 		}
+
+        #endregion
+
+        #region Public Methods
+
+        public TerrainTileBehavior GetTile(Vector2Int gridIndex)
+        {
+            TerrainTileBehavior result = null;
+
+            if (_terrainTileModel != null)
+            {
+                result = _terrainTileModel.GetTile(new IntVector2(gridIndex.x, gridIndex.y));
+            }
+
+            return result;
+        }
 
         #endregion
 	}

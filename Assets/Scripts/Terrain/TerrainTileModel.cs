@@ -56,6 +56,18 @@ namespace Misner.PalmRTS.Terrain
             }
         }
 
+        public TerrainTileBehavior GetTile(IntVector2 gridIndex)
+        {
+            TerrainTileBehavior result = null;
+
+			if (_gridToTile.ContainsKey(gridIndex))
+			{
+                result = _gridToTile[gridIndex];
+			}
+
+            return result;
+        }
+
         #endregion
 
         #region Private Methods
@@ -67,7 +79,7 @@ namespace Misner.PalmRTS.Terrain
 
             // Reparent and position
             tileBehavior.transform.SetParent(_parentBehavior.transform);
-            tileBehavior.transform.localPosition = TerrainTileBehavior.WorldPositionFromGrid(gridIndex);
+            tileBehavior.transform.localPosition = TerrainTileBehavior.WorldPositionFromGrid(gridIndex) + Vector3.up * (0.04f * UnityEngine.Random.Range(-1, 1));
 
             AddTile(tileBehavior);
         }

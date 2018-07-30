@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
+using Misner.PalmRTS.Terrain;
 using Misner.PalmRTS.UI;
 using UnityEngine;
 
@@ -101,7 +102,26 @@ namespace Misner.PalmRTS.Player
 
         protected void Update ()
         {
-            _miningProgress += Time.deltaTime * _miningRateUps;
+			TerrainTileBehavior tile = TerrainTileParentBehavior.Instance.GetTile(Actor.TilePosition);
+			Debug.LogFormat("<color=#ff00ff>{0}.Update(), tile.transform.position = {1}, transform.position = {2}, Actor.TilePosition = {3}</color>", this.ToString(), tile.transform.position, transform.position, Actor.TilePosition);
+
+
+            float miningRateCoef = 1.0f;
+
+            for (float layerDepth = 1; layerDepth < 10; layerDepth++)
+            {
+                if (_groundDrilledCount >= tile.EasyMiningLimit * layerDepth)
+                {
+                    miningRateCoef *= 0.1f;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+
+            _miningProgress += Time.deltaTime * _miningRateUps * miningRateCoef;
 
             transform.localPosition = new Vector3(transform.localPosition.x, 0.5f - 0.01f*(_miningProgress + _groundDrilledCount), transform.localPosition.z);
 
