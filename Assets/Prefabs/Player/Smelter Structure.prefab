@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 65658529207241516}
   - component: {fileID: 23049215827668542}
   - component: {fileID: 114245168785524010}
+  - component: {fileID: 114756492294904542}
   m_Layer: 0
   m_Name: Smelter Structure
   m_TagString: Untagged
@@ -448,3 +449,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actorTeam: 1
+--- !u!114 &114756492294904542
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1998758889270614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e201d83d81c4ad6ac5cc23c9da245e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _consumedResource: 1
+  _producedResource: 2
+  _productionRateUPS: 0.1

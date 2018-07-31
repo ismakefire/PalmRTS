@@ -126,30 +126,26 @@ namespace Misner.PalmRTS.Player
             }
 
 
-            _miningProgress += Time.deltaTime * _miningRateUps * miningRateCoef;
-
-            transform.localPosition = new Vector3(transform.localPosition.x, 0.5f - 0.01f*(_miningProgress + _groundDrilledCount), transform.localPosition.z);
-            tile.transform.localPosition = new Vector3(tile.transform.localPosition.x, transform.localPosition.y - 0.5f, tile.transform.localPosition.z);
-
-            if (_miningProgress >= 1f)
+            if (_emptyBoxCount >= 1)
             {
-                if (_emptyBoxCount > 0)
-                {
-                    --_emptyBoxCount;
-                    ++_fullBoxCount;
-
-                    ++_groundDrilledCount;
-                    _miningProgress = 0f;
-
-                    if (InventoryChanged != null)
-                    {
-                        InventoryChanged();
-                    }
-                }
-                else
-                {
-                    _miningProgress = 1f;
-                }
+				_miningProgress += Time.deltaTime * _miningRateUps * miningRateCoef;
+				
+				transform.localPosition = new Vector3(transform.localPosition.x, 0.5f - 0.01f*(_miningProgress + _groundDrilledCount), transform.localPosition.z);
+				tile.transform.localPosition = new Vector3(tile.transform.localPosition.x, transform.localPosition.y - 0.5f, tile.transform.localPosition.z);
+				
+				if (_miningProgress >= 1f)
+				{
+					--_emptyBoxCount;
+					++_fullBoxCount;
+					
+					++_groundDrilledCount;
+					_miningProgress = 0f;
+					
+					if (InventoryChanged != null)
+					{
+						InventoryChanged();
+					}
+				}
             }
         }
 
