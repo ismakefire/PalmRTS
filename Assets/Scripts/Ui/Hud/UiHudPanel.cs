@@ -14,6 +14,9 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private Text _moneyText;
 
+        [SerializeField]
+        private Text _debtText;
+
         #endregion
 
         #region Properties
@@ -27,6 +30,18 @@ namespace Misner.PalmRTS.UI
             set
             {
                 _moneyText.text = value;
+            }
+        }
+
+        public string DebtText
+        {
+            get
+            {
+                return _debtText.text;
+            }
+            set
+            {
+                _debtText.text = value;
             }
         }
 
@@ -53,6 +68,7 @@ namespace Misner.PalmRTS.UI
             if (playerTeam != null)
             {
                 this.MoneyText = playerTeam.GetPlayerMoneyString();
+                this.DebtText = playerTeam.GetPlayerDebtString();
             }
         }
 

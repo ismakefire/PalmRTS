@@ -61,11 +61,12 @@ namespace Misner.PalmRTS.Player
 
         public PlayerTeam()
         {
-            _debtModel = DebtModel.Create(amount: _playerMoney, pps: 0.0001);
+            _debtModel = DebtModel.Create(amount: _playerMoney * 9, pps: 0.0001);
             _debtModel.BalanceChange += OnBalanceChange;
+            _debtModel.DebtChanged += OnDebtChanged;
         }
 
-        private bool OnBalanceChange(int change)
+        protected bool OnBalanceChange(int change)
         {
             bool canAffordInterest = false;
 
@@ -74,10 +75,15 @@ namespace Misner.PalmRTS.Player
                 _playerMoney += change;
                 canAffordInterest = true;
 
-                UiHudPanel.Instance.MoneyText = string.Format("${0}", _playerMoney);
+                UiHudPanel.Instance.MoneyText = GetPlayerMoneyString();
             }
 
             return canAffordInterest;
+        }
+
+        protected void OnDebtChanged()
+        {
+            UiHudPanel.Instance.DebtText = GetPlayerDebtString();
         }
 
         public string GetPlayerMoneyString()
@@ -87,6 +93,13 @@ namespace Misner.PalmRTS.Player
             return moneyString;
         }
 
+        public string GetPlayerDebtString()
+        {
+            string debtString = string.Format("${0}", _debtModel.DebtBalance);
+
+            return debtString;
+        }
+
         public bool SpendMoney(int costInMoney)
         {
             Debug.LogFormat("<color=#ff00ff>{0}.SpendMoney(), (_playerMoney >= costInMoney) = {1}</color>", this.ToString(), (_playerMoney >= costInMoney));
@@ -94,7 +107,7 @@ namespace Misner.PalmRTS.Player
             if (_playerMoney >= costInMoney)
             {
                 _playerMoney -= costInMoney;
-                UiHudPanel.Instance.MoneyText = string.Format("${0}", _playerMoney);
+                UiHudPanel.Instance.MoneyText = GetPlayerMoneyString();
 
                 return true;
             }
@@ -107,7 +120,7 @@ namespace Misner.PalmRTS.Player
         public void AwardMoney(int moneyAwarded)
         {
             _playerMoney += moneyAwarded;
-            UiHudPanel.Instance.MoneyText = string.Format("${0}", _playerMoney);
+            UiHudPanel.Instance.MoneyText = GetPlayerMoneyString();
 
             Debug.LogFormat("<color=#00ff00>{0}.SpendMoney(), moneyAwarded = {1}, _playerMoney = {2}</color>", this.ToString(), moneyAwarded, _playerMoney);
         }

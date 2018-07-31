@@ -22,6 +22,16 @@ namespace Misner.PalmRTS.Financial
 
         public event Func<int, bool> BalanceChange;
 
+        public event Action DebtChanged;
+
+        public int DebtBalance
+        {
+            get
+            {
+                return Mathf.RoundToInt( (float)_balance );
+            }
+        }
+
         #endregion
 
         #region Public Static Methods
@@ -39,7 +49,7 @@ namespace Misner.PalmRTS.Financial
 
         #endregion
 
-        #region MonoBehaviour
+        #region Time Calculation
 
         private float _timeOfNextCharge;
         private float _timeMeasured;
@@ -50,6 +60,10 @@ namespace Misner.PalmRTS.Financial
 
             return time;
         }
+
+        #endregion
+
+        #region MonoBehaviour
 
 		// Use this for initialization
 		protected void Start ()
@@ -73,6 +87,10 @@ namespace Misner.PalmRTS.Financial
             }
         }
 
+        #endregion
+
+        #region Helper Methods
+
         private void PerformCharge()
         {
             if (BalanceChange(-1))
@@ -84,12 +102,13 @@ namespace Misner.PalmRTS.Financial
                 // Can't afford. Pay for it here and recalculate.
                 _balance += 1;
                 _timeOfNextCharge = (float)CalculateTime();
+
+                if (DebtChanged != null)
+                {
+                    DebtChanged();
+                }
             }
         }
-
-        #endregion
-
-        #region Healper Methods
 
         private static readonly double e = Math.Exp(1);
 
