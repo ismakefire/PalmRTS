@@ -92,11 +92,16 @@ namespace Misner.PalmRTS.UI
 
         protected void OnVerbDropdownChanged(int verbValue)
         {
-            if (TransitOrder.Verb != verbValue)
+			TransitOrder.Verb = verbValue;
+			TransitOrder.Object = null;
+			TransitOrder.Subject = null;
+
+            if (TransitOrder.Verb == 3)
             {
-                TransitOrder.Verb = verbValue;
-                TransitOrder.Object = null;
-                TransitOrder.Subject = null;
+                int objectResult = 10;
+                
+                TransitOrder.Object = objectResult;
+                ChangeObjectInternal(objectResult);
             }
 
             ChangeVerbInternal(verbValue);
@@ -125,32 +130,25 @@ namespace Misner.PalmRTS.UI
 
         protected void OnObjectInputfieldChanged(string objectValue)
         {
-            switch (TransitOrder.Verb)
+            Debug.LogFormat("<color=#ffffff>{0}.OnObjectInputfieldChanged(), TransitOrder.Verb = {1}</color>", this.ToString(), TransitOrder.Verb);
+
+            if (TransitOrder.Verb == 3)
             {
-                case 3:
-                    break;
+				int objectResult;
+				
+				if (int.TryParse(objectValue, out objectResult))
+				{
+					Debug.LogFormat("<color=#ffffff>{0}.OnObjectInputfieldChanged(), result = {1}</color>", this.ToString(), objectResult);
 
-                default:
-                    return;
-            }
-
-            int result;
-
-            if (int.TryParse(objectValue, out result))
-            {
-                Debug.LogFormat("<color=#ff00ff>{0}.OnObjectInputfieldChanged(), result = {1}</color>", this.ToString(), result);
-
-                ChangeObjectInternal(result);
+                    TransitOrder.Object = objectResult;
+					ChangeObjectInternal(objectResult);
+				}
             }
         }
 
 		protected void OnSubjectDropdownChanged(int subjectValue)
 		{
-			if (TransitOrder.Subject != subjectValue)
-			{
-				TransitOrder.Subject = subjectValue;
-			}
-			
+			TransitOrder.Subject = subjectValue;
 			ChangeSubjectInternal(subjectValue);
 		}
 
@@ -173,7 +171,6 @@ namespace Misner.PalmRTS.UI
 
                 case 1:
                 case 2:
-                case 3:
                     _transitOrderCard.ObjectInputfield.gameObject.SetActive(false);
                     _transitOrderCard.SubjectDropdown.gameObject.SetActive(false);
 
@@ -181,7 +178,7 @@ namespace Misner.PalmRTS.UI
                     _transitOrderCard.ObjectDropdown.value = 0;
                     break;
 
-                case 4:
+                case 3:
                     _transitOrderCard.ObjectDropdown.gameObject.SetActive(false);
                     _transitOrderCard.SubjectDropdown.gameObject.SetActive(false);
 
@@ -204,9 +201,13 @@ namespace Misner.PalmRTS.UI
 
                 default:
                     //Debug.LogFormat("<color=#ff00ff>{0}.ChangeObjectInternal(), _transitOrderCard.VerbDropdown.value = {1}</color>", this.ToString(), _transitOrderCard.VerbDropdown.value);
-                    if (_transitOrderCard.VerbDropdown.value != 4)
+                    if (_transitOrderCard.VerbDropdown.value != 3)
                     {
                         _transitOrderCard.SubjectDropdown.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        _transitOrderCard.SubjectDropdown.gameObject.SetActive(false);
                     }
                     break;
             }
