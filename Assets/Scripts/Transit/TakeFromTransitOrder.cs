@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Player;
+using Misner.PalmRTS.Resource;
 using Misner.PalmRTS.Structure;
 using UnityEngine;
 
@@ -67,22 +68,24 @@ namespace Misner.PalmRTS.Transit
                         switch (Object)
                         {
                             case 1:
-                                if (inventoryStructure.Inventory_EmptyBoxCount > 0)
                                 {
                                     int transactionAmount = 1;
 
-                                    inventoryStructure.Inventory_EmptyBoxCount -= transactionAmount;
-                                    _transitActor.Inventory_EmptyBoxCount += transactionAmount;
+                                    if (inventoryStructure.Resources.Remove(EResourceItem.MetalBox, transactionAmount))
+                                    {
+                                        _transitActor.Resources.Add(EResourceItem.MetalBox, transactionAmount);
+                                    }
                                 }
                                 break;
 
                             case 2:
-                                if (inventoryStructure.Inventory_DrillProductCount > 0)
                                 {
                                     int transactionAmount = 1;
 
-                                    inventoryStructure.Inventory_DrillProductCount -= transactionAmount;
-                                    _transitActor.Inventory_DrillProductCount += transactionAmount;
+                                    if (inventoryStructure.Resources.Remove(EResourceItem.SolidRock, transactionAmount))
+                                    {
+                                        _transitActor.Resources.Add(EResourceItem.SolidRock, transactionAmount);
+                                    }
                                 }
                                 break;
                             

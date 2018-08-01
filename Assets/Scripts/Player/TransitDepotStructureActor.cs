@@ -62,11 +62,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.MetalBox);
+                return Resources.Get(EResourceItem.MetalBox);
             }
             set
             {
-                _currentResources.Set(EResourceItem.MetalBox, value);
+                Resources.Set(EResourceItem.MetalBox, value);
             }
         }
 
@@ -74,11 +74,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.SolidRock);
+                return Resources.Get(EResourceItem.SolidRock);
             }
             set
             {
-                _currentResources.Set(EResourceItem.SolidRock, value);
+                Resources.Set(EResourceItem.SolidRock, value);
             }
         }
 
@@ -110,28 +110,28 @@ namespace Misner.PalmRTS.Player
 
         #region MonoBehaviour
 
-		// Use this for initialization
-		protected void Start ()
+        // Use this for initialization
+        protected void Start()
         {
             _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowTransitDepotPanel);
-            
+
             Resources.Add(EResourceItem.MetalBox, 20);
             Resources.Add(EResourceItem.SolidRock, 2);
 
             _lastTick = Time.time;
 
             StructureTileManager.Instance.Add(Actor);
-		}
+        }
 
         private float _lastTick;
 
-        protected void Update ()
+        protected void Update()
         {
             if (_currentOrder != null && Time.time - _lastTick >= _currentOrder.Duration)
             {
                 //Debug.LogFormat("<color=#ff00ff>{0}.Update(), _currentOrder.Duration = {1}, _currentOrder.Verb = {2}, _currentOrder.Object = {3}</color>", this.ToString(), _currentOrder.Duration, _currentOrder.Verb, _currentOrder.Object);
-                
+
                 NextOrder();
             }
         }
@@ -207,7 +207,7 @@ namespace Misner.PalmRTS.Player
             }
             else
             {
-				Debug.LogFormat("<color=#ff00ff>{0}.TODO()</color>", this.ToString());
+                Debug.LogFormat("<color=#ff00ff>{0}.TODO()</color>", this.ToString());
 
                 //UiPlayerDepotPanel.Instance.ShowPanel(
                 //    new UiPlayerDepotPanel.PlayerDepotActions(),
@@ -240,25 +240,25 @@ namespace Misner.PalmRTS.Player
             _currentOrder.CompleteOrder();
 
             int nextOrderIndex = lastOrderIndex + 1;
-			
-			// Cycle the index back to the front.
+
+            // Cycle the index back to the front.
             if (nextOrderIndex >= _transitOrders.Count)
-			{
+            {
                 nextOrderIndex = 0;
-			}
-			
+            }
+
             if (nextOrderIndex < _transitOrders.Count)
-			{
+            {
                 _currentOrder = _transitOrders[nextOrderIndex];
-				_currentOrder.IsPrimaryOrder = true;
+                _currentOrder.IsPrimaryOrder = true;
                 _lastTick = Time.time;
-			}
-			else
-			{
-				_currentOrder = null;
-			}
+            }
+            else
+            {
+                _currentOrder = null;
+            }
         }
 
         #endregion
-	}
+    }
 }

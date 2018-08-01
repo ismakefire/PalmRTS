@@ -5,11 +5,8 @@ using UnityEngine;
 
 namespace Misner.PalmRTS.Transit
 {
-	public interface ITransitActor
+    public interface ITransitActor : IInventoryStructure
 	{
 		ActorBehavior Actor { get; }
-
-        int Inventory_EmptyBoxCount { get; set; }
-        int Inventory_DrillProductCount { get; set; }
 	}
 }

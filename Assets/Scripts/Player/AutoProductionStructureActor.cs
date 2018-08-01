@@ -89,11 +89,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.MetalBox);
+                return Resources.Get(EResourceItem.MetalBox);
             }
             set
             {
-                _currentResources.Set(EResourceItem.MetalBox, value);
+                Resources.Set(EResourceItem.MetalBox, value);
             }
         }
 
@@ -101,11 +101,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.SolidRock);
+                return Resources.Get(EResourceItem.SolidRock);
             }
             set
             {
-                _currentResources.Set(EResourceItem.SolidRock, value);
+                Resources.Set(EResourceItem.SolidRock, value);
             }
         }
 
@@ -129,9 +129,9 @@ namespace Misner.PalmRTS.Player
         #region MonoBehaviour
 
         // Use this for initialization
-        protected void Start ()
+        protected void Start()
         {
-			_currentResources.Changed += OnInventoryChanged;
+            _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowPanel);
 
             StructureTileManager.Instance.Add(Actor);
@@ -168,10 +168,10 @@ namespace Misner.PalmRTS.Player
 
         protected void ShowPanel()
         {
-			UiPlayerAutoProductionStructurePanel.Instance.ShowPanel(
+            UiPlayerAutoProductionStructurePanel.Instance.ShowPanel(
                 new UiPlayerAutoProductionStructurePanel.PlayerStructureActions(),
-				this
-			);
+                this
+            );
         }
 
         protected void OnInventoryChanged()
@@ -184,5 +184,5 @@ namespace Misner.PalmRTS.Player
 
         #endregion
 
-	}
+    }
 }

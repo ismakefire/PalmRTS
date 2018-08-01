@@ -21,7 +21,7 @@ namespace Misner.PalmRTS.Player
 
         #endregion
 
-        #region Properties
+        #region ITransitActor
 
         public ActorBehavior Actor
         {
@@ -30,6 +30,10 @@ namespace Misner.PalmRTS.Player
                 return GetComponent<ActorBehavior>();
             }
         }
+
+        #endregion
+
+        #region Properties
 
         public PlayerTeam OurTeam
         {
@@ -57,11 +61,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.MetalBox);
+                return Resources.Get(EResourceItem.MetalBox);
             }
             set
             {
-                _currentResources.Set(EResourceItem.MetalBox, value);
+                Resources.Set(EResourceItem.MetalBox, value);
             }
         }
 
@@ -69,11 +73,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.SolidRock);
+                return Resources.Get(EResourceItem.SolidRock);
             }
             set
             {
-                _currentResources.Set(EResourceItem.SolidRock, value);
+                Resources.Set(EResourceItem.SolidRock, value);
             }
         }
 

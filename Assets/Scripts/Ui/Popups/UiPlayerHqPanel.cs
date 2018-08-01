@@ -2,20 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using Misner.PalmRTS.Player;
+using Misner.PalmRTS.Resource;
 using Misner.PalmRTS.Transit;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Misner.PalmRTS.UI
 {
-	public class UiPlayerHqPanel : MonoBehaviour
-	{
+    public class UiPlayerHqPanel : MonoBehaviour
+    {
         #region Types
 
         public class PlayerHQActions
         {
             public IInventoryStructure Structure { get; set; }
-            
+
             public Action CreateConstructionBot { get; set; }
             public Action CreateTransitVehicle { get; set; }
             public Action CreateMiningDrill { get; set; }
@@ -61,8 +62,8 @@ namespace Misner.PalmRTS.UI
         [SerializeField]
         private Button _createConstructionBotButton;
 
-		[SerializeField]
-		private Button _createTransitVehicleButton;
+        [SerializeField]
+        private Button _createTransitVehicleButton;
 
         [SerializeField]
         private Button _createMiningDrillButton;
@@ -92,9 +93,9 @@ namespace Misner.PalmRTS.UI
         // Update is called once per frame
         protected void Start()
         {
-			_createConstructionBotButton.onClick.AddListener(OnCreateConstructionBotButtonClicked);
-			_createTransitVehicleButton.onClick.AddListener(OnCreateTransitVehicleButtonClicked);
-			_createMiningDrillButton.onClick.AddListener(OnCreateMiningDrillButtonClicked);
+            _createConstructionBotButton.onClick.AddListener(OnCreateConstructionBotButtonClicked);
+            _createTransitVehicleButton.onClick.AddListener(OnCreateTransitVehicleButtonClicked);
+            _createMiningDrillButton.onClick.AddListener(OnCreateMiningDrillButtonClicked);
 
             _buyMetalBoxButton.onClick.AddListener(OnBuyMetalBoxButtonClicked);
             _sellMetalBoxButton.onClick.AddListener(OnSellMetalBoxButtonClicked);
@@ -103,7 +104,7 @@ namespace Misner.PalmRTS.UI
             _sellMetalBoxText.text = "+$4";
 
             HidePanel();
-		}
+        }
 
         #endregion
 
@@ -118,7 +119,7 @@ namespace Misner.PalmRTS.UI
 
             if (_panelModel.Actions != null && _panelModel.Actions.Structure != null)
             {
-				actions.Structure.InventoryChanged += OnInventoryChanged;
+                actions.Structure.InventoryChanged += OnInventoryChanged;
             }
 
             OnInventoryChanged();
@@ -128,7 +129,7 @@ namespace Misner.PalmRTS.UI
         {
             if (_panelModel.Actions != null && _panelModel.Actions.Structure != null)
             {
-				_panelModel.Actions.Structure.InventoryChanged -= OnInventoryChanged;
+                _panelModel.Actions.Structure.InventoryChanged -= OnInventoryChanged;
             }
 
             _panelModel.Clear();
@@ -174,18 +175,44 @@ namespace Misner.PalmRTS.UI
 
         protected void OnInventoryChanged()
         {
+            IInventoryStructure structure = _panelModel.Actions.Structure;
+
             ClearInventory();
 
-            Debug.LogFormat("<color=#ff00ff>{0}.OnInventoryChanged(), _panelModel.Actions.Structure.Inventory_EmptyBoxCount = {1}, _panelModel.Actions.Structure.Inventory_DrillProductCount = {2}</color>", this.ToString(), _panelModel.Actions.Structure.Inventory_EmptyBoxCount, _panelModel.Actions.Structure.Inventory_DrillProductCount);
-
-            if (_panelModel.Actions.Structure.Inventory_EmptyBoxCount > 0)
+            foreach (EResourceItem itemKey in ResourceItemUtil.GetAll())
             {
-                AddItem("Empty Box", _panelModel.Actions.Structure.Inventory_EmptyBoxCount.ToString(), Color.gray);
-            }
+                int amount = structure.Resources.Get(itemKey);
 
-            for (int i = 0; i < _panelModel.Actions.Structure.Inventory_DrillProductCount; i++)
-            {
-                AddItem("Drill Product", "1", Color.red);
+                if (amount > 0)
+                {
+                    switch (itemKey)
+                    {
+                        case EResourceItem.SolidRock:
+                            for (int i = 0; i < amount; i++)
+                            {
+                                AddItem("Drilled Rock", "1", Color.red);
+                            }
+                            break;
+
+                        case EResourceItem.CrushedRock:
+                            for (int i = 0; i < amount; i++)
+                            {
+                                AddItem("Crushed Rock", "1", new Color(1f, 0.5f, 0f));
+                            }
+                            break;
+
+                        case EResourceItem.MetalPlate:
+                            AddItem("Metal Plate", amount.ToString(), new Color(0.5f, 0.5f, 1f));
+                            break;
+
+                        case EResourceItem.MetalBox:
+                            AddItem("Empty Box", amount.ToString(), Color.gray);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
             }
         }
 
@@ -216,5 +243,5 @@ namespace Misner.PalmRTS.UI
         }
 
         #endregion
-	}
+    }
 }

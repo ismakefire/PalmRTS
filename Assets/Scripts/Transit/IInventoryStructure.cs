@@ -6,13 +6,16 @@ using UnityEngine;
 
 namespace Misner.PalmRTS.Transit
 {
-	public interface IInventoryStructure
+    public interface IInventoryStructure
     {
         ResourceCollection Resources { get; }
-        
+
+        [Obsolete]
         int Inventory_EmptyBoxCount { get; set; }
+
+        [Obsolete]
         int Inventory_DrillProductCount { get; set; }
 
         event Action InventoryChanged;
-	}
+    }
 }

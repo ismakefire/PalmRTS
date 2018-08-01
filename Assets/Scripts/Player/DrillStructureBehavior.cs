@@ -70,11 +70,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.MetalBox);
+                return Resources.Get(EResourceItem.MetalBox);
             }
             set
             {
-                _currentResources.Set(EResourceItem.MetalBox, value);
+                Resources.Set(EResourceItem.MetalBox, value);
             }
         }
 
@@ -82,11 +82,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.SolidRock);
+                return Resources.Get(EResourceItem.SolidRock);
             }
             set
             {
-                _currentResources.Set(EResourceItem.SolidRock, value);
+                Resources.Set(EResourceItem.SolidRock, value);
             }
         }
 
@@ -96,21 +96,21 @@ namespace Misner.PalmRTS.Player
 
         #region MonoBehaviour
 
-		// Use this for initialization
-		protected void Start ()
+        // Use this for initialization
+        protected void Start()
         {
-			_currentResources.Changed += OnInventoryChanged;
+            _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowDrillPanel);
 
             _currentResources.Add(EResourceItem.MetalBox, 15);
 
             StructureTileManager.Instance.Add(Actor);
-		}
+        }
 
-        protected void Update ()
+        protected void Update()
         {
-			TerrainTileBehavior tile = TerrainTileParentBehavior.Instance.GetTile(Actor.TilePosition);
-			//Debug.LogFormat("<color=#ff00ff>{0}.Update(), tile.transform.position = {1}, transform.position = {2}, Actor.TilePosition = {3}</color>", this.ToString(), tile.transform.position, transform.position, Actor.TilePosition);
+            TerrainTileBehavior tile = TerrainTileParentBehavior.Instance.GetTile(Actor.TilePosition);
+            //Debug.LogFormat("<color=#ff00ff>{0}.Update(), tile.transform.position = {1}, transform.position = {2}, Actor.TilePosition = {3}</color>", this.ToString(), tile.transform.position, transform.position, Actor.TilePosition);
 
 
             float miningRateCoef = 1.0f;
@@ -130,13 +130,13 @@ namespace Misner.PalmRTS.Player
 
             if (Resources.Has(EResourceItem.MetalBox))
             {
-				_miningProgress += Time.deltaTime * _miningRateUps * miningRateCoef;
-				
-				transform.localPosition = new Vector3(transform.localPosition.x, 0.5f - 0.01f*(_miningProgress + _groundDrilledCount), transform.localPosition.z);
-				tile.transform.localPosition = new Vector3(tile.transform.localPosition.x, transform.localPosition.y - 0.5f, tile.transform.localPosition.z);
-				
-				if (_miningProgress >= 1f)
-				{
+                _miningProgress += Time.deltaTime * _miningRateUps * miningRateCoef;
+
+                transform.localPosition = new Vector3(transform.localPosition.x, 0.5f - 0.01f * (_miningProgress + _groundDrilledCount), transform.localPosition.z);
+                tile.transform.localPosition = new Vector3(tile.transform.localPosition.x, transform.localPosition.y - 0.5f, tile.transform.localPosition.z);
+
+                if (_miningProgress >= 1f)
+                {
                     if (Resources.Remove(EResourceItem.MetalBox, 1))
                     {
                         Resources.Add(EResourceItem.SolidRock, 1);
@@ -144,7 +144,7 @@ namespace Misner.PalmRTS.Player
                         ++_groundDrilledCount;
                         _miningProgress = 0f;
                     }
-				}
+                }
             }
         }
 
@@ -173,5 +173,5 @@ namespace Misner.PalmRTS.Player
         }
 
         #endregion
-	}
+    }
 }

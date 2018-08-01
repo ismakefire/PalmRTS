@@ -42,19 +42,19 @@ namespace Misner.PalmRTS.Player
 
         #region Properties
 
-		public ActorBehavior Actor
-		{
-			get
-			{
-				return GetComponent<ActorBehavior>();
-			}
-		}
+        public ActorBehavior Actor
+        {
+            get
+            {
+                return GetComponent<ActorBehavior>();
+            }
+        }
 
         public PlayerTeam OurTeam
         {
             get
             {
-				PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
+                PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
 
                 return playerTeam;
             }
@@ -76,11 +76,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.MetalBox);
+                return Resources.Get(EResourceItem.MetalBox);
             }
             set
             {
-                _currentResources.Set(EResourceItem.MetalBox, value);
+                Resources.Set(EResourceItem.MetalBox, value);
             }
         }
 
@@ -88,22 +88,22 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _currentResources.Get(EResourceItem.SolidRock);
+                return Resources.Get(EResourceItem.SolidRock);
             }
             set
             {
-                _currentResources.Set(EResourceItem.SolidRock, value);
+                Resources.Set(EResourceItem.SolidRock, value);
             }
         }
 
         public event Action InventoryChanged;
 
         #endregion
-        
+
         #region MonoBehaviour
 
-		// Use this for initialization
-		protected void Start ()
+        // Use this for initialization
+        protected void Start()
         {
             _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowHQPanel);
@@ -117,48 +117,49 @@ namespace Misner.PalmRTS.Player
             }
 
             StructureTileManager.Instance.Add(Actor);
-		}
+        }
 
         #endregion
 
         #region Events
 
-		protected void ShowHQPanel()
-		{
+        protected void ShowHQPanel()
+        {
             if (PanelManager.Instance.IsAnyChildActive)
             {
                 Debug.LogFormat("<color=#ff0000>{0}.ShowHQPanel(), PanelManager.Instance.IsAnyChildActive = {1}</color>", this.ToString(), PanelManager.Instance.IsAnyChildActive);
             }
             else
             {
-				UiPlayerHqPanel.Instance.ShowPanel(
-					new UiPlayerHqPanel.PlayerHQActions() {
-                    Structure = this,
-					CreateConstructionBot = OnCreateConstructionBot,
-					CreateTransitVehicle = OnCreateTransitVehicle,
-                    CreateMiningDrill = OnCreateMiningDrill,
-                    BuyMetalBox = OnBuyMetalBox,
-                    SellMetalBox = OnSellMetalBox
-				}
-				);
+                UiPlayerHqPanel.Instance.ShowPanel(
+                    new UiPlayerHqPanel.PlayerHQActions()
+                    {
+                        Structure = this,
+                        CreateConstructionBot = OnCreateConstructionBot,
+                        CreateTransitVehicle = OnCreateTransitVehicle,
+                        CreateMiningDrill = OnCreateMiningDrill,
+                        BuyMetalBox = OnBuyMetalBox,
+                        SellMetalBox = OnSellMetalBox
+                    }
+                );
             }
-		}
+        }
 
         protected void OnCreateConstructionBot()
         {
             if (OurTeam.SpendMoney(40))
             {
-				Debug.LogFormat("{0}.OnCreateConstructionBot()", this.ToString());
-				
-				GameObject newConstructionBot = Instantiate(_constructionBotPrefab);
-				newConstructionBot.transform.SetParent(this.transform.parent);
-				newConstructionBot.transform.localPosition = this.transform.localPosition + _actorSpawnOffset + UnityEngine.Random.insideUnitSphere * 0.1f;
-				
-				ActorBehavior actor = newConstructionBot.GetComponent<ActorBehavior>();
-				ActorModelManager.Instance.Add(actor);
-				
-				ConstructionBotActorBehavior constructionBot = newConstructionBot.GetComponent<ConstructionBotActorBehavior>();
-				constructionBot.DrillStructurePrefab = _drillStructurePrefab;
+                Debug.LogFormat("{0}.OnCreateConstructionBot()", this.ToString());
+
+                GameObject newConstructionBot = Instantiate(_constructionBotPrefab);
+                newConstructionBot.transform.SetParent(this.transform.parent);
+                newConstructionBot.transform.localPosition = this.transform.localPosition + _actorSpawnOffset + UnityEngine.Random.insideUnitSphere * 0.1f;
+
+                ActorBehavior actor = newConstructionBot.GetComponent<ActorBehavior>();
+                ActorModelManager.Instance.Add(actor);
+
+                ConstructionBotActorBehavior constructionBot = newConstructionBot.GetComponent<ConstructionBotActorBehavior>();
+                constructionBot.DrillStructurePrefab = _drillStructurePrefab;
                 constructionBot.DepotStructurePrefab = _depotStructurePrefab;
                 constructionBot.MachineFactoryStructurePrefab = _machineFactoryStructurePrefab;
                 constructionBot.ConnectorStructurePrefab = _connectorStructurePrefab;
@@ -168,16 +169,16 @@ namespace Misner.PalmRTS.Player
         protected void OnCreateTransitVehicle()
         {
             bool purchaseWorked = OurTeam.SpendMoney(10);
-            
+
             Debug.LogFormat("{0}.OnCreateTransitVehicle(), purchaseWorked = {1}", this.ToString(), purchaseWorked);
         }
 
-		protected void OnCreateMiningDrill()
+        protected void OnCreateMiningDrill()
         {
             bool purchaseWorked = OurTeam.SpendMoney(100);
 
             Debug.LogFormat("{0}.OnCreateMiningDrill(), purchaseWorked = {1}", this.ToString(), purchaseWorked);
-		}
+        }
 
         protected void OnBuyMetalBox()
         {
@@ -185,10 +186,10 @@ namespace Misner.PalmRTS.Player
             {
                 _currentResources.Add(EResourceItem.MetalBox, 1);
 
-				if (InventoryChanged != null)
-				{
-					InventoryChanged();
-				}
+                if (InventoryChanged != null)
+                {
+                    InventoryChanged();
+                }
             }
         }
 
@@ -215,5 +216,5 @@ namespace Misner.PalmRTS.Player
 
         #endregion
 
-	}
+    }
 }
