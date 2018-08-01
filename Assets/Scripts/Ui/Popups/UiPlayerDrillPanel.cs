@@ -173,7 +173,7 @@ namespace Misner.PalmRTS.UI
         private void AddItem(string itemName, string itemCount, Color itemColor)
         {
             InventorySlot inventorySlot = UnityEngine.Object.Instantiate<InventorySlot>(_inventorySlotPrefab);
-            inventorySlot.transform.parent = _inventoryLayout;
+            inventorySlot.transform.SetParent(_inventoryLayout);
 
             inventorySlot.ItemNameText = itemName;
             inventorySlot.ItemCountText = itemCount;
