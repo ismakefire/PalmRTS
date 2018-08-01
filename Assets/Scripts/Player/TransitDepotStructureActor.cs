@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Misner.PalmRTS.Actor;
+using Misner.PalmRTS.Resource;
 using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Transit;
@@ -35,6 +36,19 @@ namespace Misner.PalmRTS.Player
                 PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(ETeam.Player);
 
                 return playerTeam;
+            }
+        }
+
+        #endregion
+
+        #region IInventoryStructure
+
+        public ResourceCollection Resources
+        {
+            get
+            {
+                // TODO
+                return null;
             }
         }
 
@@ -74,6 +88,12 @@ namespace Misner.PalmRTS.Player
             }
         }
 
+        public event Action InventoryChanged;
+
+        #endregion
+
+        #region Transit Order Properties
+
         private readonly List<TransitOrderController> _transitOrders = new List<TransitOrderController>();
         public IList<TransitOrderController> TransitOrders
         {
@@ -90,7 +110,6 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        public event Action InventoryChanged;
         public event Action TransitOrdersChanged;
 
         #endregion

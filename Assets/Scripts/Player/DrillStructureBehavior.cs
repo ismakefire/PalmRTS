@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Misner.PalmRTS.Actor;
+using Misner.PalmRTS.Resource;
 using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Terrain;
@@ -56,6 +57,15 @@ namespace Misner.PalmRTS.Player
         #endregion
 
         #region IInventoryStructure
+
+        public ResourceCollection Resources
+        {
+            get
+            {
+                // TODO
+                return null;
+            }
+        }
 
         public int Inventory_EmptyBoxCount
         {

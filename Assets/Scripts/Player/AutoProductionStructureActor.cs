@@ -5,6 +5,7 @@ using Misner.PalmRTS.Resource;
 using Misner.PalmRTS.Structure;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Transit;
+using Misner.PalmRTS.UI;
 using UnityEngine;
 
 namespace Misner.PalmRTS.Player
@@ -75,6 +76,14 @@ namespace Misner.PalmRTS.Player
         #endregion
 
         #region IInventoryStructure
+
+        public ResourceCollection Resources
+        {
+            get
+            {
+                return _currentResources;
+            }
+        }
 
         public int Inventory_EmptyBoxCount
         {
@@ -173,9 +182,10 @@ namespace Misner.PalmRTS.Player
 
         protected void ShowPanel()
         {
-            _currentResources.Print();
-            
-            //Debug.LogFormat("<color=#ff00ff>{0}.ShowPanel(), _currentResources.Get(EResourceItem.MetalBox) = {1}</color>", this.ToString(), _currentResources.Get(EResourceItem.MetalBox));
+			UiPlayerAutoProductionStructurePanel.Instance.ShowPanel(
+                new UiPlayerAutoProductionStructurePanel.PlayerStructureActions(),
+				this
+			);
         }
 
         #endregion
