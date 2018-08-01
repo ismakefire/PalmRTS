@@ -10,12 +10,6 @@ namespace Misner.PalmRTS.Transit
     {
         ResourceCollection Resources { get; }
 
-        [Obsolete]
-        int Inventory_EmptyBoxCount { get; set; }
-
-        [Obsolete]
-        int Inventory_DrillProductCount { get; set; }
-
         event Action InventoryChanged;
     }
 }
