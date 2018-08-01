@@ -58,30 +58,6 @@ namespace Misner.PalmRTS.Player
             }
         }
 
-        public int Inventory_EmptyBoxCount
-        {
-            get
-            {
-                return Resources.Get(EResourceItem.MetalBox);
-            }
-            set
-            {
-                Resources.Set(EResourceItem.MetalBox, value);
-            }
-        }
-
-        public int Inventory_DrillProductCount
-        {
-            get
-            {
-                return Resources.Get(EResourceItem.SolidRock);
-            }
-            set
-            {
-                Resources.Set(EResourceItem.SolidRock, value);
-            }
-        }
-
         public event Action InventoryChanged;
 
         #endregion
