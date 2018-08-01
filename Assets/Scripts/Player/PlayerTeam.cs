@@ -28,7 +28,7 @@ namespace Misner.PalmRTS.Player
         private Dictionary<ActorBehavior, Action> _onClickActions = new Dictionary<ActorBehavior, Action>();
         private readonly DebtModel _debtModel;
 
-        private int _playerMoney = 250;
+        private int _playerMoney = 500;
 
         #endregion
 
