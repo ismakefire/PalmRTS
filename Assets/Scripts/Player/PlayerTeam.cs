@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Financial;
 using Misner.PalmRTS.Team;
+using Misner.PalmRTS.Transit;
 using Misner.PalmRTS.UI;
 using Misner.Utility.Collections;
 using UnityEngine;
@@ -11,7 +12,8 @@ namespace Misner.PalmRTS.Team
 {
     public interface ITeam
     {
-		void OnActorAdded(ActorBehavior actorBehavior);
+        void OnActorAdded(ActorBehavior actorBehavior);
+        void OnActorRemoved(ActorBehavior actorBehavior);
         void OnActorClicked(ActorBehavior actorBehavior);
     }
 }
@@ -35,6 +37,11 @@ namespace Misner.PalmRTS.Player
         public void OnActorAdded(ActorBehavior actorBehavior)
         {
             _actors.Add(actorBehavior);
+        }
+
+        public void OnActorRemoved(ActorBehavior actorBehavior)
+        {
+            _actors.Remove(actorBehavior);
         }
 
         public void OnActorClicked(ActorBehavior actorBehavior)
@@ -130,6 +137,41 @@ namespace Misner.PalmRTS.Player
             _onClickActions[actor] = clickAction;
         }
 
+        public ActorBehavior GetActorByTile(Vector2Int tileLocation)
+        {
+            ActorBehavior resultActor = null;
+            
+            foreach (ActorBehavior actorBehavior in _actors)
+            {
+                if (actorBehavior.TilePosition == tileLocation)
+                {
+                    resultActor = actorBehavior;
+                }
+            }
+
+            return resultActor;
+        }
+
+        public List<Vector2Int> GenerateRecyclableStructureTiles()
+        {
+            List<Vector2Int> resultOutput = new List<Vector2Int>();
+
+            foreach (ActorBehavior actorBehavior in _actors)
+            {
+                if (actorBehavior.GetComponent<HQActorBehavior>())
+                {
+                    continue;
+                }
+
+                if (actorBehavior.GetComponent<IInventoryStructure>() != null)
+                {
+                    resultOutput.Add(actorBehavior.TilePosition);
+                }
+            }
+
+            return resultOutput;
+        }
+
         public List<Vector2Int> GenerateAvailableStructureTiles()
         {
             HashList<Vector2Int> result = new HashList<Vector2Int>();
@@ -168,7 +210,8 @@ namespace Misner.PalmRTS.Player
                     actor.GetComponent<DrillStructureBehavior>() != null ||
                     actor.GetComponent<TransitDepotStructureActor>() != null ||
                     actor.GetComponent<MachineFactoryStructureActoryBehavior>() != null ||
-                    actor.GetComponent<TransportConnector>() != null
+                    actor.GetComponent<TransportConnector>() != null ||
+                    actor.GetComponent<AutoProductionStructureActor>() != null
                 )
                 {
                     result.Remove(actor.TilePosition);
@@ -180,6 +223,23 @@ namespace Misner.PalmRTS.Player
             resultOutput.AddRange(result);
 
             return resultOutput;
+        }
+
+        public HQActorBehavior GetFirstHQ()
+        {
+            HQActorBehavior hq = null;
+
+            foreach (ActorBehavior actor in _actors)
+            {
+                hq = actor.GetComponent<HQActorBehavior>();
+
+                if (hq != null)
+                {
+                    break;
+                }
+            }
+
+            return hq;
         }
 
         #endregion

@@ -61,6 +61,16 @@ namespace Misner.PalmRTS.Actor
             }
         }
 
+        protected void OnDestroy()
+        {
+            ITeam team = TeamManager.Instance.GetTeam(ControllingTeam);
+
+            if (team != null)
+            {
+                team.OnActorRemoved(this);
+            }
+        }
+
         protected void OnMouseDown()
         {
             if (OnClicked != null)

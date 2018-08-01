@@ -47,6 +47,15 @@ namespace Misner.PalmRTS.Actor
             //Debug.LogFormat("{0}.Add(), _actorBehaviors.Count = {1}", this.ToString(), _actorBehaviors.Count);
         }
 
+        public void Destroy(ActorBehavior actorBehavior)
+        {
+			actorBehavior.OnClicked -= OnActorClicked;
+            _actorBehaviors.Remove(actorBehavior);
+            UnityEngine.Object.Destroy(actorBehavior.gameObject);
+
+            Debug.LogFormat("{0}.Destroy(), _actorBehaviors.Count = {1}", this.ToString(), _actorBehaviors.Count);
+        }
+
         #endregion
 
         #region Actor Events
@@ -84,6 +93,7 @@ namespace Misner.PalmRTS.Actor
 
         private void KillActor(ActorBehavior actorBehavior)
         {
+            actorBehavior.OnClicked -= OnActorClicked;
             _actorBehaviors.Remove(actorBehavior);
             UnityEngine.Object.Destroy(actorBehavior.gameObject);
 

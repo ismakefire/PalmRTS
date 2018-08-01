@@ -11,6 +11,8 @@ namespace Misner.PalmRTS.UI
 
         public class PlayerDeploymentActions
         {
+            public Action RecycleStructure { get; set; }
+            
             public Action DeployDrill { get; set; }
             public Action DeployDepot { get; set; }
             public Action DeployMachineFactory { get; set; }
@@ -44,6 +46,9 @@ namespace Misner.PalmRTS.UI
         #endregion
 
         #region SerializeField
+
+        [SerializeField]
+        private Button _recycleStructureButton;
 
         [SerializeField]
         private Button _deployDrillButton;
@@ -84,9 +89,17 @@ namespace Misner.PalmRTS.UI
                 Debug.LogErrorFormat("{0}.Awake(), why are there two of these?", this.ToString());
             }
 
+            _recycleStructureButton.onClick.AddListener(OnRecycleStructureButtonClicked);
+
             _deployDrillButton.onClick.AddListener(OnDeployDrillButtonClicked);
-            _deployDepotButton.onClick.AddListener(OnDeployDepotButtonClicked);
-            _deployMachineFactoryButton.onClick.AddListener(OnDeployMachineFactoryButtonClicked);
+            if (_deployDepotButton != null)
+            {
+				_deployDepotButton.onClick.AddListener(OnDeployDepotButtonClicked);
+			}
+            if (_deployMachineFactoryButton != null)
+            {
+				_deployMachineFactoryButton.onClick.AddListener(OnDeployMachineFactoryButtonClicked);
+            }
             _deployConnectorButton.onClick.AddListener(OnDeployConnectorButtonClicked);
 
             _deployCrusherButton.onClick.AddListener(OnDeployCrusherButtonClicked);
@@ -126,6 +139,28 @@ namespace Misner.PalmRTS.UI
         #endregion
 
         #region Events
+
+        protected void OnRecycleStructureButtonClicked()
+        {
+            if (Time.time - _panelShowTime < 0.1f)
+            {
+                Debug.LogFormat("<color=#ff0000>{0}.OnRecycleStructureButtonClicked() TOO FAST!</color>", this.ToString());
+                return;
+            }
+
+            if (_actions != null && _actions.RecycleStructure != null)
+            {
+                Debug.LogFormat("{0}.OnRecycleStructureButtonClicked(), we're all good!", this.ToString());
+
+                _actions.RecycleStructure();
+            }
+            else
+            {
+                Debug.LogFormat("{0}.OnRecycleStructureButtonClicked(), (_actions != null && _actions.RecycleStructure != null) = {1}", this.ToString(), (_actions != null && _actions.RecycleStructure != null));
+            }
+
+            HidePanel();
+        }
 
         protected void OnDeployDrillButtonClicked()
         {

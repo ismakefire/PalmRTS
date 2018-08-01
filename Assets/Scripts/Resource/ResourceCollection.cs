@@ -72,6 +72,16 @@ namespace Misner.PalmRTS.Resource
             return didWeRemoveAnything;
         }
 
+        public void AddAll(ResourceCollection resources)
+        {
+            foreach (EResourceItem resourceKey in resources._collection.Keys)
+            {
+                int amountToAdd = resources.Get(resourceKey);
+                
+                this.Add(resourceKey, amountToAdd);
+            }
+        }
+
         public bool Has(EResourceItem item)
         {
             return (Get(item) > 0);
@@ -96,6 +106,6 @@ namespace Misner.PalmRTS.Resource
             Debug.LogFormat("<color=#ff00ff>{0}.Print(), _collection.Keys.Count = {1}, values = ( {2} )</color>", this.ToString(), _collection.Keys.Count, values);
         }
 
-        #endregion
+		#endregion
 	}
 }

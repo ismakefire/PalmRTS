@@ -4,6 +4,7 @@ using Misner.PalmRTS.Actor;
 using Misner.PalmRTS.Selection;
 using Misner.PalmRTS.Team;
 using Misner.PalmRTS.Terrain;
+using Misner.PalmRTS.Transit;
 using Misner.PalmRTS.UI;
 using Misner.Utility.Math;
 using UnityEngine;
@@ -207,6 +208,7 @@ namespace Misner.PalmRTS.Player
             {
 				UiConstructionBotPanel.Instance.ShowPanel(
 					new UiConstructionBotPanel.PlayerDeploymentActions() {
+                        RecycleStructure = OnRecycleStructure,
     					DeployDrill = OnDeployDrill,
     					DeployDepot = OnDeployDepot,
     					DeployMachineFactory = OnDeployMachineFactory,
@@ -227,15 +229,17 @@ namespace Misner.PalmRTS.Player
             private readonly ConstructionBotActorBehavior _constructionBot;
             private readonly Action<StructureDeploymentHandle> _removeDeploymentHandle;
             private readonly Action<Misner.Utility.Math.IntVector2> _onDeployStructure;
+            private readonly Vector3 _selectionTileOffset;
             private readonly List<SelectionTileItemBehavior> _selectionTiles = new List<SelectionTileItemBehavior>();
 
             private Vector2Int? _tileLocation = null;
 
-            public StructureDeploymentHandle(ConstructionBotActorBehavior constructionBot, Action<StructureDeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onDeployStructure)
+            public StructureDeploymentHandle(ConstructionBotActorBehavior constructionBot, Action<StructureDeploymentHandle> removeDeplymentHandle, Action<Misner.Utility.Math.IntVector2> onDeployStructure, Vector3? selectionTileOffset = null)
             {
                 this._constructionBot = constructionBot;
                 this._removeDeploymentHandle = removeDeplymentHandle;
                 this._onDeployStructure = onDeployStructure;
+                this._selectionTileOffset = (selectionTileOffset != null) ? selectionTileOffset.Value : Vector3.zero;
             }
 
             public void ApplyToTilesLocations(List<Vector2Int> availableTiles)
@@ -243,6 +247,7 @@ namespace Misner.PalmRTS.Player
                 foreach (Vector2Int tileLocation in availableTiles)
                 {
                     SelectionTileItemBehavior selectionTile = SelectionTileParentBehavior.Instance.CreateObjectAt(tileLocation, this);
+                    selectionTile.transform.position += _selectionTileOffset;
                     
                     AddSelectionTile(selectionTile);
                 }
@@ -295,25 +300,69 @@ namespace Misner.PalmRTS.Player
 
 		private readonly List<StructureDeploymentHandle> _deploymentHandles = new List<StructureDeploymentHandle>();
 		
-		private List<Vector2Int> GetAvailableTiles()
-		{
-			PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(Actor.ControllingTeam);
-			
-			List<Vector2Int> availableTiles = playerTeam.GenerateAvailableStructureTiles();
-			
-			return availableTiles;
-		}
-		
 		private void RemoveDeploymentHandle(StructureDeploymentHandle deploymentHandle)
 		{
 			_deploymentHandles.Remove(deploymentHandle);
 		}
 		
+
+
+
+
+
+
+
+        protected void OnRecycleStructure()
+        {
+            CurrentState = State.AwaitingInput;
+
+            List<Vector2Int> availableTiles = GetAvailableRecyclingTiles();
+
+            StructureDeploymentHandle deploymentHandle = new StructureDeploymentHandle(this, RemoveDeploymentHandle, OnRecycleSelected, Vector3.up * 0.5f);
+
+            deploymentHandle.ApplyToTilesLocations(availableTiles);
+
+            _deploymentHandles.Add(deploymentHandle);
+        }
+
+        private List<Vector2Int> GetAvailableRecyclingTiles()
+        {
+            List<Vector2Int> availableTiles = OurTeam.GenerateRecyclableStructureTiles();
+
+            return availableTiles;
+        }
+
+        protected void OnRecycleSelected(Utility.Math.IntVector2 tileLocation)
+        {
+            Debug.LogFormat("{0}.OnRecycleSelected(), tileLocation = {1}", this.ToString(), tileLocation);
+
+            ActorBehavior actorSelected = OurTeam.GetActorByTile(new Vector2Int(tileLocation.x, tileLocation.y));
+
+            int price = (actorSelected.GetComponent<TransportConnector>() != null) ? 20 : 40;
+
+            IInventoryStructure structure = actorSelected.GetComponent<IInventoryStructure>();
+
+            OurTeam.GetFirstHQ().Resources.AddAll(structure.Resources);
+
+            ActorModelManager.Instance.Destroy(actorSelected);
+
+            int payout = price / 3;
+
+            OurTeam.AwardMoney(payout);
+        }
+
+
+
+
+
+
+
+
         private void BeginStructureDeployment(Action<IntVector2> onDeploymentSelected)
         {
             CurrentState = State.AwaitingInput;
             
-            List<Vector2Int> availableTiles = GetAvailableTiles();
+            List<Vector2Int> availableTiles = GetAvailableDeploymentTiles();
 
             StructureDeploymentHandle deploymentHandle = new StructureDeploymentHandle(this, RemoveDeploymentHandle, onDeploymentSelected);
 
@@ -322,6 +371,14 @@ namespace Misner.PalmRTS.Player
             _deploymentHandles.Add(deploymentHandle);
         }
 
+        private List<Vector2Int> GetAvailableDeploymentTiles()
+        {
+            PlayerTeam playerTeam = TeamManager.Instance.GetTeam<PlayerTeam>(Actor.ControllingTeam);
+            
+            List<Vector2Int> availableTiles = playerTeam.GenerateAvailableStructureTiles();
+            
+            return availableTiles;
+        }
 
 
 		protected void OnDeployDrill()
