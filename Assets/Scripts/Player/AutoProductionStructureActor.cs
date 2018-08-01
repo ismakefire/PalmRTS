@@ -122,6 +122,9 @@ namespace Misner.PalmRTS.Player
         private EResourceItem _producedResource;
 
         [SerializeField]
+        private int _producedResourceCount = 1;
+
+        [SerializeField]
         private float _productionRateUPS;
 
         #endregion
@@ -155,7 +158,7 @@ namespace Misner.PalmRTS.Player
                 if (_productionProgress >= 1f)
                 {
                     --ConsumedResourceAmount;
-                    ++ProducedResourceAmount;
+                    ProducedResourceAmount += _producedResourceCount;
 
                     _productionProgress = 0f;
                 }

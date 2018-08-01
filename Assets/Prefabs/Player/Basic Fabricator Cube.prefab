@@ -249,6 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _consumedResource: 2
   _producedResource: 3
+  _producedResourceCount: 2
   _productionRateUPS: 0.1
 --- !u!114 &114465675668053256
 MonoBehaviour:
