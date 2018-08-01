@@ -136,11 +136,11 @@ namespace Misner.PalmRTS.UI
                                 break;
 
                             case EResourceItem.MetalPlate:
-                                AddItem("Metal Plate", amount.ToString(), Color.gray);
+                                AddItem("Metal Plate", amount.ToString(), new Color(0.5f, 0.5f, 1f));
                                 break;
 
                             case EResourceItem.MetalBox:
-                                AddItem("Empty Box", amount.ToString(), new Color(0.5f, 0.5f, 1f));
+                                AddItem("Empty Box", amount.ToString(), Color.gray);
                                 break;
 
                             default:
