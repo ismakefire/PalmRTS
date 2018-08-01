@@ -102,7 +102,7 @@ namespace Misner.PalmRTS.Player
 			_currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowDrillPanel);
 
-            Inventory_EmptyBoxCount = 15;
+            _currentResources.Add(EResourceItem.MetalBox, 15);
 
             StructureTileManager.Instance.Add(Actor);
 		}
@@ -128,7 +128,7 @@ namespace Misner.PalmRTS.Player
             }
 
 
-            if (Inventory_EmptyBoxCount >= 1)
+            if (Resources.Has(EResourceItem.MetalBox))
             {
 				_miningProgress += Time.deltaTime * _miningRateUps * miningRateCoef;
 				
@@ -137,16 +137,13 @@ namespace Misner.PalmRTS.Player
 				
 				if (_miningProgress >= 1f)
 				{
-                    --Inventory_EmptyBoxCount;
-                    ++Inventory_DrillProductCount;
-					
-					++_groundDrilledCount;
-					_miningProgress = 0f;
-					
-					//if (InventoryChanged != null)
-					//{
-					//	InventoryChanged();
-					//}
+                    if (Resources.Remove(EResourceItem.MetalBox, 1))
+                    {
+                        Resources.Add(EResourceItem.SolidRock, 1);
+
+                        ++_groundDrilledCount;
+                        _miningProgress = 0f;
+                    }
 				}
             }
         }

@@ -108,8 +108,8 @@ namespace Misner.PalmRTS.Player
             _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowHQPanel);
 
-            Inventory_EmptyBoxCount = 20;
-            Inventory_DrillProductCount = 2;
+            Resources.Add(EResourceItem.MetalBox, 20);
+            Resources.Add(EResourceItem.SolidRock, 2);
 
             if (InventoryChanged != null)
             {
@@ -183,7 +183,7 @@ namespace Misner.PalmRTS.Player
         {
             if (OurTeam.SpendMoney(10))
             {
-                Inventory_EmptyBoxCount += 1;
+                _currentResources.Add(EResourceItem.MetalBox, 1);
 
 				if (InventoryChanged != null)
 				{
@@ -194,9 +194,8 @@ namespace Misner.PalmRTS.Player
 
         protected void OnSellMetalBox()
         {
-            if (Inventory_EmptyBoxCount >= 1)
+            if (_currentResources.Remove(EResourceItem.MetalBox, 1))
             {
-                Inventory_EmptyBoxCount -= 1;
                 OurTeam.AwardMoney(4);
 
                 if (InventoryChanged != null)

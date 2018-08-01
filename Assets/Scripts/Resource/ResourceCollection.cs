@@ -28,7 +28,7 @@ namespace Misner.PalmRTS.Resource
                 return 0;
             }
 		}
-		
+
 		public void Set(EResourceItem item, int newValue)
 		{
             if (Get(item) != newValue)
@@ -41,6 +41,41 @@ namespace Misner.PalmRTS.Resource
                 }
             }
 		}
+
+        public void Add(EResourceItem resourceKey, int amountToAdd)
+        {
+            if (amountToAdd > 0)
+            {
+                int previousAmount = Get(resourceKey);
+                int newAmount = previousAmount + amountToAdd;
+
+                Set(resourceKey, newAmount);
+            }
+        }
+
+        public bool Remove(EResourceItem resourceKey, int amountToRemove)
+        {
+            bool didWeRemoveAnything = false;
+            
+            if (amountToRemove > 0)
+            {
+                int previousAmount = Get(resourceKey);
+                int newAmount = previousAmount - amountToRemove;
+
+                if (newAmount >= 0)
+                {
+                    Set(resourceKey, newAmount);
+					didWeRemoveAnything = true;
+                }
+            }
+
+            return didWeRemoveAnything;
+        }
+
+        public bool Has(EResourceItem item)
+        {
+            return (Get(item) > 0);
+        }
 
         public void Print()
         {
