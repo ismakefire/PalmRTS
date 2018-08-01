@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Misner.PalmRTS.Player;
 using Misner.PalmRTS.Resource;
+using Misner.PalmRTS.Transit;
 using UnityEngine;
 
 namespace Misner.PalmRTS.UI
@@ -111,56 +112,41 @@ namespace Misner.PalmRTS.UI
         {
             ClearInventory();
 
-            if (_structure.Resources != null)
-            {
-                foreach (EResourceItem itemKey in ResourceItemUtil.GetAll())
-                {
-                    int amount = _structure.Resources.Get(itemKey);
-
-                    if (amount > 0)
-                    {
-                        switch (itemKey)
-                        {
-                            case EResourceItem.SolidRock:
-                                for (int i = 0; i < amount; i++)
-                                {
-                                    AddItem("Drilled Rock", "1", Color.red);
-                                }
-                                break;
-                            
-                            case EResourceItem.CrushedRock:
-                                for (int i = 0; i < amount; i++)
-                                {
-                                    AddItem("Crushed Rock", "1", new Color(1f, 0.5f, 0f));
-                                }
-                                break;
-
-                            case EResourceItem.MetalPlate:
-                                AddItem("Metal Plate", amount.ToString(), new Color(0.5f, 0.5f, 1f));
-                                break;
-
-                            case EResourceItem.MetalBox:
-                                AddItem("Empty Box", amount.ToString(), Color.gray);
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-				if (_structure.Inventory_EmptyBoxCount > 0)
-				{
-					AddItem("Empty Box", _structure.Inventory_EmptyBoxCount.ToString(), Color.gray);
-				}
+			foreach (EResourceItem itemKey in ResourceItemUtil.GetAll())
+			{
+				int amount = _structure.Resources.Get(itemKey);
 				
-				for (int i = 0; i < _structure.Inventory_DrillProductCount; i++)
-                {
-                    AddItem("Drilled Rock", "1", Color.red);
+				if (amount > 0)
+				{
+					switch (itemKey)
+					{
+						case EResourceItem.SolidRock:
+							for (int i = 0; i < amount; i++)
+							{
+								AddItem("Drilled Rock", "1", Color.red);
+							}
+							break;
+							
+						case EResourceItem.CrushedRock:
+							for (int i = 0; i < amount; i++)
+							{
+								AddItem("Crushed Rock", "1", new Color(1f, 0.5f, 0f));
+							}
+							break;
+							
+						case EResourceItem.MetalPlate:
+							AddItem("Metal Plate", amount.ToString(), new Color(0.5f, 0.5f, 1f));
+							break;
+							
+						case EResourceItem.MetalBox:
+							AddItem("Empty Box", amount.ToString(), Color.gray);
+							break;
+							
+						default:
+							break;
+					}
 				}
-            }
+			}
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Misner.PalmRTS.Player;
+using Misner.PalmRTS.Resource;
 using Misner.PalmRTS.Transit;
 using UnityEngine;
 using UnityEngine.UI;
@@ -132,16 +133,44 @@ namespace Misner.PalmRTS.UI
 
         protected void OnDepotInventoryChanged()
         {
+            IInventoryStructure structure = _transportConnector;
+
             ClearInventory();
 
-            if (_transportConnector.Inventory_EmptyBoxCount > 0)
+            foreach (EResourceItem itemKey in ResourceItemUtil.GetAll())
             {
-                AddItem("Empty Box", _transportConnector.Inventory_EmptyBoxCount.ToString(), Color.gray);
-            }
+                int amount = structure.Resources.Get(itemKey);
 
-            for (int i = 0; i < _transportConnector.Inventory_DrillProductCount; i++)
-            {
-                AddItem("Drill Product", "1", Color.red);
+                if (amount > 0)
+                {
+                    switch (itemKey)
+                    {
+                        case EResourceItem.SolidRock:
+                            for (int i = 0; i < amount; i++)
+                            {
+                                AddItem("Drilled Rock", "1", Color.red);
+                            }
+                            break;
+
+                        case EResourceItem.CrushedRock:
+                            for (int i = 0; i < amount; i++)
+                            {
+                                AddItem("Crushed Rock", "1", new Color(1f, 0.5f, 0f));
+                            }
+                            break;
+
+                        case EResourceItem.MetalPlate:
+                            AddItem("Metal Plate", amount.ToString(), new Color(0.5f, 0.5f, 1f));
+                            break;
+
+                        case EResourceItem.MetalBox:
+                            AddItem("Empty Box", amount.ToString(), Color.gray);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
             }
         }
 
