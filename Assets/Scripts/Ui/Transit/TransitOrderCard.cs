@@ -10,9 +10,6 @@ namespace Misner.PalmRTS.UI
         #region SerializeField
 
         [SerializeField]
-        private Text _orderDescriptionText;
-
-        [SerializeField]
         private Dropdown _verbDropdown;
 
         [SerializeField]
