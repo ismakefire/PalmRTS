@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Misner.PalmRTS.Transit;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Misner.PalmRTS.UI
 {
@@ -96,14 +97,6 @@ namespace Misner.PalmRTS.UI
 			TransitOrder.Object = null;
 			TransitOrder.Subject = null;
 
-            if (TransitOrder.Verb == 3)
-            {
-                int objectResult = 10;
-                
-                TransitOrder.Object = objectResult;
-                ChangeObjectInternal(objectResult);
-            }
-
             ChangeVerbInternal(verbValue);
         }
 
@@ -176,14 +169,31 @@ namespace Misner.PalmRTS.UI
 
                     _transitOrderCard.ObjectDropdown.gameObject.SetActive(true);
                     _transitOrderCard.ObjectDropdown.value = 0;
+
+                    {
+						List<Dropdown.OptionData> dropdownOptions = new List<Dropdown.OptionData>();
+						
+                        foreach (string optionName in TransitOrder.GenerateObjectDropdownOptions())
+                        {
+                            dropdownOptions.Add(new Dropdown.OptionData(optionName));
+                        }
+
+                        _transitOrderCard.ObjectDropdown.options = dropdownOptions;
+                    }
                     break;
 
                 case 3:
-                    _transitOrderCard.ObjectDropdown.gameObject.SetActive(false);
-                    _transitOrderCard.SubjectDropdown.gameObject.SetActive(false);
+                    {
+                        int objectResult = 10;
+                        TransitOrder.Object = objectResult;
+                        ChangeObjectInternal(objectResult);
 
-                    _transitOrderCard.ObjectInputfield.gameObject.SetActive(true);
-                    _transitOrderCard.ObjectInputfield.text = "10";
+						_transitOrderCard.ObjectDropdown.gameObject.SetActive(false);
+						_transitOrderCard.SubjectDropdown.gameObject.SetActive(false);
+						
+						_transitOrderCard.ObjectInputfield.gameObject.SetActive(true);
+                        _transitOrderCard.ObjectInputfield.text = "" + objectResult;
+                    }
                     break;
 
                 default:

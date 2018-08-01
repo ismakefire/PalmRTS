@@ -7,6 +7,8 @@ namespace Misner.PalmRTS.Transit
     public interface ITransitOrder
     {
         int? Object { get; set; }
+        List<string> GenerateObjectDropdownOptions();
+
         int? Subject { get; set; }
 
         float? Duration { get; }

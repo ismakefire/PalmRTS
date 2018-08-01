@@ -9,7 +9,12 @@ namespace Misner.PalmRTS.Transit
         #region ITransitOrder
 
 		public int? Object { get; set; }
-		
+
+        public List<string> GenerateObjectDropdownOptions()
+        {
+            return null;
+        }
+
 		public int? Subject { get; set; }
 
         public float? Duration

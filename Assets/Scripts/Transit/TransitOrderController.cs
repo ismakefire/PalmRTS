@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Misner.PalmRTS.Player;
 using UnityEngine;
 
@@ -89,6 +90,11 @@ namespace Misner.PalmRTS.Transit
 					_verb = value;
                 }
             }
+        }
+
+        public List<string> GenerateObjectDropdownOptions()
+        {
+            return _currentOrder.GenerateObjectDropdownOptions();
         }
 
         public int? Object

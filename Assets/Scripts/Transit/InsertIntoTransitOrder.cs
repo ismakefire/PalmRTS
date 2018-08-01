@@ -28,7 +28,12 @@ namespace Misner.PalmRTS.Transit
         #region ITransitOrder
 
         public int? Object { get; set; }
-        
+
+        public List<string> GenerateObjectDropdownOptions()
+        {
+            return ResourceItemUtil.GenerateObjectDropdownOptions();
+        }
+
         public int? Subject { get; set; }
 
         public float? Duration
@@ -65,32 +70,19 @@ namespace Misner.PalmRTS.Transit
                     }
                     else
                     {
-                        switch (Object)
+                        if (Object != null)
                         {
-                            case 1:
+                            EResourceItem? resourceItem = ResourceItemUtil.GetResourceFromDropdownOptionIndex(Object.Value);
+
+                            if (resourceItem != null)
+                            {
+                                int transactionAmount = 1;
+                                
+                                if (_transitActor.Resources.Remove(resourceItem.Value, transactionAmount))
                                 {
-									int transactionAmount = 1;
-									
-                                    if (_transitActor.Resources.Remove(EResourceItem.MetalBox, transactionAmount))
-									{
-                                        inventoryStructure.Resources.Add(EResourceItem.MetalBox, transactionAmount);
-									}
+                                    inventoryStructure.Resources.Add(resourceItem.Value, transactionAmount);
                                 }
-                                break;
-
-                            case 2:
-                                {
-                                    int transactionAmount = 1;
-
-                                    if (_transitActor.Resources.Remove(EResourceItem.SolidRock, transactionAmount))
-                                    {
-                                        inventoryStructure.Resources.Add(EResourceItem.SolidRock, transactionAmount);
-                                    }
-                                }
-                                break;
-
-                            default:
-                                break;
+                            }
                         }
                     }
                 }
