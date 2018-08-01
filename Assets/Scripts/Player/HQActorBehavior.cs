@@ -11,7 +11,13 @@ namespace Misner.PalmRTS.Player
 {
     [RequireComponent(typeof(ActorBehavior))]
     public class HQActorBehavior : MonoBehaviour, IInventoryStructure
-	{
+    {
+        #region Variables
+
+        private readonly ResourceCollection _currentResources = new ResourceCollection();
+
+        #endregion
+
         #region SerializeField
 
         [SerializeField]
@@ -62,13 +68,33 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                // TODO
-                return null;
+                return _currentResources;
             }
         }
 
-        public int Inventory_EmptyBoxCount { get; set; }
-        public int Inventory_DrillProductCount { get; set; }
+        public int Inventory_EmptyBoxCount
+        {
+            get
+            {
+                return _currentResources.Get(EResourceItem.MetalBox);
+            }
+            set
+            {
+                _currentResources.Set(EResourceItem.MetalBox, value);
+            }
+        }
+
+        public int Inventory_DrillProductCount
+        {
+            get
+            {
+                return _currentResources.Get(EResourceItem.SolidRock);
+            }
+            set
+            {
+                _currentResources.Set(EResourceItem.SolidRock, value);
+            }
+        }
 
         public event Action InventoryChanged;
 
@@ -78,7 +104,8 @@ namespace Misner.PalmRTS.Player
 
 		// Use this for initialization
 		protected void Start ()
-		{
+        {
+            _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowHQPanel);
 
             Inventory_EmptyBoxCount = 20;
@@ -176,6 +203,14 @@ namespace Misner.PalmRTS.Player
                 {
                     InventoryChanged();
                 }
+            }
+        }
+
+        protected void OnInventoryChanged()
+        {
+            if (InventoryChanged != null)
+            {
+                InventoryChanged();
             }
         }
 

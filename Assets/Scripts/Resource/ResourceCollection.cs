@@ -15,6 +15,8 @@ namespace Misner.PalmRTS.Resource
 
         #region Public Interface
 
+        public event Action Changed;
+
 		public int Get(EResourceItem item)
 		{
             if (_collection.ContainsKey(item))
@@ -29,7 +31,15 @@ namespace Misner.PalmRTS.Resource
 		
 		public void Set(EResourceItem item, int newValue)
 		{
-            _collection[item] = newValue;
+            if (Get(item) != newValue)
+            {
+				_collection[item] = newValue;
+
+                if (Changed != null)
+                {
+                    Changed();
+                }
+            }
 		}
 
         public void Print()

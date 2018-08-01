@@ -10,10 +10,17 @@ using UnityEngine;
 
 namespace Misner.PalmRTS.Player
 {
+    /// <summary>
+    /// BE AWARE!
+    /// 
+    /// This class has not been tested in a while, as it's previous funcionality has been taken over by TransportConnector. 
+    /// </summary>
     [RequireComponent(typeof(ActorBehavior))]
     public class TransitDepotStructureActor : MonoBehaviour, ITransitActor, IInventoryStructure
     {
-        #region Private Variables
+        #region Variables
+
+        private readonly ResourceCollection _currentResources = new ResourceCollection();
 
         private TransitOrderController _currentOrder = null;
 
@@ -47,44 +54,31 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                // TODO
-                return null;
+                return _currentResources;
             }
         }
 
-        private int _emptyBoxCount;
         public int Inventory_EmptyBoxCount
         {
             get
             {
-                return _emptyBoxCount;
+                return _currentResources.Get(EResourceItem.MetalBox);
             }
             set
             {
-                _emptyBoxCount = value;
-
-                if (InventoryChanged != null)
-                {
-                    InventoryChanged();
-                }
+                _currentResources.Set(EResourceItem.MetalBox, value);
             }
         }
 
-        private int _drillProductCount;
         public int Inventory_DrillProductCount
         {
             get
             {
-                return _drillProductCount;
+                return _currentResources.Get(EResourceItem.SolidRock);
             }
             set
             {
-                _drillProductCount = value;
-
-                if (InventoryChanged != null)
-                {
-                    InventoryChanged();
-                }
+                _currentResources.Set(EResourceItem.SolidRock, value);
             }
         }
 
@@ -119,6 +113,7 @@ namespace Misner.PalmRTS.Player
 		// Use this for initialization
 		protected void Start ()
         {
+            _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowTransitDepotPanel);
 
             Inventory_EmptyBoxCount = 20;
@@ -218,6 +213,14 @@ namespace Misner.PalmRTS.Player
                 //    new UiPlayerDepotPanel.PlayerDepotActions(),
                 //    this
                 //);
+            }
+        }
+
+        protected void OnInventoryChanged()
+        {
+            if (InventoryChanged != null)
+            {
+                InventoryChanged();
             }
         }
 

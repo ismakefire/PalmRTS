@@ -94,11 +94,6 @@ namespace Misner.PalmRTS.Player
             set
             {
                 _currentResources.Set(EResourceItem.MetalBox, value);
-
-                if (InventoryChanged != null)
-                {
-                    InventoryChanged();
-                }
             }
         }
 
@@ -111,11 +106,6 @@ namespace Misner.PalmRTS.Player
             set
             {
                 _currentResources.Set(EResourceItem.SolidRock, value);
-
-                if (InventoryChanged != null)
-                {
-                    InventoryChanged();
-                }
             }
         }
 
@@ -141,6 +131,7 @@ namespace Misner.PalmRTS.Player
         // Use this for initialization
         protected void Start ()
         {
+			_currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowPanel);
 
             StructureTileManager.Instance.Add(Actor);
@@ -167,11 +158,6 @@ namespace Misner.PalmRTS.Player
                     ++ProducedResourceAmount;
 
                     _productionProgress = 0f;
-
-                    if (InventoryChanged != null)
-                    {
-                        InventoryChanged();
-                    }
                 }
             }
         }
@@ -186,6 +172,14 @@ namespace Misner.PalmRTS.Player
                 new UiPlayerAutoProductionStructurePanel.PlayerStructureActions(),
 				this
 			);
+        }
+
+        protected void OnInventoryChanged()
+        {
+            if (InventoryChanged != null)
+            {
+                InventoryChanged();
+            }
         }
 
         #endregion

@@ -18,9 +18,9 @@ namespace Misner.PalmRTS.Player
 
         private readonly float _miningRateUps = 10.0f / 30f;
 
+        private readonly ResourceCollection _currentResources = new ResourceCollection();
+
         private float _groundDrilledCount = 0f;
-        private int _emptyBoxCount = 15;
-        private int _fullBoxCount = 0;
 
         private float _miningProgress = 0f;
 
@@ -62,8 +62,7 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                // TODO
-                return null;
+                return _currentResources;
             }
         }
 
@@ -71,16 +70,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _emptyBoxCount;
+                return _currentResources.Get(EResourceItem.MetalBox);
             }
             set
             {
-                _emptyBoxCount = value;
-
-                if (InventoryChanged != null)
-                {
-                    InventoryChanged();
-                }
+                _currentResources.Set(EResourceItem.MetalBox, value);
             }
         }
 
@@ -88,16 +82,11 @@ namespace Misner.PalmRTS.Player
         {
             get
             {
-                return _fullBoxCount;
+                return _currentResources.Get(EResourceItem.SolidRock);
             }
             set
             {
-                _fullBoxCount = value;
-
-                if (InventoryChanged != null)
-                {
-                    InventoryChanged();
-                }
+                _currentResources.Set(EResourceItem.SolidRock, value);
             }
         }
 
@@ -110,7 +99,10 @@ namespace Misner.PalmRTS.Player
 		// Use this for initialization
 		protected void Start ()
         {
+			_currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowDrillPanel);
+
+            Inventory_EmptyBoxCount = 15;
 
             StructureTileManager.Instance.Add(Actor);
 		}
@@ -136,7 +128,7 @@ namespace Misner.PalmRTS.Player
             }
 
 
-            if (_emptyBoxCount >= 1)
+            if (Inventory_EmptyBoxCount >= 1)
             {
 				_miningProgress += Time.deltaTime * _miningRateUps * miningRateCoef;
 				
@@ -145,16 +137,16 @@ namespace Misner.PalmRTS.Player
 				
 				if (_miningProgress >= 1f)
 				{
-					--_emptyBoxCount;
-					++_fullBoxCount;
+                    --Inventory_EmptyBoxCount;
+                    ++Inventory_DrillProductCount;
 					
 					++_groundDrilledCount;
 					_miningProgress = 0f;
 					
-					if (InventoryChanged != null)
-					{
-						InventoryChanged();
-					}
+					//if (InventoryChanged != null)
+					//{
+					//	InventoryChanged();
+					//}
 				}
             }
         }
@@ -172,6 +164,14 @@ namespace Misner.PalmRTS.Player
             else
             {
                 UiPlayerDrillPanel.Instance.ShowPanel(new UiPlayerDrillPanel.PlayerDrillActions(), this);
+            }
+        }
+
+        protected void OnInventoryChanged()
+        {
+            if (InventoryChanged != null)
+            {
+                InventoryChanged();
             }
         }
 
