@@ -102,8 +102,6 @@ namespace Misner.PalmRTS.Player
             _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowDrillPanel);
 
-            _currentResources.Add(EResourceItem.MetalBox, 15);
-
             StructureTileManager.Instance.Add(Actor);
         }
 

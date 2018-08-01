@@ -138,11 +138,6 @@ namespace Misner.PalmRTS.Player
             OurTeam.AddClickEvent(Actor, ShowPanel);
 
             StructureTileManager.Instance.Add(Actor);
-
-            foreach (EResourceItem item in ResourceItemUtil.GetAll())
-            {
-                _currentResources.Set(item, 3);
-            }
         }
 
         protected void Update()

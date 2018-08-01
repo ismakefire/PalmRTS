@@ -108,9 +108,6 @@ namespace Misner.PalmRTS.Player
             _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowHQPanel);
 
-            Resources.Add(EResourceItem.MetalBox, 20);
-            Resources.Add(EResourceItem.SolidRock, 2);
-
             if (InventoryChanged != null)
             {
                 InventoryChanged();

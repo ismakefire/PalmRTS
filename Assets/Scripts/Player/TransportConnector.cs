@@ -115,9 +115,6 @@ namespace Misner.PalmRTS.Player
             _currentResources.Changed += OnInventoryChanged;
             OurTeam.AddClickEvent(Actor, ShowTransitDepotPanel);
 
-            Resources.Add(EResourceItem.MetalBox, 20);
-            Resources.Add(EResourceItem.SolidRock, 2);
-
             _lastTick = Time.time;
 
             StructureTileManager.Instance.Add(Actor);
