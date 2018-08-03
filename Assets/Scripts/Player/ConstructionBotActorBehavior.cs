@@ -318,7 +318,7 @@ namespace Misner.PalmRTS.Player
 
             List<Vector2Int> availableTiles = GetAvailableRecyclingTiles();
 
-            StructureDeploymentHandle deploymentHandle = new StructureDeploymentHandle(this, RemoveDeploymentHandle, OnRecycleSelected, Vector3.up * 0.5f);
+            StructureDeploymentHandle deploymentHandle = new StructureDeploymentHandle(this, RemoveDeploymentHandle, OnRecycleSelected, Vector3.up * 0.75f);
 
             deploymentHandle.ApplyToTilesLocations(availableTiles);
 
