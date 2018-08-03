@@ -49,6 +49,78 @@ namespace Misner.PalmRTS.Financial
 
         #endregion
 
+        #region Public Interface
+
+        public void BorrowMoney(int borrowRequest)
+        {
+            if (BalanceChange(+borrowRequest))
+            {
+                float percentOfDollarOwed = (_timeOfNextCharge - _timeMeasured) / _timeOfNextCharge;
+                float percentOfDollarLeft = 1 - percentOfDollarOwed;
+
+                // Afforded.
+                _balance += borrowRequest;
+                _timeOfNextCharge = _timeMeasured + (float)CalculateTime() * percentOfDollarLeft; // This is an approxiation, but oh well.
+
+                Debug.LogFormat("<color=#ff00ff>{0}.BorrowMoney({1}), percentOfDollarOwed = {2}, _timeMeasured = {3}, _timeOfNextCharge = {4}</color>", this.ToString(), borrowRequest, percentOfDollarOwed, _timeMeasured, _timeOfNextCharge);
+
+                if (DebtChanged != null)
+                {
+                    DebtChanged();
+                }
+            }
+            else
+            {
+                // Can't afford. Do nothing. 
+            }
+        }
+
+        public void PayoffMoney(int payoffRequest)
+        {
+			if (payoffRequest > _balance)
+			{
+                if (BalanceChange(Mathf.RoundToInt((float)_balance)))
+                {
+                    // Afforded.
+                    _balance = 0;
+
+                    if (DebtChanged != null)
+                    {
+                        DebtChanged();
+                    }
+                }
+                else
+                {
+                    // Can't afford. Do nothing. 
+                }
+			}
+			else
+            {
+                if (BalanceChange(-payoffRequest))
+                {
+                    float percentOfDollarOwed = (_timeOfNextCharge - _timeMeasured) / _timeOfNextCharge;
+                    float percentOfDollarLeft = 1 - percentOfDollarOwed;
+
+                    // Afforded.
+                    _balance -= payoffRequest;
+                    _timeOfNextCharge = _timeMeasured + (float)CalculateTime() * percentOfDollarLeft; // This is an approxiation, but oh well.
+
+                    Debug.LogFormat("<color=#ff00ff>{0}.PayoffMoney({1}), percentOfDollarOwed = {2}, _timeMeasured = {3}, _timeOfNextCharge = {4}</color>", this.ToString(), payoffRequest, percentOfDollarOwed, _timeMeasured, _timeOfNextCharge);
+
+                    if (DebtChanged != null)
+                    {
+                        DebtChanged();
+                    }
+                }
+                else
+                {
+                    // Can't afford. Do nothing. 
+                }
+            }
+        }
+
+        #endregion
+
         #region Time Calculation
 
         private float _timeOfNextCharge;
@@ -78,12 +150,15 @@ namespace Misner.PalmRTS.Financial
 		// Update is called once per frame
 		protected void Update ()
 		{
-            _timeMeasured += Time.deltaTime;
-
-            if (_timeMeasured >= _timeOfNextCharge)
+            if (_balance > 0)
             {
-                PerformCharge();
-                _timeMeasured -= _timeOfNextCharge;
+				_timeMeasured += Time.deltaTime;
+				
+				if (_timeMeasured >= _timeOfNextCharge)
+				{
+					PerformCharge();
+					_timeMeasured -= _timeOfNextCharge;
+				}
             }
         }
 

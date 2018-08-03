@@ -71,6 +71,19 @@ namespace Misner.PalmRTS.Player
             _debtModel = DebtModel.Create(amount: _playerMoney * 9, pps: 0.00001);
             _debtModel.BalanceChange += OnBalanceChange;
             _debtModel.DebtChanged += OnDebtChanged;
+
+            UiHudPanel.Instance.OnBarrowButtonClicked += OnBarrowButtonClicked;
+            UiHudPanel.Instance.OnPayoffButtonClicked += OnPayoffButtonClicked;
+        }
+
+        protected void OnBarrowButtonClicked()
+        {
+            _debtModel.BorrowMoney(100);
+        }
+
+        protected void OnPayoffButtonClicked()
+        {
+            _debtModel.PayoffMoney(100);
         }
 
         protected bool OnBalanceChange(int change)

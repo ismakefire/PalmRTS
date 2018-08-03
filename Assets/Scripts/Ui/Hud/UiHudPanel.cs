@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Misner.PalmRTS.Player;
 using Misner.PalmRTS.Team;
@@ -16,6 +17,12 @@ namespace Misner.PalmRTS.UI
 
         [SerializeField]
         private Text _debtText;
+
+        [SerializeField]
+        private Button _barrowButton;
+
+        [SerializeField]
+        private Button _payoffButton;
 
         #endregion
 
@@ -45,6 +52,9 @@ namespace Misner.PalmRTS.UI
             }
         }
 
+        public Action OnBarrowButtonClicked;
+        public Action OnPayoffButtonClicked;
+
         #endregion
 
         #region MonoBehaviour Singleton
@@ -69,6 +79,37 @@ namespace Misner.PalmRTS.UI
             {
                 this.MoneyText = playerTeam.GetPlayerMoneyString();
                 this.DebtText = playerTeam.GetPlayerDebtString();
+            }
+
+            _barrowButton.onClick.AddListener(BarrowButtonClicked);
+            _payoffButton.onClick.AddListener(PayoffButtonClicked);
+        }
+
+        #endregion
+
+        #region Events
+
+        protected void BarrowButtonClicked()
+        {
+            if (OnBarrowButtonClicked == null)
+            {
+                Debug.LogFormat("<color=#ff00ff>{0}.BarrowButtonClicked(), (OnBarrowButtonClicked == null)</color>", this.ToString());
+            }
+            else
+            {
+                OnBarrowButtonClicked();
+            }
+        }
+
+        protected void PayoffButtonClicked()
+        {
+            if (OnPayoffButtonClicked == null)
+            {
+                Debug.LogFormat("<color=#ff00ff>{0}.PayoffButtonClicked(), (OnPayoffButtonClicked == null)</color>", this.ToString());
+            }
+            else
+            {
+                OnPayoffButtonClicked();
             }
         }
 
